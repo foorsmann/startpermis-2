@@ -30,12 +30,23 @@
   // Uses reCAPTCHA v3 for web attestation
   const RECAPTCHA_SITE_KEY = '6LcIcDosAAAAAI2dKCE7c-15ioM6N3CnUac5BNrg';
 
+  function isCompatSDK() {
+    // Compat SDK exposes firebase.initializeApp + firebase.apps[]
+    return typeof firebase !== 'undefined' && typeof firebase.initializeApp === 'function' && Array.isArray(firebase.apps);
+  }
+
   function activateAppCheck() {
     console.log('[appcheck] Attempting activation...');
     try {
+      if (!isCompatSDK()) {
+        console.error('[appcheck] Compat SDK not detected. App Check activation skipped to avoid modular API mismatch.');
+        return;
+      }
+
       if (typeof firebase.appCheck !== 'function') {
-        console.error('[appcheck] firebase.appCheck is not available');
+        console.error('[appcheck] firebase.appCheck is not available on this SDK build. App Check protection is OFF.');
         console.log('[appcheck] Available firebase methods:', Object.keys(firebase).filter(k => typeof firebase[k] === 'function'));
+        window.__spAppCheckUnavailable = true;
         return;
       }
       if (window.__spAppCheckActivated) {
@@ -55,6 +66,7 @@
     } catch (e) {
       console.error('[appcheck] Activation failed:', e.message || e);
       console.error('[appcheck] Full error:', e);
+      window.__spAppCheckUnavailable = true;
     }
   }
 
@@ -74,7 +86,8 @@
           console.log('[appcheck] SDK now available after retry');
           activateAppCheck();
         } else {
-          console.error('[appcheck] SDK still not available after retry');
+          console.error('[appcheck] SDK still not available after retry. App Check protection is OFF.');
+          window.__spAppCheckUnavailable = true;
         }
       }, 500);
     }
@@ -93,11 +106,18 @@
 
   try {
     if (!window.__spFirestoreSettingsApplied) {
-      window.db.settings({
-        experimentalAutoDetectLongPolling: true,
-        merge: true
-      });
-      window.__spFirestoreSettingsApplied = true;
+      if (!isCompatSDK()) {
+        console.warn('[firestore] Compat SDK not detected, skipping settings() to avoid modular API mismatch.');
+      } else if (typeof window.db.settings === 'function') {
+        // Keep long-polling enabled for restrictive networks where websockets are blocked.
+        // See https://firebase.google.com/docs/reference/js/firestore_.settings for compat options.
+        window.db.settings({
+          experimentalAutoDetectLongPolling: true
+        });
+        window.__spFirestoreSettingsApplied = true;
+      } else {
+        console.warn('[firestore] db.settings is not available on this SDK build, skipping settings().');
+      }
     }
   } catch (e) {
     console.warn('[firestore] settings() skipped:', e);

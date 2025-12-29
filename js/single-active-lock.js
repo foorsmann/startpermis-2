@@ -10,6 +10,7 @@
   'use strict';
 
   function sanitizeKey(k) {
+    // eslint-disable-next-line no-useless-escape
     return String(k || "global").replace(/[.#$\[\]\/]/g, "-");
   }
 

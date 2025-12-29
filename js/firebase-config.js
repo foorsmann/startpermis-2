@@ -34,7 +34,8 @@
     console.log('[appcheck] Attempting activation...');
     try {
       if (typeof firebase.appCheck !== 'function') {
-        console.error('[appcheck] firebase.appCheck is not a function');
+        console.error('[appcheck] firebase.appCheck is not available');
+        console.log('[appcheck] Available firebase methods:', Object.keys(firebase).filter(k => typeof firebase[k] === 'function'));
         return;
       }
       if (window.__spAppCheckActivated) {
@@ -44,33 +45,47 @@
 
       // Use ReCaptchaV3Provider as per official Firebase documentation
       const appCheck = firebase.appCheck();
+      console.log('[appcheck] Creating ReCaptchaV3Provider...');
       const provider = new firebase.appCheck.ReCaptchaV3Provider(RECAPTCHA_SITE_KEY);
 
+      console.log('[appcheck] Calling activate()...');
       appCheck.activate(provider, true);
       window.__spAppCheckActivated = true;
-      console.log('[appcheck] Firebase App Check activated successfully');
+      console.log('[appcheck] Firebase App Check activated successfully!');
     } catch (e) {
-      console.error('[appcheck] Activation failed:', e);
+      console.error('[appcheck] Activation failed:', e.message || e);
+      console.error('[appcheck] Full error:', e);
     }
   }
 
-  // Load App Check SDK - must be loaded before activation
-  console.log('[appcheck] Checking SDK availability...');
-  if (typeof firebase.appCheck === 'function') {
-    console.log('[appcheck] SDK already loaded');
-    activateAppCheck();
+  // Initialize App Check after a short delay to ensure SDK is fully loaded
+  function initAppCheck() {
+    console.log('[appcheck] Initializing...');
+
+    // Check if App Check SDK is available
+    if (typeof firebase.appCheck === 'function') {
+      console.log('[appcheck] SDK is available, activating...');
+      activateAppCheck();
+    } else {
+      console.warn('[appcheck] SDK not found, will retry...');
+      // Retry after a delay in case the script is still loading
+      setTimeout(function() {
+        if (typeof firebase.appCheck === 'function') {
+          console.log('[appcheck] SDK now available after retry');
+          activateAppCheck();
+        } else {
+          console.error('[appcheck] SDK still not available after retry');
+        }
+      }, 500);
+    }
+  }
+
+  // Run App Check initialization after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAppCheck);
   } else {
-    console.log('[appcheck] Loading SDK dynamically...');
-    var appCheckScript = document.createElement('script');
-    appCheckScript.src = 'https://www.gstatic.com/firebasejs/10.10.0/firebase-appcheck-compat.js';
-    appCheckScript.onload = function() {
-      console.log('[appcheck] SDK loaded successfully');
-      setTimeout(activateAppCheck, 50);
-    };
-    appCheckScript.onerror = function(e) {
-      console.error('[appcheck] Failed to load SDK:', e);
-    };
-    document.head.appendChild(appCheckScript);
+    // DOM already loaded, run with small delay
+    setTimeout(initAppCheck, 100);
   }
 
   // Initialize Firestore with stability settings

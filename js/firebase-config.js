@@ -27,38 +27,50 @@
 
   // Firebase App Check - Security layer
   // Protects backend resources from abuse
-  // Dynamically loads App Check SDK if not already present
+  // Uses reCAPTCHA v3 for web attestation
+  const RECAPTCHA_SITE_KEY = '6LcIcDosAAAAAI2dKCE7c-15ioM6N3CnUac5BNrg';
+
   function activateAppCheck() {
+    console.log('[appcheck] Attempting activation...');
     try {
-      if (!firebase.appCheck) {
-        console.warn('[appcheck] SDK not loaded, skipping activation');
+      if (typeof firebase.appCheck !== 'function') {
+        console.error('[appcheck] firebase.appCheck is not a function');
         return;
       }
-      if (window.__spAppCheckActivated) return;
+      if (window.__spAppCheckActivated) {
+        console.log('[appcheck] Already activated, skipping');
+        return;
+      }
 
+      // Use ReCaptchaV3Provider as per official Firebase documentation
       const appCheck = firebase.appCheck();
-      appCheck.activate(
-        '6LcIcDosAAAAAI2dKCE7c-15ioM6N3CnUac5BNrg',  // reCAPTCHA v3 site key
-        true  // isTokenAutoRefreshEnabled
-      );
+      const provider = new firebase.appCheck.ReCaptchaV3Provider(RECAPTCHA_SITE_KEY);
+
+      appCheck.activate(provider, true);
       window.__spAppCheckActivated = true;
-      console.log('[appcheck] Firebase App Check activated');
+      console.log('[appcheck] Firebase App Check activated successfully');
     } catch (e) {
-      console.warn('[appcheck] App Check activation failed:', e);
+      console.error('[appcheck] Activation failed:', e);
     }
   }
 
-  // Load App Check SDK dynamically if not present
-  if (!firebase.appCheck) {
-    var script = document.createElement('script');
-    script.src = 'https://www.gstatic.com/firebasejs/10.10.0/firebase-appcheck-compat.js';
-    script.onload = activateAppCheck;
-    script.onerror = function() {
-      console.warn('[appcheck] Failed to load App Check SDK');
-    };
-    document.head.appendChild(script);
-  } else {
+  // Load App Check SDK - must be loaded before activation
+  console.log('[appcheck] Checking SDK availability...');
+  if (typeof firebase.appCheck === 'function') {
+    console.log('[appcheck] SDK already loaded');
     activateAppCheck();
+  } else {
+    console.log('[appcheck] Loading SDK dynamically...');
+    var appCheckScript = document.createElement('script');
+    appCheckScript.src = 'https://www.gstatic.com/firebasejs/10.10.0/firebase-appcheck-compat.js';
+    appCheckScript.onload = function() {
+      console.log('[appcheck] SDK loaded successfully');
+      setTimeout(activateAppCheck, 50);
+    };
+    appCheckScript.onerror = function(e) {
+      console.error('[appcheck] Failed to load SDK:', e);
+    };
+    document.head.appendChild(appCheckScript);
   }
 
   // Initialize Firestore with stability settings

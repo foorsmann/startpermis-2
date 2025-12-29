@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - master
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
 
 permissions:
   checks: write

@@ -1,0 +1,1142 @@
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon Dec 29 2025 03:35:29 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6859bfeafacaca784ea62a53" data-wf-site="68589124f5ef093107d3fdc2" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Start Permis - Login</title>
+  <meta content="Start Permis - Login" property="og:title">
+  <meta content="Start Permis - Login" property="twitter:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/webarcs-ultra-awesome-site.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic","Plus Jakarta Sans:regular,500,600,700,800","Space Grotesk:300,regular,500,600,700","Outfit:200,300,regular,500,600,700,800,900","Urbanist:300,regular,500,600,700,800,900","Kanit:200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900","Mulish:regular,500,600,700,800,900,200italic,300italic,italic","Jost:100,200,300,regular,500,600,700,800,900"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.webp" rel="apple-touch-icon"><!--  ✅ GLOBAL AUTH GUARD (HEAD) — PRO: cache + anti-flicker + excepții  -->
+  <script>
+(function () {
+  var root = document.documentElement;
+  if (root.classList.contains('wf-design-mode')) return;
+  function normPath(p){
+    p = String(p || '/');
+    p = p.split('?')[0].split('#')[0];
+    p = p.replace(/\/+$/, '');
+    return p || '/';
+  }
+  var path = normPath(location.pathname);
+  // ✅ pagini unde NU vrem să ascundem nimic / NU vrem redirect din HEAD
+  var EXEMPT = {
+    '/auth': true,
+    '/confirmare-email': true,
+    '/resetare-parola': true,
+    '/verifica-email': true
+  };
+  if (EXEMPT[path]) return;
+  var VERIFY_URL = '/verifica-email';
+  // ✅ “Auth snapshot” (cross-page) — PRO
+  var SNAP_KEY = 'sp_auth_snapshot_v1';
+  // TTL-uri (poți ajusta)
+  var TTL_VERIFIED_MS   = 24 * 60 * 60 * 1000; // 24h
+  var TTL_ANON_MS       = 24 * 60 * 60 * 1000; // 24h
+  var TTL_UNVERIFIED_MS = 10 * 60 * 1000;      // 10 min
+  function readSnap(){
+    try {
+      var raw = localStorage.getItem(SNAP_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
+  }
+  function isFresh(s){
+    if (!s || !s.t) return false;
+    var age = Date.now() - Number(s.t || 0);
+    if (!isFinite(age) || age < 0) return false;
+    // s.a = 1 (logged), 0 (anon)
+    // s.ev = 1 (verified), 0 (unverified)
+    if (s.a === 0) return age <= TTL_ANON_MS;
+    if (s.a === 1 && s.ev === 1) return age <= TTL_VERIFIED_MS;
+    if (s.a === 1 && s.ev === 0) return age <= TTL_UNVERIFIED_MS;
+    return false;
+  }
+  var snap = readSnap();
+  // ✅ Dacă știm sigur (fresh) că e logged + UNverified -> redirect instant (fără flicker)
+  if (snap && isFresh(snap) && snap.a === 1 && snap.ev === 0) {
+    try { sessionStorage.setItem('sp_return_after_verify', location.pathname + location.search + location.hash); } catch(e){}
+    root.classList.add('sp-auth-preload');
+    location.replace(VERIFY_URL);
+    return;
+  }
+  // ✅ Dacă știm sigur (fresh) că e ANON sau VERIFIED -> NU ascundem deloc (page loads normal)
+  if (snap && isFresh(snap) && (snap.a === 0 || (snap.a === 1 && snap.ev === 1))) {
+    return;
+  }
+  // ✅ Necunoscut / expirat -> ascundem până decide Firebase (fără flicker)
+  root.classList.add('sp-auth-preload');
+})();
+</script>
+  <style>
+  html:not(.wf-design-mode).sp-auth-preload body{
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+</style>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+  <style>
+  ::selection { background: #3366FF; color: #FFFFFF; }
+  :focus:not(:focus-visible) { outline: none !important; box-shadow: none !important; }
+  * { -webkit-tap-highlight-color: rgba(0,0,0,0) !important; }
+  input, textarea, select, button, [contenteditable] {
+    -webkit-user-select: text !important; user-select: text !important;
+  }
+  [data-error],
+  [data-forgot-message] { display: none; font-size: 12px; margin-top: 6px; line-height: 1.4; }
+  .plyr__video-wrapper,
+  .plyr__video-wrapper video,
+  .plyr__video-embed iframe,
+  .plyr__poster { border-radius: 5px !important; overflow: hidden; }
+  .plyr__controls { border-bottom-left-radius: 5px !important; border-bottom-right-radius: 5px !important; overflow: hidden; }
+  .plyr--full-ui input[type='range'] { color: #27282e !important; accent-color: #27282e !important; }
+  .plyr__progress--played, .plyr__volume--display { background: #27282e !important; }
+  .plyr__control.plyr__tab-focus, .plyr__control:hover, .plyr__control[aria-expanded='true'] { background:#27282e !important; color:#fff !important; }
+  .plyr__control--overlaid { background:#27282e !important; }
+  .plyr--video .plyr__progress__buffer { background:#18181b !important; }
+  .plyr__menu__container { border-radius: 8px !important; }
+  .is-loading { opacity:.7; pointer-events:none; }
+</style>
+  <style>
+.ms-spinner{
+  width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;
+  border-radius:50%;display:inline-block;animation:msSpin .6s linear infinite;
+}
+@keyframes msSpin{to{transform:rotate(360deg)}}
+.ms-btn-overlay{
+  position:absolute;left:0;top:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:2;
+}
+.ms-btn-in{
+  position:absolute;left:0;top:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.ms-btn-loading{opacity:1;}
+.ms-invalid{
+  border-color:#ff4d4f !important;
+  box-shadow: inset 0 0 0 1px #ff4d4f !important;
+}
+.ms-label-invalid{ color:#ff4d4f !important; }
+.ms-checkbox-invalid{
+  outline:2px solid #ff4d4f; outline-offset:2px; border-radius:4px;
+}
+</style>
+  <style id="critical-auth-fouc-fix">
+@media (max-width: 991px){
+  .auth-btn,
+  .swap-btn{
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    white-space: nowrap !important;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none !important;
+  }
+  .user-logged-in-menu .icon.w-icon-dropdown-toggle{ display:none !important; }
+}
+</style>
+  <style>
+  html:not([data-theme]) body,
+  html[data-theme="dark"] body {
+    background-color: var(--dark-theme--main-background);
+    color: #f5f5f5;
+  }
+  html[data-theme="light"] body {
+    background-color: var(--light-theme--main-background);
+    color: #111111;
+  }
+  html:not([data-theme]) .theme-card,
+  html[data-theme="dark"] .theme-card {
+    background-color: var(--dark-theme--contrast-background);
+    color: #f5f5f5;
+    border: 1px solid var(--dark-theme--border-color);
+  }
+  html[data-theme="light"] .theme-card {
+    background-color: var(--light-theme--contrast-background);
+    color: #111111;
+    border: 1px solid var(--light-theme--border-color);
+  }
+  html:not([data-theme]) .theme-btn-primary,
+  html[data-theme="dark"] .theme-btn-primary {
+    background-color: var(--dark-theme--active-color);
+    border: 1px solid var(--dark-theme--active-color);
+    color: #ffffff;
+  }
+  html[data-theme="light"] .theme-btn-primary {
+    background-color: var(--light-theme--active-color);
+    border: 1px solid var(--light-theme--active-color);
+    color: #ffffff;
+  }
+  html:not([data-theme]) .theme-btn-primary:active,
+  html[data-theme="dark"] .theme-btn-primary:active,
+  html:not([data-theme]) .theme-btn-primary:focus-visible,
+  html[data-theme="dark"] .theme-btn-primary:focus-visible {
+    background-color: var(--dark-theme--active-color-pressed);
+    border-color: var(--dark-theme--active-color-pressed);
+  }
+  html[data-theme="light"] .theme-btn-primary:active,
+  html[data-theme="light"] .theme-btn-primary:focus-visible {
+    background-color: var(--light-theme--active-color-pressed);
+    border-color: var(--light-theme--active-color-pressed);
+  }
+  html:not([data-theme]) .theme-error-text,
+  html[data-theme="dark"] .theme-error-text {
+    color: var(--dark-theme--red-color);
+  }
+  html[data-theme="light"] .theme-error-text {
+    color: var(--light-theme--red-color);
+  }
+  label { margin-bottom: 0px !important; }
+</style>
+  <style>
+  :root{ --ms-spinner-color:#050505; }
+  /* default checkbox – fără border highlight Webflow */
+  .ms-checkbox,
+  .w-checkbox-input--inputType-custom {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .ms-checkbox.redirected-focus,
+  .ms-checkbox.w--redirected-checked,
+  .w-checkbox-input--inputType-custom.redirected-focus,
+  .w-checkbox-input--inputType-custom.w--redirected-checked {
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  /* ✅ Centrare pe wrapper (nu pe icon) — NU afectează display-ul iconurilor */
+  .eyes-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Iconurile de parolă – click DOAR pe ele, fără să le forțăm display */
+  .show-password-icon,
+  .hide-password-icon {
+    cursor: pointer;
+    pointer-events: auto !important;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .show-password-icon svg,
+  .hide-password-icon svg {
+    pointer-events: none;
+    display: block;
+  }
+  /* default ascuns, îl gestionează JS */
+  [data-error],
+  [data-forgot-message]{
+    display:none;
+  }
+</style>
+</head>
+<body class="login-body">
+  <div class="auth-wrapper">
+    <div class="logo-container">
+      <a href="index.html" class="home-link w-inline-block"><img src="images/nav-bar-icon.svg" loading="lazy" alt="" class="logo-image"></a>
+    </div>
+    <div class="login-card">
+      <div data-ms-form="login" class="login-form-block w-form">
+        <form id="wf-form-Email-Form" name="wf-form-Email-Form" data-name="Email Form" method="post" class="ms-form" data-wf-page-id="6859bfeafacaca784ea62a53" data-wf-element-id="c73ac33e-00ec-04f0-cac3-a832598375ac">
+          <h2 class="ms-form-heading">Intra in cont</h2>
+          <div class="email-input-wrapper">
+            <div class="email-label-text">Email</div><input spellcheck="false" class="ms-input w-input" autocomplete="username" maxlength="256" name="Email" inputmode="email" data-name="Email" placeholder="Emailul dvs." type="email" id="login-email" autocapitalize="none" autocorrect="off" required="">
+          </div>
+          <div class="password-input-wrapper">
+            <div class="password-label w-clearfix">Parola <a id="forgot-password-link" href="#" data-forgot-link="" class="ms-link ms-is-forgot">Ai uitat parola?</a>
+            </div>
+            <div id="login-error" data-forgot-message="" class="forgot-password-message"> </div>
+            <div class="password-full-wrapper"><input spellcheck="false" class="ms-input w-input" autocomplete="current-password" maxlength="256" name="Password" data-name="Password" placeholder="••••••••" type="password" id="login-password" autocapitalize="none" autocorrect="off" required="">
+              <div class="eyes-wrapper"><img src="images/show-password-icon.svg" loading="lazy" alt="" class="show-password-icon"><img src="images/hide-password-icon.svg" loading="lazy" alt="" class="hide-password-icon"></div>
+            </div>
+          </div><input type="submit" data-wait="Se trimite..." id="login-btn" class="ms-button ms-is-form w-button" value="Conecteaza-te">
+          <div class="ms-form-divider">
+            <div class="ms-form-divider-line"></div>
+            <div class="ms-form-divider-text">sau</div>
+            <div class="ms-form-divider-line"></div>
+          </div>
+          <div class="connect-with-google">
+            <a id="google-login-btn" data-google-btn="" href="#" class="social-button w-inline-block">
+              <div class="social-button-inner social-is-center"><img loading="lazy" src="images/google.svg" alt="" class="social-button-icon">
+                <div data-ms-auth-connected-text="Disconnect Google" class="social-button-text">Continua cu Google</div>
+              </div>
+            </a>
+          </div>
+          <div class="signup-prompt">
+            <div class="text-block-15">Nu ai cont? </div>
+            <a href="sign-up.html" class="signup-link">Creeaza unul</a>
+          </div>
+        </form>
+        <div class="form-success-message w-form-done">
+          <div> </div>
+        </div>
+        <div data-error="1" class="form-error-message w-form-fail">
+          <div id="login-error"> </div>
+        </div>
+      </div>
+    </div>
+    <section class="background-wrapper"></section>
+    <div class="icons-background"></div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=68589124f5ef093107d3fdc2" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <!--  Firebase v10 compat  -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQRl-U7rJPgEC083Ra1oEL_pOVTNJL0FM",
+    authDomain: "scaoalauto.firebaseapp.com",
+    projectId: "scaoalauto",
+    storageBucket: "scaoalauto.firebasestorage.app",
+    messagingSenderId: "698835669482",
+    appId: "1:698835669482:web:038234f137a1497beae293",
+    databaseURL: "https://scaoalauto-default-rtdb.europe-west1.firebasedatabase.app"
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  window.db = firebase.firestore();
+  /* ✅ FIRESTORE STABILITY (Varianta A)
+     - Activează auto-detect pentru long-polling.
+     - Ajută în rețele/proxy-uri unde conexiunea WebChannel/QUIC e instabilă.
+     IMPORTANT: trebuie apelat înainte de primul listener/query Firestore. */
+  try {
+    if (!window.__spFirestoreSettingsApplied) {
+      window.db.settings({
+        experimentalAutoDetectLongPolling: true,
+        // Dacă mai ai probleme și vrei să forțezi 100% long-polling:
+        // experimentalForceLongPolling: true,
+        // 🔥 important: spunem explicit că vrem să „combinăm” cu setările existente
+        merge: true
+      });
+      window.__spFirestoreSettingsApplied = true;
+    }
+  } catch (e) {
+    // dacă Firestore a fost deja folosit înainte (în alt script), settings poate arunca — nu blocăm site-ul
+    console.warn('[firestore] settings() skipped:', e);
+  }
+  document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+      }
+    } else {
+      if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+      }
+    }
+  });
+  console.log("Firebase inițializat:", firebase.apps.length, "app(s)");
+</script>
+  <!--  ✅ GLOBAL AUTH GUARD (FOOTER) — PRO: update snapshot + redirect unverified fără reload  -->
+  <script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  if (root.classList.contains('wf-design-mode')) return;
+  function normPath(p){
+    p = String(p || '/');
+    p = p.split('?')[0].split('#')[0];
+    p = p.replace(/\/+$/, '');
+    return p || '/';
+  }
+  var path = normPath(location.pathname);
+  // ✅ excepții: NU redirectăm de aici (dar putem actualiza snapshot)
+  var EXEMPT_REDIRECT = {
+    '/auth': true,
+    '/confirmare-email': true,
+    '/resetare-parola': true,
+    '/verifica-email': true
+  };
+  var VERIFY_URL = '/verifica-email';
+  var SNAP_KEY   = 'sp_auth_snapshot_v1';
+  function showPage(){
+    root.classList.remove('sp-auth-preload');
+  }
+  function writeSnap(obj){
+    try { localStorage.setItem(SNAP_KEY, JSON.stringify(obj)); } catch(e){}
+  }
+  function snapAnon(){
+    writeSnap({ a:0, ev:0, uid:'', t:Date.now() });
+  }
+  function snapUser(user){
+    writeSnap({
+      a:1,
+      uid: String(user && user.uid || ''),
+      ev: (user && user.emailVerified) ? 1 : 0,
+      t: Date.now()
+    });
+  }
+  function redirectToVerify(){
+    try { sessionStorage.setItem('sp_return_after_verify', location.pathname + location.search + location.hash); } catch(e){}
+    // păstrăm ascuns (fără flicker) și trimitem direct la verifica-email
+    root.classList.add('sp-auth-preload');
+    location.replace(VERIFY_URL);
+  }
+  // fail-safe: dacă Firebase nu pornește, nu lăsăm ecran gol
+  var failSafe = setTimeout(showPage, 12000);
+  function waitForAuth(timeoutMs){
+    return new Promise(function(resolve, reject){
+      var t0 = Date.now();
+      (function tick(){
+        var ok = window.firebase && typeof window.firebase.auth === 'function';
+        if (ok) return resolve(window.firebase.auth());
+        if (Date.now() - t0 > timeoutMs) return reject(new Error('auth-timeout'));
+        setTimeout(tick, 50);
+      })();
+    });
+  }
+  waitForAuth(8000).then(function(auth){
+    auth.onAuthStateChanged(function(user){
+      clearTimeout(failSafe);
+      // anon -> allow page, snapshot ANON
+      if (!user) {
+        snapAnon();
+        showPage();
+        return;
+      }
+      // logged -> snapshot + logic
+      snapUser(user);
+      // verified -> allow
+      if (user.emailVerified) {
+        showPage();
+        return;
+      }
+      // unverified -> redirect everywhere, except exempt pages
+      if (!EXEMPT_REDIRECT[path]) {
+        redirectToVerify();
+        return;
+      }
+      // pe pagini exceptate (auth/reset/confirm/verifica-email) NU redirectăm
+      showPage();
+    });
+  }).catch(function(){
+    clearTimeout(failSafe);
+    showPage();
+  });
+})();
+</script>
+  <!--  ======= Helper global: single-active lock (LAST-OPEN WINS, via chapterLocks) =======  -->
+  <script>
+(function () {
+  function sanitizeKey(k){ return String(k||"global").replace(/[.#$\[\]\/]/g,"-"); }
+  window.installSingleActiveLock = function installSingleActiveLock(opts){
+    const { lockKey, redirectUrl, userId, redirectDelayMs = 0 } = (opts||{});
+    if (!firebase || !firebase.database) { console.warn("[lock] RTDB indisponibil."); return; }
+    if (!lockKey || !redirectUrl) { console.warn("[lock] lockKey/redirectUrl lipsă."); return; }
+    const auth = firebase.auth();
+    const userReady = userId
+      ? Promise.resolve({ uid:userId })
+      : (auth.currentUser ? Promise.resolve(auth.currentUser)
+                          : new Promise(res => auth.onAuthStateChanged(res)));
+    userReady.then(user=>{
+      if(!user||!user.uid){ console.warn("[lock] user nelogat; aplicăm lock-ul după login."); return; }
+      const db = firebase.database();
+      const SID = (crypto.randomUUID?.() || (Math.random().toString(36).slice(2)+"-"+Date.now()));
+      const key = sanitizeKey(lockKey);
+      const lockRef = db.ref("chapterLocks").child(user.uid).child(key);
+      function claim(){
+        try{
+          lockRef.set({ uid:user.uid, sessionId:SID, ts: firebase.database.ServerValue.TIMESTAMP });
+          try{ lockRef.onDisconnect().remove(); }catch(_){}
+        }catch(e){ console.warn("[lock] set failed:", e); }
+      }
+      function kick(){
+        setTimeout(()=>{ location.replace(redirectUrl); }, redirectDelayMs);
+      }
+      lockRef.on("value", snap=>{
+        const v = snap.val();
+        if(!v){ if(!document.hidden) claim(); return; }
+        if(v.sessionId !== SID) kick();
+      });
+      document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) claim(); }, {passive:true});
+      window.addEventListener("focus", claim, {passive:true});
+      window.addEventListener("beforeunload", ()=>{ try{ lockRef.remove(); }catch(_){}});
+      claim();
+    });
+  };
+  window.installSingleActiveLock.version = "v2:chapterLocks";
+  console.log("[lock] helper ready:", window.installSingleActiveLock.version);
+})();
+</script>
+  <!--  ======= /Helper global =======  -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script>
+  (function () {
+    const STORAGE_KEY = 'sp-theme';
+    const root = document.documentElement;
+    const toggles = document.querySelectorAll('.theme-checkbox');
+    function getInitialTheme() {
+      let saved = null;
+      try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') return saved;
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+      return 'light';
+    }
+    function setTheme(theme) {
+      if (theme !== 'light' && theme !== 'dark') theme = 'light';
+      root.setAttribute('data-theme', theme);
+      try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) {}
+      const isDark = theme === 'dark';
+      toggles.forEach(function (cb) { cb.checked = isDark; });
+      return theme;
+    }
+    setTheme(getInitialTheme());
+    requestAnimationFrame(function () {
+      if (document.body) document.body.classList.add('theme-ready');
+    });
+    if (!toggles.length) return;
+    toggles.forEach(function (cb) {
+      cb.addEventListener('change', function (e) {
+        const newTheme = e.target.checked ? 'dark' : 'light';
+        setTheme(newTheme);
+      });
+    });
+  })();
+</script>
+  <script>
+(function(){
+  'use strict';
+  /* ===================== VERSION + ANTI-DOUBLE GUARD ===================== */
+  var VERSION = '2025-12-23.login.pro.v5.sticky-errors.redirect-logs';
+  var GUARD_KEY = '__SP_LOGIN_BOOTED__';
+  function getDebugFlag(){
+    var qs = null;
+    try { qs = new URLSearchParams(location.search); } catch(e){}
+    function qp(key){
+      if (!qs) return false;
+      var v = qs.get(key);
+      if (!v) return false;
+      v = String(v).toLowerCase().trim();
+      return (v === '1' || v === 'true' || v === 'yes' || v === 'on');
+    }
+    if (qp('debug') || qp('sp_debug') || qp('spdebug')) return true;
+    try{
+      if (localStorage.getItem('sp_debug') === '1') return true;
+      if (localStorage.getItem('sp_login_debug') === '1') return true;
+    }catch(e){}
+    return false;
+  }
+  var DEBUG = getDebugFlag();
+  /* ===================== LOGS (DISABLED) ===================== */
+  var ENABLE_CONSOLE = false; // ✅ lasă pe false ca să NU mai apară loguri
+  function dlog(){ if (ENABLE_CONSOLE) console.log.apply(console, ['[Login]'].concat([].slice.call(arguments))); }
+  function dwarn(){ if (ENABLE_CONSOLE) console.warn.apply(console, ['[Login]'].concat([].slice.call(arguments))); }
+  function derr(){ if (ENABLE_CONSOLE) console.error.apply(console, ['[Login]'].concat([].slice.call(arguments))); }
+  try{ window.__SP_LOGIN_VERSION = VERSION; }catch(e){}
+  try{
+    if (window[GUARD_KEY]) {
+      dwarn('Script duplicat detectat. Oprire a doua instanta. Versiune curenta:', VERSION, 'Existent:', window[GUARD_KEY]);
+      return;
+    }
+    window[GUARD_KEY] = VERSION;
+  }catch(e){}
+  /* ===================== BOOT (Webflow-safe) ===================== */
+  function boot(fn){
+    if (window.Webflow && typeof Webflow.push === 'function') { Webflow.push(fn); return; }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+  boot(function(){
+    dlog('BOOT ok. VERSION =', VERSION, 'PATH=', location.pathname);
+    try{
+      var snap = null;
+      try { snap = localStorage.getItem('sp_auth_snapshot_v1'); } catch(_){}
+      dlog('Global snapshot sp_auth_snapshot_v1:', snap ? ('present (' + snap.length + ' chars)') : 'missing');
+      dlog('Global guard marker:', (window.__SP_AUTH_GUARD_VERSION || window.__SP_GLOBAL_AUTH_GUARD_VERSION || window.__SP_GLOBAL_GUARD_VERSION || '(none found)'));
+    }catch(_e){}
+    /* ===================== CONFIG ===================== */
+    var REDIRECT_AFTER = '/';
+    var VERIFY_PAGE    = '/verifica-email';
+    var TERMS_VERSION  = 'v1-2025-01';
+    var TXT = {
+      fillAll: 'Completeaza toate campurile!',
+      invalidEmail: 'Adresa de email nu este valida.',
+      noUser: 'Nu exista niciun cont cu acest email.',
+      wrongCred: 'Email sau parola incorecte.',
+      tooMany: 'Prea multe incercari. Incearca mai tarziu.',
+      unauthorizedDomain: 'Domeniul nu este autorizat in Firebase (Authentication → Settings → Authorized domains).',
+      popupClosed: 'Fereastra de autentificare a fost inchisa.',
+      popupBlocked: 'Popup blocat de browser. Permite pop-up-uri pentru acest site.',
+      otherMethod: 'Exista deja un cont cu acest email, dar cu alta metoda. Autentifica-te clasic.',
+      googleError: 'Eroare Google: ',
+      resetNeedEmail: 'Introdu adresa de email pentru a reseta parola!',
+      resetOk: 'Ti-am trimis email pentru resetare (verifica si Spam).'
+    };
+    var AUTH_HINT_KEY = 'sp_auth_hint_verify_email_v1';
+    function setVerifyEmailHint(){
+      try { sessionStorage.setItem(AUTH_HINT_KEY, '1'); } catch(e) {}
+    }
+    /* ===================== SAFETY ===================== */
+    if (!window.firebase || !firebase.auth || !firebase.firestore) {
+      derr('Firebase nu este initializat. Verifica Global.html (firebase-app + auth + firestore compat).');
+      return;
+    }
+    var auth = firebase.auth();
+    var db   = firebase.firestore();
+    var SVT  = firebase.firestore.FieldValue.serverTimestamp;
+    /* ===================== PERSISTENCE ===================== */
+    var _persistReady = false;
+    async function ensurePersistence(){
+      if (_persistReady) return;
+      try{
+        await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        dlog('ensurePersistence: LOCAL');
+      }catch(e1){
+        try{
+          await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+          dlog('ensurePersistence: SESSION (fallback)');
+        }catch(e2){
+          dwarn('ensurePersistence: nu pot seta persistence', e2);
+        }
+      }
+      _persistReady = true;
+    }
+    ensurePersistence();
+    /* ===================== DEVICE HEURISTICS (Google redirect) ===================== */
+    var UA = navigator.userAgent || '';
+    var isIOS = /iP(hone|ad|od)/i.test(UA);
+    var isSafari = /^((?!chrome|android).)*safari/i.test(UA) || (isIOS && /Safari/i.test(UA));
+    var isInApp = /(FBAN|FBAV|Instagram|Line\/|Pinterest|Twitter|LinkedInApp|Snapchat)/i.test(UA);
+    var shouldUseRedirect = isIOS || isSafari || isInApp;
+    dlog('UA flags:', { isIOS:isIOS, isSafari:isSafari, isInApp:isInApp, shouldUseRedirect:shouldUseRedirect });
+    function isTouchLike(){
+      try{
+        if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return true;
+      }catch(_){}
+      return /Android|iP(hone|ad|od)/i.test(UA);
+    }
+    /* ===================== FIRESTORE USER PROFILE (NO READ) ===================== */
+    async function afterAuth(user, isNew){
+      var ref = db.collection('users').doc(user.uid);
+      var payload = {
+        email: user.email || null,
+        lastLogin: SVT()
+      };
+      if (isNew) {
+        payload.createdAt = SVT();
+        payload.plan = 'free';
+        payload.questionsAnswered = 0;
+        payload.aiQuestions = 0;
+        payload.acceptTerms   = true;
+        payload.acceptTermsAt = SVT();
+        payload.termsVersion  = TERMS_VERSION;
+        payload.marketingOptIn = false;
+      }
+      await ref.set(payload, { merge:true });
+    }
+    async function refreshUserState(user){
+      if (!user) return;
+      try { await user.reload(); } catch(_e){}
+      try { await user.getIdToken(true); } catch(_e2){}
+    }
+    /* ===================== ERROR MAPPERS ===================== */
+    function mapAuthError(e){
+      var c = (e && e.code) || '';
+      if (c === 'auth/invalid-email') return TXT.invalidEmail;
+      if (c === 'auth/user-not-found') return TXT.noUser;
+      if (c === 'auth/wrong-password' || c === 'auth/invalid-credential') return TXT.wrongCred;
+      if (c === 'auth/too-many-requests') return TXT.tooMany;
+      if (c === 'auth/unauthorized-domain') return TXT.unauthorizedDomain;
+      return 'Eroare: ' + ((e && e.message) ? e.message : 'necunoscuta');
+    }
+    function mapGoogleError(e){
+      var c = (e && e.code) || '';
+      if (c === 'auth/popup-closed-by-user') return TXT.popupClosed;
+      if (c === 'auth/popup-blocked') return TXT.popupBlocked;
+      if (c === 'auth/cancelled-popup-request') return TXT.popupClosed;
+      if (c === 'auth/account-exists-with-different-credential') return TXT.otherMethod;
+      if (c === 'auth/unauthorized-domain') return TXT.unauthorizedDomain;
+      return TXT.googleError + ((e && e.message) ? e.message : 'necunoscuta');
+    }
+    /* ===================== DOM HELPERS ===================== */
+    function getEls(wrapper){
+      var formEl = (wrapper.tagName === 'FORM') ? wrapper : wrapper.querySelector('form');
+      var emailEl =
+        wrapper.querySelector('input[type="email"]') ||
+        wrapper.querySelector('input[autocomplete="username"]') ||
+        wrapper.querySelector('input[autocomplete="email"]') ||
+        wrapper.querySelector('#login-email') ||
+        wrapper.querySelector('input[name="email"], input[name="Email"]') ||
+        wrapper.querySelector('input:not([type="password"]):not([type="checkbox"]):not([type="submit"]):not([type="button"])');
+      var passSelector =
+        'input[name="Password"], input[name="password"], input[name*="parola" i], input[type="password"]';
+      var wForm = wrapper.closest('.w-form') || wrapper.querySelector('.w-form') || null;
+      var wDone = (wForm ? wForm.querySelector('.w-form-done') : null) || wrapper.querySelector('.w-form-done');
+      var wFail = (wForm ? wForm.querySelector('.w-form-fail') : null) || wrapper.querySelector('.w-form-fail');
+      var errorEl =
+        (wFail && wFail.querySelector('[data-error]')) ||
+        wrapper.querySelector('[data-error]') ||
+        null;
+      return {
+        wrapper: wrapper,
+        formEl: formEl,
+        emailEl: emailEl,
+        passEl: wrapper.querySelector(passSelector),
+        errorEl: errorEl,
+        wDone: wDone,
+        wFail: wFail,
+        forgotLink: wrapper.querySelector('[data-forgot-link]'),
+        forgotMsg:  wrapper.querySelector('[data-forgot-message]'),
+        submitBtn:  wrapper.querySelector('button[type="submit"], input[type="submit"], [data-submit]'),
+        googleBtn:  wrapper.querySelector('[data-google-btn]'),
+        showPwIcon: wrapper.querySelector('.show-password-icon'),
+        hidePwIcon: wrapper.querySelector('.hide-password-icon')
+      };
+    }
+    function disableNativeValidation(wrapper){
+      var els = getEls(wrapper);
+      if (els.formEl) els.formEl.setAttribute('novalidate','true');
+      wrapper.querySelectorAll('[required]').forEach(function(el){
+        el.removeAttribute('required');
+        el.setAttribute('aria-required','true');
+      });
+    }
+    function applyInputHints(wrapper){
+      var els = getEls(wrapper);
+      if (els.emailEl){
+        if (!els.emailEl.getAttribute('autocomplete')) els.emailEl.setAttribute('autocomplete','username');
+        if (!els.emailEl.getAttribute('inputmode')) els.emailEl.setAttribute('inputmode','email');
+        if (!els.emailEl.getAttribute('autocapitalize')) els.emailEl.setAttribute('autocapitalize','none');
+        if (!els.emailEl.getAttribute('autocorrect')) els.emailEl.setAttribute('autocorrect','off');
+        if (!els.emailEl.getAttribute('spellcheck')) els.emailEl.setAttribute('spellcheck','false');
+      }
+      if (els.passEl){
+        if (!els.passEl.getAttribute('autocomplete')) els.passEl.setAttribute('autocomplete','current-password');
+        if (!els.passEl.getAttribute('autocapitalize')) els.passEl.setAttribute('autocapitalize','none');
+        if (!els.passEl.getAttribute('autocorrect')) els.passEl.setAttribute('autocorrect','off');
+        if (!els.passEl.getAttribute('spellcheck')) els.passEl.setAttribute('spellcheck','false');
+      }
+    }
+    function clearFieldErrors(wrapper){
+      wrapper.querySelectorAll('.ms-invalid,.ms-label-invalid,.ms-checkbox-invalid,[data-invalid]')
+        .forEach(function(el){
+          el.classList.remove('ms-invalid','ms-label-invalid','ms-checkbox-invalid');
+          el.removeAttribute('aria-invalid');
+          el.removeAttribute('data-invalid');
+        });
+    }
+    function markInputInvalid(input){
+      if (!input) return;
+      input.classList.add('ms-invalid');
+      input.setAttribute('aria-invalid','true');
+      input.setAttribute('data-invalid','1');
+    }
+    /* ===================== UI (FIXED: sticky error on mobile) ===================== */
+    var UI_MAP = new WeakMap();
+    function getUI(wrapper){
+      var existing = UI_MAP.get(wrapper);
+      if (existing) return existing;
+      var lastMsg = '';
+      function ensureAria(el){
+        if (!el) return;
+        el.setAttribute('role','alert');
+        el.setAttribute('aria-live','polite');
+        el.setAttribute('aria-atomic','true');
+      }
+      function setGlobalError(msg){
+        var els = getEls(wrapper);
+        lastMsg = String(msg || '');
+        if (!els.errorEl) return;
+        ensureAria(els.errorEl);
+        try{
+          if (els.wDone) els.wDone.style.display = 'none';
+          if (els.wFail) els.wFail.style.display = 'block';
+        }catch(_){}
+        els.errorEl.style.display = 'block';
+        els.errorEl.textContent = lastMsg;
+        try{ els.errorEl.scrollIntoView({behavior:'smooth', block:'center'}); }catch(_){}
+        dlog('setGlobalError:', lastMsg);
+      }
+      function clearGlobalError(reason){
+        var els = getEls(wrapper);
+        if (!els.errorEl) return;
+        els.errorEl.style.display = 'none';
+        els.errorEl.textContent = '';
+        try{ if (els.wFail) els.wFail.style.display = 'none'; }catch(_){}
+        lastMsg = '';
+        if (DEBUG && reason) dlog('clearGlobalError:', reason);
+      }
+      function focusFirstInvalid(){
+        var bad = wrapper.querySelector('[data-invalid]');
+        if (!bad) return;
+        if (isTouchLike()) {
+          dlog('focusFirstInvalid: touch-like -> skip focus');
+          return;
+        }
+        try{
+          if (typeof bad.focus === 'function') bad.focus({ preventScroll: true });
+        }catch(_){
+          try{ if (typeof bad.focus === 'function') bad.focus(); }catch(__){}
+        }
+        try{ bad.scrollIntoView({behavior:'smooth', block:'center'}); }catch(_){}
+      }
+      function clearForgotMsg(){
+        var els = getEls(wrapper);
+        if (!els.forgotMsg) return;
+        els.forgotMsg.style.display = 'none';
+        els.forgotMsg.textContent = '';
+        els.forgotMsg.style.color = '';
+      }
+      function setForgotMsg(msg, color){
+        var els = getEls(wrapper);
+        if (!els.forgotMsg) return;
+        els.forgotMsg.style.display = 'block';
+        els.forgotMsg.textContent = String(msg || '');
+        if (color) els.forgotMsg.style.color = color;
+        dlog('forgotMsg:', msg);
+      }
+      wrapper.addEventListener('input', function(){
+        if (!lastMsg) return;
+        clearGlobalError('user input');
+      }, true);
+      wrapper.addEventListener('change', function(){
+        if (!lastMsg) return;
+        clearGlobalError('user change');
+      }, true);
+      var api = {
+        setGlobalError: setGlobalError,
+        clearGlobalError: clearGlobalError,
+        focusFirstInvalid: focusFirstInvalid,
+        clearForgotMsg: clearForgotMsg,
+        setForgotMsg: setForgotMsg
+      };
+      UI_MAP.set(wrapper, api);
+      return api;
+    }
+    /* ===================== BUTTON LOCK (spinner) ===================== */
+    function lock(btn, state){
+      if (!btn) return;
+      var isInput = btn.tagName === 'INPUT';
+      var isButtonLike = (btn.tagName === 'BUTTON' || (isInput && /submit|button/i.test(btn.type)));
+      var color =
+        getComputedStyle(document.documentElement)
+          .getPropertyValue('--ms-spinner-color')
+          .trim() || '#050505';
+      if (state){
+        if (!btn.dataset._w) btn.dataset._w = btn.offsetWidth;
+        btn.style.minWidth = btn.dataset._w + 'px';
+        if (!isInput){
+          if (!btn.dataset._pos) btn.dataset._pos = btn.style.position || '';
+          if (getComputedStyle(btn).position === 'static') btn.style.position = 'relative';
+          if (!btn.dataset._origColor) btn.dataset._origColor = btn.style.color || '';
+          btn.style.color = 'transparent';
+          var toHide = btn.querySelectorAll('.ms-social-image, .social-button-icon, .social-button-text');
+          toHide.forEach(function(el){
+            if (el && el.dataset._vis === undefined) {
+              el.dataset._vis = el.style.visibility || '';
+              el.style.visibility = 'hidden';
+            }
+          });
+          var inner = document.createElement('span');
+          inner.className = 'ms-btn-in';
+          inner.style.color = color;
+          inner.innerHTML = '<span class="ms-spinner" aria-hidden="true"></span>';
+          btn.appendChild(inner);
+          btn.__msInner = inner;
+        } else {
+          if (btn.dataset._val === undefined) btn.dataset._val = btn.value;
+          btn.value = '';
+          var parent = btn.parentElement;
+          if (parent){
+            if (!btn.dataset._parentPos) btn.dataset._parentPos = parent.style.position || '';
+            if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+            var rect = { left: btn.offsetLeft, top: btn.offsetTop, w: btn.offsetWidth, h: btn.offsetHeight };
+            var ov = document.createElement('span');
+            ov.className = 'ms-btn-overlay';
+            ov.style.left   = rect.left + 'px';
+            ov.style.top    = rect.top  + 'px';
+            ov.style.width  = rect.w    + 'px';
+            ov.style.height = rect.h    + 'px';
+            ov.style.color  = color;
+            ov.innerHTML = '<span class="ms-spinner" aria-hidden="true"></span>';
+            parent.appendChild(ov);
+            btn.__msOverlay = ov;
+          }
+        }
+        btn.classList.add('ms-btn-loading','is-loading');
+        btn.setAttribute('aria-busy','true');
+        if (isButtonLike) btn.disabled = true;
+        else {
+          btn.dataset._pe = btn.style.pointerEvents;
+          btn.style.pointerEvents = 'none';
+          btn.setAttribute('aria-disabled','true');
+        }
+      } else {
+        btn.classList.remove('ms-btn-loading','is-loading');
+        btn.removeAttribute('aria-busy');
+        if (!isInput){
+          if (btn.__msInner && btn.__msInner.parentNode) btn.__msInner.parentNode.removeChild(btn.__msInner);
+          delete btn.__msInner;
+          if (btn.dataset._origColor !== undefined) btn.style.color = btn.dataset._origColor;
+          if (btn.dataset._pos !== undefined) btn.style.position = btn.dataset._pos;
+          var toShow = btn.querySelectorAll('.ms-social-image, .social-button-icon, .social-button-text');
+          toShow.forEach(function(el){
+            if (el && el.dataset._vis !== undefined){
+              el.style.visibility = el.dataset._vis;
+              delete el.dataset._vis;
+            }
+          });
+        } else {
+          if (btn.dataset._val !== undefined) btn.value = btn.dataset._val;
+          if (btn.__msOverlay && btn.__msOverlay.parentNode){
+            btn.__msOverlay.parentNode.removeChild(btn.__msOverlay);
+            delete btn.__msOverlay;
+          }
+          var parent2 = btn.parentElement;
+          if (parent2 && btn.dataset._parentPos !== undefined){
+            parent2.style.position = btn.dataset._parentPos;
+          }
+        }
+        btn.style.minWidth = '';
+        if (isButtonLike) btn.disabled = false;
+        else {
+          btn.style.pointerEvents = btn.dataset._pe || '';
+          btn.removeAttribute('aria-disabled');
+        }
+      }
+    }
+    /* ===================== REDIRECT GATE (logs) ===================== */
+    var redirectHandling = true;
+    var redirectHandled  = false;
+    var pendingAutoUser  = null;
+    dlog('getRedirectResult: start');
+    auth.getRedirectResult().then(async function(res){
+      if (res && res.user) {
+        redirectHandled = true;
+        dlog('getRedirectResult: user ok', { uid: res.user.uid, emailVerified: !!res.user.emailVerified });
+        var isNew = !!(res.additionalUserInfo && res.additionalUserInfo.isNewUser);
+        await afterAuth(res.user, isNew);
+        await refreshUserState(res.user);
+        if (res.user && !res.user.emailVerified) setVerifyEmailHint();
+        var target = ((res.user && res.user.emailVerified) ? REDIRECT_AFTER : VERIFY_PAGE);
+        dlog('redirect (getRedirectResult) ->', target);
+        location.replace(target);
+      } else {
+        dlog('getRedirectResult: no user');
+      }
+    }).catch(function(e){
+      if (DEBUG && e) dwarn('getRedirectResult error:', e.code || e, e);
+    }).finally(function(){
+      redirectHandling = false;
+      dlog('getRedirectResult: finally', { redirectHandled: redirectHandled, pendingAutoUser: pendingAutoUser ? pendingAutoUser.uid : null });
+      if (pendingAutoUser && !redirectHandled) {
+        (async function(){
+          dlog('post-redirectResult: pendingAutoUser redirect');
+          await refreshUserState(pendingAutoUser);
+          var target2 = (pendingAutoUser.emailVerified ? REDIRECT_AFTER : VERIFY_PAGE);
+          dlog('redirect (pendingAutoUser) ->', target2);
+          location.replace(target2);
+        })();
+      }
+    });
+    /* ===================== ONE-TIME AUTO-REDIRECT ===================== */
+    (function oneTimeAutoRedirect(){
+      var p = (location.pathname || '').toLowerCase();
+      var isAuthPage = (p.includes('/login') || p.includes('/sign-up') || p.includes('/signup'));
+      if (!isAuthPage) return;
+      var unsub = auth.onAuthStateChanged(function(user){
+        try { unsub && unsub(); } catch(e){}
+        dlog('onAuthStateChanged:', { uid: user ? user.uid : null, emailVerified: user ? !!user.emailVerified : null, redirectHandling: redirectHandling });
+        if (!user) return;
+        if (redirectHandling) {
+          pendingAutoUser = user;
+          dlog('onAuthStateChanged: defer -> pendingAutoUser set');
+          return;
+        }
+        (async function(){
+          await refreshUserState(user);
+          var target = (user.emailVerified ? REDIRECT_AFTER : VERIFY_PAGE);
+          dlog('redirect (already logged in) ->', target);
+          location.replace(target);
+        })();
+      });
+    })();
+    /* ===================== INIT PER WRAPPER ===================== */
+    var wrappers = Array.from(document.querySelectorAll('[data-ms-form]'));
+    if (!wrappers.length) {
+      if (DEBUG) dwarn('Nu gasesc [data-ms-form] pe pagina.');
+      return;
+    }
+    wrappers.forEach(function(wrapper){
+      disableNativeValidation(wrapper);
+      applyInputHints(wrapper);
+      var ui  = getUI(wrapper);
+      var els = getEls(wrapper);
+      ui.clearGlobalError('init');
+      ui.clearForgotMsg();
+      if (els.passEl && (els.showPwIcon || els.hidePwIcon)) {
+        function syncPwIcons() {
+          var isVisible = els.passEl.type === 'text';
+          if (els.showPwIcon) els.showPwIcon.style.display = isVisible ? 'none' : 'flex';
+          if (els.hidePwIcon) els.hidePwIcon.style.display = isVisible ? 'flex' : 'none';
+        }
+        function togglePw(ev){
+          if (ev) ev.preventDefault();
+          els.passEl.type = (els.passEl.type === 'password') ? 'text' : 'password';
+          syncPwIcons();
+        }
+        els.passEl.type = 'password';
+        syncPwIcons();
+        [els.showPwIcon, els.hidePwIcon].forEach(function(icon){
+          if (!icon) return;
+          icon.addEventListener('click', togglePw);
+        });
+      }
+      /* RESET PAROLA */
+      if (els.forgotLink){
+        els.forgotLink.addEventListener('click', async function(e){
+          e.preventDefault();
+          ui.clearForgotMsg();
+          var email = (els.emailEl && els.emailEl.value.trim()) || '';
+          if (!email) {
+            ui.setForgotMsg(TXT.resetNeedEmail, 'red');
+            return;
+          }
+          try{
+            await auth.sendPasswordResetEmail(email);
+            ui.setForgotMsg(TXT.resetOk, 'green');
+          }catch(er){
+            var msg =
+              (er && er.code === 'auth/user-not-found') ? TXT.noUser :
+              (er && er.code === 'auth/invalid-email') ? TXT.invalidEmail :
+              ('Eroare: ' + ((er && er.message) ? er.message : 'necunoscuta'));
+            ui.setForgotMsg(msg, 'red');
+            if (DEBUG) dwarn('reset error:', er && er.code, er);
+          }
+        });
+      }
+      /* GOOGLE */
+      if (els.googleBtn){
+        if (els.googleBtn.tagName === 'BUTTON') els.googleBtn.setAttribute('type','button');
+        els.googleBtn.addEventListener('click', async function(e){
+          e.preventDefault();
+          ui.clearGlobalError('google click');
+          ui.clearForgotMsg();
+          clearFieldErrors(wrapper);
+          if (els.googleBtn.dataset.msBusy === '1') return;
+          els.googleBtn.dataset.msBusy = '1';
+          var provider = new firebase.auth.GoogleAuthProvider();
+          provider.setCustomParameters({ prompt: 'select_account' });
+          await ensurePersistence();
+          if (shouldUseRedirect) {
+            lock(els.googleBtn, true);
+            try{
+              dlog('Google: redirect...');
+              await auth.signInWithRedirect(provider);
+              return;
+            }catch(er){
+              lock(els.googleBtn, false);
+              els.googleBtn.dataset.msBusy = '';
+              ui.setGlobalError(mapGoogleError(er));
+              if (DEBUG) dwarn('Google redirect error:', er && er.code, er);
+              return;
+            }
+          }
+          lock(els.googleBtn, true);
+          var willNavigate = false;
+          try{
+            dlog('Google: popup...');
+            var cred = await auth.signInWithPopup(provider);
+            var isNew = !!(cred.additionalUserInfo && cred.additionalUserInfo.isNewUser);
+            await afterAuth(cred.user, isNew);
+            await refreshUserState(cred.user);
+            if (cred.user && !cred.user.emailVerified) {
+              setVerifyEmailHint();
+              willNavigate = true;
+              dlog('redirect (google popup) ->', VERIFY_PAGE);
+              location.href = VERIFY_PAGE;
+              return;
+            }
+            willNavigate = true;
+            dlog('redirect (google popup) ->', REDIRECT_AFTER);
+            location.href = REDIRECT_AFTER;
+          }catch(er){
+            ui.setGlobalError(mapGoogleError(er));
+            if (DEBUG) dwarn('Google popup error:', er && er.code, er);
+          }finally{
+            if (!willNavigate) lock(els.googleBtn, false);
+            els.googleBtn.dataset.msBusy = '';
+          }
+        });
+      }
+    });
+    /* ===================== SUBMIT LOGIN (capturing) ===================== */
+    document.addEventListener('submit', async function(e){
+      var form = e.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      var wrapper = form.closest('[data-ms-form]');
+      if (!wrapper) return;
+      var ui  = getUI(wrapper);
+      var els = getEls(wrapper);
+      disableNativeValidation(wrapper);
+      applyInputHints(wrapper);
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      ui.clearGlobalError('submit start');
+      ui.clearForgotMsg();
+      clearFieldErrors(wrapper);
+      if (!els.emailEl || !els.passEl){
+        ui.setGlobalError('Lipsesc campurile din formular.');
+        return;
+      }
+      var email = (els.emailEl.value || '').trim();
+      var pass  = (els.passEl.value  || '').trim();
+      var hasClientError = false;
+      if (!email){ markInputInvalid(els.emailEl); hasClientError = true; }
+      if (!pass){  markInputInvalid(els.passEl);  hasClientError = true; }
+      if (hasClientError){
+        ui.setGlobalError(TXT.fillAll);
+        ui.focusFirstInvalid();
+        return;
+      }
+      lock(els.submitBtn, true);
+      var unlockNeeded = true;
+      try{
+        await ensurePersistence();
+        dlog('submit: signInWithEmailAndPassword...');
+        var cred = await auth.signInWithEmailAndPassword(email, pass);
+        await afterAuth(cred.user, false);
+        await refreshUserState(cred.user);
+        if (cred.user && !cred.user.emailVerified) {
+          setVerifyEmailHint();
+          unlockNeeded = false;
+          dlog('redirect (email/pass) ->', VERIFY_PAGE);
+          location.href = VERIFY_PAGE;
+          return;
+        }
+        unlockNeeded = false;
+        dlog('redirect (email/pass) ->', REDIRECT_AFTER);
+        location.href = REDIRECT_AFTER;
+      }catch(er){
+        var code = (er && er.code) || '';
+        if (DEBUG) dwarn('submit error:', code, er);
+        if (code === 'auth/invalid-email' || code === 'auth/user-not-found') markInputInvalid(els.emailEl);
+        if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') markInputInvalid(els.passEl);
+        ui.setGlobalError(mapAuthError(er));
+        ui.focusFirstInvalid();
+      }finally{
+        if (unlockNeeded) lock(els.submitBtn, false);
+      }
+    }, true);
+  }); // boot()
+})();
+</script>
+</body>
+</html>

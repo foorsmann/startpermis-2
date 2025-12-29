@@ -66,6 +66,18 @@
     } catch (e) {
       console.error('[appcheck] Activation failed:', e.message || e);
       console.error('[appcheck] Full error:', e);
+      if (e && e.code === 'appCheck/recaptcha-error') {
+        console.error('[appcheck] ReCAPTCHA error usually means the domain is not in the App Check allowlist or the site key is invalid for this origin.');
+        try {
+          const instance = firebase.appCheck && firebase.appCheck();
+          if (instance && typeof instance.setTokenAutoRefreshEnabled === 'function') {
+            instance.setTokenAutoRefreshEnabled(false);
+            console.warn('[appcheck] Disabled token auto-refresh to avoid repeated ReCAPTCHA errors.');
+          }
+        } catch (inner) {
+          console.warn('[appcheck] Failed to disable auto-refresh after error:', inner);
+        }
+      }
       window.__spAppCheckUnavailable = true;
     }
   }
@@ -112,7 +124,9 @@
         // Keep long-polling enabled for restrictive networks where websockets are blocked.
         // See https://firebase.google.com/docs/reference/js/firestore_.settings for compat options.
         window.db.settings({
-          experimentalAutoDetectLongPolling: true
+          // Use merge to preserve any pre-existing host/ssl settings (e.g., emulator).
+          experimentalAutoDetectLongPolling: true,
+          merge: true
         });
         window.__spFirestoreSettingsApplied = true;
       } else {

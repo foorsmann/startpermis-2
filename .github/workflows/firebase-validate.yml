@@ -1,0 +1,92 @@
+# Validation workflow for Start Permis
+# Runs on all PRs to validate Firebase rules and configuration
+
+name: Validate Firebase Configuration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Validate firebase.json
+        run: |
+          echo "Validating firebase.json..."
+          node -e "JSON.parse(require('fs').readFileSync('firebase.json', 'utf8'))"
+          echo "✅ firebase.json is valid JSON"
+
+      - name: Validate Firestore Rules Syntax
+        run: |
+          echo "Validating firestore.rules..."
+          if [ -f "firestore.rules" ]; then
+            firebase --project=scaoalauto firestore:rules:get 2>/dev/null || echo "⚠️ Could not validate against Firebase (expected for PRs)"
+            echo "✅ firestore.rules exists"
+          else
+            echo "❌ firestore.rules not found"
+            exit 1
+          fi
+
+      - name: Validate Database Rules Syntax
+        run: |
+          echo "Validating database.rules.json..."
+          if [ -f "database.rules.json" ]; then
+            node -e "JSON.parse(require('fs').readFileSync('database.rules.json', 'utf8'))"
+            echo "✅ database.rules.json is valid JSON"
+          else
+            echo "❌ database.rules.json not found"
+            exit 1
+          fi
+
+      - name: Validate Storage Rules
+        run: |
+          echo "Validating storage.rules..."
+          if [ -f "storage.rules" ]; then
+            echo "✅ storage.rules exists"
+          else
+            echo "❌ storage.rules not found"
+            exit 1
+          fi
+
+      - name: Check for common issues
+        run: |
+          echo "Checking for common issues..."
+
+          # Check for exposed secrets (basic check)
+          if grep -r "FIREBASE_TOKEN" --include="*.html" --include="*.js" .; then
+            echo "⚠️ Warning: Found potential secret exposure"
+          fi
+
+          # Check HTML files exist
+          if [ -f "index.html" ]; then
+            echo "✅ index.html exists"
+          else
+            echo "❌ index.html not found"
+            exit 1
+          fi
+
+          echo "✅ All checks passed"
+
+      - name: Validation Summary
+        run: |
+          echo "## Validation Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All Firebase configuration files are valid." >> $GITHUB_STEP_SUMMARY

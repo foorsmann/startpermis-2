@@ -1,0 +1,80 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isEmailVerified()
+        && request.auth.token.email in [
+          "webarcdesign.ro@gmail.com"
+        ];
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // File size limits
+    function isValidImageSize() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB
+    }
+
+    function isValidDocSize() {
+      return request.resource.size < 10 * 1024 * 1024; // 10MB
+    }
+
+    // Content type validation
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isPDF() {
+      return request.resource.contentType == 'application/pdf';
+    }
+
+    // Public assets (read-only for everyone)
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // User profile pictures
+    match /users/{uid}/profile/{fileName} {
+      allow read: if true;
+      allow write: if isOwner(uid) && isEmailVerified() && isImage() && isValidImageSize();
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    // User private documents
+    match /users/{uid}/documents/{fileName} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if isOwner(uid) && isEmailVerified() && (isImage() || isPDF()) && isValidDocSize();
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    // Admin uploads
+    match /admin/{allPaths=**} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Content for courses (public read, admin write)
+    match /content/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,212 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ===================== HELPERS ===================== */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isEmailVerified()
+        && (request.auth.token.email in [
+          "webarcdesign.ro@gmail.com"
+        ]);
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isBool(x) { return x is bool; }
+    function isStr(x)  { return x is string; }
+    function isInt(x)  { return x is int; }
+    function isTs(x)   { return x is timestamp; }
+    function isMap(x)  { return x is map; }
+
+    function validPrefs(p) {
+      return isMap(p)
+        && p.keys().hasOnly(["theme", "uiSounds", "haptics", "correctAnim"])
+        && (!("theme" in p) || (isStr(p.theme) && (p.theme in ["dark", "light"])))
+        && (!("uiSounds" in p) || isBool(p.uiSounds))
+        && (!("haptics" in p) || isBool(p.haptics))
+        && (!("correctAnim" in p) || isBool(p.correctAnim));
+    }
+
+    /* ===================== PUBLIC CONTENT ===================== */
+    match /mediu_invatare_chapters/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /mediu_invatare_pages/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /simulare_chestionare_tests/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /simulare_chestionare_pages/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /legislatie_chapters/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /legislatie_pages/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    /* ===================== USERS (doc principal) ===================== */
+    function allowedUserCreateKeys() {
+      return request.resource.data.keys().hasAll([
+          "email",
+          "createdAt",
+          "lastLogin",
+          "plan",
+          "questionsAnswered",
+          "aiQuestions",
+          "acceptTerms",
+          "acceptTermsAt",
+          "termsVersion"
+        ])
+        && request.resource.data.keys().hasOnly([
+          "email",
+          "createdAt",
+          "lastLogin",
+          "plan",
+          "questionsAnswered",
+          "aiQuestions",
+          "acceptTerms",
+          "acceptTermsAt",
+          "termsVersion",
+          "marketingOptIn",
+          "marketingOptInAt",
+          "prefs"
+        ]);
+    }
+
+    function validUserCreateValues() {
+      return request.auth.token.email != null
+        && isStr(request.resource.data.email)
+        && request.resource.data.email == request.auth.token.email
+
+        && request.resource.data.plan == "free"
+        && isInt(request.resource.data.questionsAnswered)
+        && request.resource.data.questionsAnswered == 0
+        && isInt(request.resource.data.aiQuestions)
+        && request.resource.data.aiQuestions == 0
+
+        && isTs(request.resource.data.createdAt)
+        && isTs(request.resource.data.lastLogin)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.lastLogin == request.time
+
+        && request.resource.data.acceptTerms == true
+        && isTs(request.resource.data.acceptTermsAt)
+        && request.resource.data.acceptTermsAt == request.time
+        && isStr(request.resource.data.termsVersion)
+
+        && (!("marketingOptIn" in request.resource.data) || isBool(request.resource.data.marketingOptIn))
+        && (!("marketingOptInAt" in request.resource.data)
+            || (request.resource.data.marketingOptIn == true
+                && isTs(request.resource.data.marketingOptInAt)
+                && request.resource.data.marketingOptInAt == request.time))
+
+        && (!("prefs" in request.resource.data) || validPrefs(request.resource.data.prefs));
+    }
+
+    function allowedUserUpdateKeys() {
+      return request.resource.data
+        .diff(resource.data)
+        .affectedKeys()
+        .hasOnly([
+          "email",
+          "lastLogin",
+          "acceptTerms",
+          "acceptTermsAt",
+          "termsVersion",
+          "marketingOptIn",
+          "marketingOptInAt",
+          "prefs"
+        ]);
+    }
+
+    function validUserUpdateValues() {
+      let k = request.resource.data.diff(resource.data).affectedKeys();
+
+      return request.auth.token.email != null
+        && isStr(request.resource.data.email)
+        && request.resource.data.email == request.auth.token.email
+
+        && request.resource.data.plan == resource.data.plan
+        && request.resource.data.questionsAnswered == resource.data.questionsAnswered
+        && request.resource.data.aiQuestions == resource.data.aiQuestions
+        && request.resource.data.createdAt == resource.data.createdAt
+
+        && (!k.hasAny(["lastLogin"])
+            || (isTs(request.resource.data.lastLogin)
+                && request.resource.data.lastLogin == request.time))
+
+        && (!k.hasAny(["acceptTerms"]) || request.resource.data.acceptTerms == true)
+        && (!k.hasAny(["acceptTermsAt"])
+            || (request.resource.data.acceptTerms == true
+                && isTs(request.resource.data.acceptTermsAt)
+                && request.resource.data.acceptTermsAt == request.time))
+        && (!k.hasAny(["termsVersion"]) || isStr(request.resource.data.termsVersion))
+
+        && (!k.hasAny(["marketingOptIn"]) || isBool(request.resource.data.marketingOptIn))
+        && (!k.hasAny(["marketingOptInAt"])
+            || (request.resource.data.marketingOptIn == true
+                && isTs(request.resource.data.marketingOptInAt)
+                && request.resource.data.marketingOptInAt == request.time))
+
+        && (!k.hasAny(["prefs"]) || validPrefs(request.resource.data.prefs));
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+
+      allow create: if (isOwner(uid) && allowedUserCreateKeys() && validUserCreateValues())
+                    || isAdmin();
+
+      allow update: if (isOwner(uid) && allowedUserUpdateKeys() && validUserUpdateValues())
+                    || isAdmin();
+
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    /* ===================== USERS (subcollections) ===================== */
+    match /users/{uid}/{docPath=**} {
+      allow read, create, update: if (isOwner(uid) && isEmailVerified()) || isAdmin();
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    /* ===================== CONTACT ===================== */
+    match /contact_messages/{docId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /contact_errors/{docId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    /* ===================== DEFAULT DENY ===================== */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

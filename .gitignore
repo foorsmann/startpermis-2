@@ -67,3 +67,28 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Emulator data
+emulator-data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local env files
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,37 @@
+{
+  "name": "startpermis",
+  "version": "1.0.0",
+  "description": "Start Permis - Romanian Driving School Platform",
+  "main": "index.html",
+  "scripts": {
+    "serve": "firebase emulators:start",
+    "serve:hosting": "firebase serve --only hosting",
+    "deploy": "firebase deploy --only hosting",
+    "deploy:all": "firebase deploy",
+    "deploy:rules": "firebase deploy --only firestore:rules,database,storage",
+    "deploy:indexes": "firebase deploy --only firestore:indexes",
+    "emulators": "firebase emulators:start --import=./emulator-data --export-on-exit",
+    "validate": "node scripts/validate.js",
+    "lint:html": "echo 'HTML linting not configured'",
+    "lint:css": "echo 'CSS linting not configured'",
+    "lint:js": "echo 'JS linting not configured'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foorsmann/startpermis-2.git"
+  },
+  "keywords": [
+    "driving-school",
+    "education",
+    "romania",
+    "firebase",
+    "webflow"
+  ],
+  "author": "Start Permis",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {}
+}

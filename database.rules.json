@@ -1,0 +1,37 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "chapterLocks": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$key": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.val() === null || (newData.hasChildren(['uid','sessionId','ts']) && newData.child('uid').val() === auth.uid && newData.child('sessionId').isString() && newData.child('ts').isNumber())"
+        }
+      }
+    },
+
+    "emailVerification": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+
+        "firstSentAt": {
+          ".validate": "newData.val() === null || ((!data.exists() && newData.isNumber() && newData.val() <= now + 60000) || (data.exists() && newData.val() === data.val()))"
+        },
+        "firstSentBy": {
+          ".validate": "newData.val() === null || ((!data.exists() && newData.isString() && newData.val().matches(/^(auto|manual)$/)) || (data.exists() && newData.val() === data.val()))"
+        },
+        "v": {
+          ".validate": "newData.val() === null || ((!data.exists() && newData.isNumber()) || (data.exists() && newData.val() === data.val()))"
+        },
+
+        "manual": {
+          ".validate": "newData.val() === null || (newData.hasChildren(['windowStartAt','count','lastSentAt']) && newData.child('windowStartAt').isNumber() && newData.child('count').isNumber() && newData.child('lastSentAt').isNumber() && newData.child('count').val() >= 1 && newData.child('count').val() <= 3 && newData.child('windowStartAt').val() <= now + 60000 && newData.child('lastSentAt').val() <= now + 60000 && newData.child('lastSentAt').val() >= newData.child('windowStartAt').val() && ( !data.exists() || ( (newData.child('windowStartAt').val() === data.child('windowStartAt').val() && (now - data.child('windowStartAt').val()) < 15000 && newData.child('count').val() === data.child('count').val() + 1 && newData.child('count').val() <= 3 && newData.child('lastSentAt').val() >= data.child('lastSentAt').val()) || (newData.child('windowStartAt').val() > data.child('windowStartAt').val() && (now - data.child('windowStartAt').val()) >= 15000 && newData.child('count').val() === 1) ) ) )"
+        }
+      }
+    }
+  }
+}

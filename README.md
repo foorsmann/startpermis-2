@@ -96,10 +96,22 @@ Configurate în `firebase.json`:
 ## Caching
 
 - **Imagini/Fonturi**: 1 an (immutable)
-- **CSS/JS**: 1 săptămână
+- **CSS/JS**: 5 minute (public, must-revalidate)
 - **HTML**: No cache (always fresh)
 
 ## URLs Production
 
 - https://scaoalauto.web.app
 - https://scaoalauto.firebaseapp.com
+
+## Dependențe externe și actualizare
+
+- **Firebase SDK (gstatic)**: app/auth/firestore/database/app-check încărcate din `https://www.gstatic.com`.
+- **Google Fonts**: fonturi de pe `fonts.googleapis.com` / `fonts.gstatic.com`.
+- **Asset-uri Webflow**: imagini/audio/animații de pe `cdn.prod.website-files.com` și placeholder SVG de pe `d3e54v103j8qbb.cloudfront.net`.
+- **Biblioteci self-hosted în `vendor/`** (versiuni fixate): Plyr 3.7.8 (`vendor/plyr`), Lottie-web 5.12.2 (`vendor/lottie`), Chart.js 4.4.2 (`vendor/chart`), jQuery 3.5.1 (`vendor/jquery`), WebFont Loader 1.6.26 (`vendor/webfont`).
+
+Politică de actualizare:
+1. Folosește `npm pack <pachet>@<versiune>` pentru a descărca arhiva, apoi înlocuiește fișierele din `vendor/` (CSS/JS).
+2. Dacă adaugi/schimbi resurse externe, actualizează și `firebase.json` (CSP) + această listă.
+3. Dacă revii la CDN pentru o bibliotecă, fixează o versiune explicită și adaugă `integrity` + `crossorigin="anonymous"` în HTML.

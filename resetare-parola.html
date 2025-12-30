@@ -2,6 +2,15 @@
 <html data-wf-page="69432e3e47be2d16ad9dce6a" data-wf-site="68589124f5ef093107d3fdc2" lang="ro">
 <head>
   <meta charset="utf-8">
+  <!-- Early theme application to prevent FOUC -->
+  <script>
+    (function(){
+      var t = 'dark';
+      try { t = localStorage.getItem('sp_theme_v1') || 'dark'; } catch(e){}
+      if (t !== 'light') t = 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <meta name="description" content="Reseteaza parola contului Start Permis - introdu o parola noua pentru a-ti accesa contul.">
   <title>Resetare Parola</title>
   <meta content="Resetare Parola" property="og:title">
@@ -11,6 +20,7 @@
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/webarcs-ultra-awesome-site.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/theme.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <script src="js/webfontloader-1.6.26.js" type="text/javascript"></script>

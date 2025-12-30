@@ -1,0 +1,472 @@
+/**
+ * Theme System CSS Variables
+ * Start Permis - Light/Dark Mode Support
+ *
+ * This file defines CSS custom properties that switch based on
+ * the [data-theme] attribute on <html>.
+ *
+ * Default: dark theme (when no data-theme or data-theme="dark")
+ * Light: html[data-theme="light"]
+ */
+
+/* =========================================
+   DARK THEME (default)
+   ========================================= */
+html, html[data-theme="dark"] {
+  /* Backgrounds */
+  --sp-bg: #111111;
+  --sp-bg-contrast: #131313;
+  --sp-bg-elevated: #1a1a1b;
+  --sp-bg-card: #161616;
+  --sp-bg-input: #1a1a1b;
+  --sp-bg-overlay: rgba(0, 0, 0, 0.8);
+
+  /* Text */
+  --sp-text: #f5f5f5;
+  --sp-text-secondary: #a3a3a3;
+  --sp-text-muted: #737373;
+  --sp-text-inverse: #111111;
+
+  /* Borders */
+  --sp-border: #313131;
+  --sp-border-subtle: #252525;
+  --sp-border-input: #3a3a3a;
+
+  /* Brand colors */
+  --sp-accent: #e7bc22;
+  --sp-accent-hover: #d4aa18;
+  --sp-primary: #00b15f;
+  --sp-primary-hover: #0e8d52;
+  --sp-error: #e24f1a;
+  --sp-error-dark: #a81c00;
+
+  /* Progress bar */
+  --sp-progress-track: #252525;
+  --sp-progress-fill: #00b15f;
+  --sp-progress-badge-bg: #252525;
+  --sp-progress-badge-text: #f5f5f5;
+
+  /* Cards - module tiles */
+  --sp-module-card-bg: #e7bc22;
+  --sp-module-card-title-bg: #050505;
+  --sp-module-card-title-text: #f5f5f5;
+
+  /* Nav/Header */
+  --sp-nav-bg: #111111;
+  --sp-nav-border: #313131;
+  --sp-nav-text: #f5f5f5;
+  --sp-nav-link-hover: #e7bc22;
+
+  /* Inputs/Forms */
+  --sp-input-bg: #1a1a1b;
+  --sp-input-text: #f5f5f5;
+  --sp-input-placeholder: #737373;
+  --sp-input-border: #3a3a3a;
+  --sp-input-border-focus: #00b15f;
+
+  /* Buttons */
+  --sp-btn-bg: #252525;
+  --sp-btn-text: #f5f5f5;
+  --sp-btn-border: #313131;
+  --sp-btn-primary-bg: #00b15f;
+  --sp-btn-primary-text: #ffffff;
+  --sp-btn-primary-hover: #0e8d52;
+
+  /* Shadows */
+  --sp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sp-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --sp-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6);
+
+  /* Misc */
+  --sp-loader-bg: rgba(17, 17, 17, 0.95);
+  --sp-focus-ring: rgba(0, 177, 95, 0.5);
+
+  /* Toggle icon colors */
+  --sp-toggle-icon-inactive: #d4d4d4;
+  --sp-toggle-icon-active: #e7bc22;
+}
+
+/* =========================================
+   LIGHT THEME
+   ========================================= */
+html[data-theme="light"] {
+  /* Backgrounds */
+  --sp-bg: #f8f8f8;
+  --sp-bg-contrast: #ffffff;
+  --sp-bg-elevated: #ffffff;
+  --sp-bg-card: #ffffff;
+  --sp-bg-input: #ffffff;
+  --sp-bg-overlay: rgba(255, 255, 255, 0.9);
+
+  /* Text */
+  --sp-text: #111111;
+  --sp-text-secondary: #525252;
+  --sp-text-muted: #737373;
+  --sp-text-inverse: #f5f5f5;
+
+  /* Borders */
+  --sp-border: #d4d4d4;
+  --sp-border-subtle: #e5e5e5;
+  --sp-border-input: #a3a3a3;
+
+  /* Brand colors remain consistent */
+  --sp-accent: #d4aa18;
+  --sp-accent-hover: #c9a016;
+  --sp-primary: #00994f;
+  --sp-primary-hover: #007a3f;
+  --sp-error: #dc2626;
+  --sp-error-dark: #b91c1c;
+
+  /* Progress bar */
+  --sp-progress-track: #e5e5e5;
+  --sp-progress-fill: #00994f;
+  --sp-progress-badge-bg: #111111;
+  --sp-progress-badge-text: #f5f5f5;
+
+  /* Cards - module tiles */
+  --sp-module-card-bg: #e7bc22;
+  --sp-module-card-title-bg: #111111;
+  --sp-module-card-title-text: #f5f5f5;
+
+  /* Nav/Header */
+  --sp-nav-bg: #ffffff;
+  --sp-nav-border: #e5e5e5;
+  --sp-nav-text: #111111;
+  --sp-nav-link-hover: #d4aa18;
+
+  /* Inputs/Forms */
+  --sp-input-bg: #ffffff;
+  --sp-input-text: #111111;
+  --sp-input-placeholder: #737373;
+  --sp-input-border: #a3a3a3;
+  --sp-input-border-focus: #00994f;
+
+  /* Buttons */
+  --sp-btn-bg: #f5f5f5;
+  --sp-btn-text: #111111;
+  --sp-btn-border: #d4d4d4;
+  --sp-btn-primary-bg: #00994f;
+  --sp-btn-primary-text: #ffffff;
+  --sp-btn-primary-hover: #007a3f;
+
+  /* Shadows */
+  --sp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --sp-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sp-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
+
+  /* Misc */
+  --sp-loader-bg: rgba(248, 248, 248, 0.95);
+  --sp-focus-ring: rgba(0, 153, 79, 0.5);
+
+  /* Toggle icon colors */
+  --sp-toggle-icon-inactive: #525252;
+  --sp-toggle-icon-active: #d4aa18;
+}
+
+/* =========================================
+   COMPONENT STYLES USING THEME VARIABLES
+   ========================================= */
+
+/* Body */
+html[data-theme="dark"] body,
+html:not([data-theme]) body {
+  background-color: var(--sp-bg);
+  color: var(--sp-text);
+}
+
+html[data-theme="light"] body {
+  background-color: var(--sp-bg);
+  color: var(--sp-text);
+}
+
+/* Navbar */
+html[data-theme="light"] .navbar-no-shadow-container,
+html[data-theme="light"] .navbar-no-shadow {
+  background-color: var(--sp-nav-bg);
+  border-color: var(--sp-nav-border);
+}
+
+html[data-theme="light"] .nav-link-btn {
+  color: var(--sp-nav-text);
+}
+
+html[data-theme="light"] .nav-link-btn:hover {
+  color: var(--sp-nav-link-hover);
+}
+
+/* Dropdown menus */
+html[data-theme="light"] .dropdown-list,
+html[data-theme="light"] .dropdown-menu-wrapper {
+  background-color: var(--sp-bg-card);
+  border-color: var(--sp-border);
+}
+
+html[data-theme="light"] .dropdown-title,
+html[data-theme="light"] .dropdown-title-two {
+  color: var(--sp-text-secondary);
+}
+
+html[data-theme="light"] .first-module-text,
+html[data-theme="light"] .second-module-text,
+html[data-theme="light"] .third-module-text,
+html[data-theme="light"] .plan-section-text,
+html[data-theme="light"] .user-settings-text,
+html[data-theme="light"] .logout-text,
+html[data-theme="light"] .client-email-text {
+  color: var(--sp-text);
+}
+
+/* Auth buttons */
+html[data-theme="light"] .auth-btn,
+html[data-theme="light"] .swap-btn {
+  background-color: var(--sp-bg-card);
+  color: var(--sp-text);
+  border-color: var(--sp-border);
+}
+
+html[data-theme="light"] .auth-btn:hover,
+html[data-theme="light"] .swap-btn:hover {
+  border-color: var(--sp-accent);
+}
+
+/* Module cards - yellow tiles */
+html[data-theme="light"] .module-card {
+  background-color: var(--sp-module-card-bg);
+}
+
+html[data-theme="light"] .module-card-title {
+  background-color: var(--sp-module-card-title-bg);
+  color: var(--sp-module-card-title-text);
+}
+
+/* Progress bar */
+html[data-theme="light"] .progress-bar,
+html[data-theme="light"] .liquid-chart {
+  background-color: var(--sp-progress-track);
+}
+
+html[data-theme="light"] .seg::before {
+  background: var(--sp-progress-fill);
+}
+
+html[data-theme="light"] .seg-label {
+  color: var(--sp-progress-badge-text);
+  background-color: var(--sp-progress-badge-bg);
+}
+
+/* Cards/containers */
+html[data-theme="light"] .theme-card,
+html[data-theme="light"] .settings-section,
+html[data-theme="light"] .plan-card,
+html[data-theme="light"] .content-card,
+html[data-theme="light"] .modules-wrapper {
+  background-color: var(--sp-bg-card);
+  border-color: var(--sp-border);
+  color: var(--sp-text);
+}
+
+html[data-theme="light"] .notice-column-module {
+  background-color: var(--sp-bg-card);
+  border-color: var(--sp-border);
+}
+
+/* Inputs and forms */
+html[data-theme="light"] input[type="text"],
+html[data-theme="light"] input[type="email"],
+html[data-theme="light"] input[type="password"],
+html[data-theme="light"] input[type="tel"],
+html[data-theme="light"] input[type="number"],
+html[data-theme="light"] input[type="search"],
+html[data-theme="light"] input[type="url"],
+html[data-theme="light"] textarea,
+html[data-theme="light"] select,
+html[data-theme="light"] .w-input,
+html[data-theme="light"] .w-select {
+  background-color: var(--sp-input-bg);
+  color: var(--sp-input-text);
+  border-color: var(--sp-input-border);
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+  color: var(--sp-input-placeholder);
+}
+
+html[data-theme="light"] input:focus,
+html[data-theme="light"] textarea:focus,
+html[data-theme="light"] select:focus,
+html[data-theme="light"] .w-input:focus,
+html[data-theme="light"] .w-select:focus {
+  border-color: var(--sp-input-border-focus);
+  box-shadow: 0 0 0 2px var(--sp-focus-ring);
+}
+
+/* Buttons - primary */
+html[data-theme="light"] .theme-btn-primary,
+html[data-theme="light"] .primary-btn,
+html[data-theme="light"] .submit-btn {
+  background-color: var(--sp-btn-primary-bg);
+  color: var(--sp-btn-primary-text);
+  border-color: var(--sp-btn-primary-bg);
+}
+
+html[data-theme="light"] .theme-btn-primary:hover,
+html[data-theme="light"] .primary-btn:hover,
+html[data-theme="light"] .submit-btn:hover {
+  background-color: var(--sp-btn-primary-hover);
+  border-color: var(--sp-btn-primary-hover);
+}
+
+/* Text colors */
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5,
+html[data-theme="light"] h6 {
+  color: var(--sp-text);
+}
+
+html[data-theme="light"] p,
+html[data-theme="light"] .paragraph,
+html[data-theme="light"] .text-block {
+  color: var(--sp-text);
+}
+
+html[data-theme="light"] .text-muted,
+html[data-theme="light"] .text-secondary {
+  color: var(--sp-text-secondary);
+}
+
+/* Links */
+html[data-theme="light"] a {
+  color: var(--sp-text);
+}
+
+html[data-theme="light"] a:hover {
+  color: var(--sp-accent);
+}
+
+/* Error text */
+html[data-theme="light"] .theme-error-text,
+html[data-theme="light"] .error-message,
+html[data-theme="light"] [data-error] {
+  color: var(--sp-error);
+}
+
+/* Loader/overlay backgrounds */
+html[data-theme="light"] .loader-overlay,
+html[data-theme="light"] .loading-screen,
+html[data-theme="light"] .page-loader {
+  background-color: var(--sp-loader-bg);
+}
+
+/* Sections */
+html[data-theme="light"] .section,
+html[data-theme="light"] .full-main,
+html[data-theme="light"] .page-main {
+  background-color: var(--sp-bg);
+}
+
+/* Border containers */
+html[data-theme="light"] .border-container,
+html[data-theme="light"] .bordered,
+html[data-theme="light"] [class*="border"] {
+  border-color: var(--sp-border);
+}
+
+/* Grain overlay adjust for light mode */
+html[data-theme="light"] .grain-overlay {
+  opacity: 0.02;
+}
+
+/* Toggle icon in light mode */
+html[data-theme="light"] .st-sunMoonThemeToggleBtn .themeToggleInput:not(:checked) + svg {
+  color: var(--sp-toggle-icon-inactive);
+}
+
+html[data-theme="light"] .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg {
+  color: var(--sp-toggle-icon-active);
+}
+
+/* Mobile menu in light mode */
+@media (max-width: 991px) {
+  html[data-theme="light"] .user-logged-in-menu.w-dropdown-toggle,
+  html[data-theme="light"] .auth-btn {
+    background: var(--sp-bg-card);
+    border-color: var(--sp-border) !important;
+  }
+}
+
+/* SVG icon filters for light mode */
+html[data-theme="light"] .icon-dropdown {
+  filter: invert(0.15);
+}
+
+/* Tooltip in light mode */
+html[data-theme="light"] .ms-email-tooltip {
+  background: var(--sp-bg-card);
+  color: var(--sp-text);
+  border-color: var(--sp-border);
+}
+
+/* All-modules background */
+html[data-theme="light"] .all-modules-bkg {
+  opacity: 0.1;
+}
+
+/* Footer */
+html[data-theme="light"] .footer,
+html[data-theme="light"] .footer-section {
+  background-color: var(--sp-bg-contrast);
+  color: var(--sp-text);
+  border-color: var(--sp-border);
+}
+
+/* Video player adjustments */
+html[data-theme="light"] .plyr--video {
+  --plyr-color-main: var(--sp-primary);
+}
+
+/* Tabs and navigation components */
+html[data-theme="light"] .tab-link,
+html[data-theme="light"] .w-tab-link {
+  color: var(--sp-text);
+  border-color: var(--sp-border);
+}
+
+html[data-theme="light"] .tab-link.w--current,
+html[data-theme="light"] .w-tab-link.w--current {
+  color: var(--sp-accent);
+  border-color: var(--sp-accent);
+}
+
+/* Checkboxes and radios */
+html[data-theme="light"] .w-checkbox-input,
+html[data-theme="light"] .w-radio-input {
+  border-color: var(--sp-input-border);
+  background-color: var(--sp-input-bg);
+}
+
+html[data-theme="light"] .w-checkbox-input--inputType-custom.w--redirected-checked {
+  background-color: var(--sp-primary);
+  border-color: var(--sp-primary);
+}
+
+/* Smooth theme transition (only apply after page load) */
+body.theme-ready {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body.theme-ready .navbar-no-shadow-container,
+body.theme-ready .navbar-no-shadow,
+body.theme-ready .dropdown-list,
+body.theme-ready .theme-card,
+body.theme-ready input,
+body.theme-ready textarea,
+body.theme-ready select,
+body.theme-ready .auth-btn,
+body.theme-ready .swap-btn,
+body.theme-ready .modules-wrapper {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}

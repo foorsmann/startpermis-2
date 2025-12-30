@@ -2,33 +2,32 @@
  * Theme Manager (Dark/Light Mode)
  * Start Permis - Driving School Platform
  *
- * Handles theme switching with localStorage persistence
- * and system preference detection.
+ * Handles theme switching with localStorage persistence.
+ * Works with early inline script that prevents FOUC.
  */
 
 (function() {
   'use strict';
 
-  var STORAGE_KEY = 'sp-theme';
+  var STORAGE_KEY = 'sp_theme_v1';
   var root = document.documentElement;
 
   /**
-   * Get the initial theme based on saved preference or system setting
+   * Get the current theme from DOM or localStorage
+   * @returns {string} Current theme ('light' or 'dark')
    */
-  function getInitialTheme() {
+  function getTheme() {
+    // First check if already set by early script
+    var current = root.getAttribute('data-theme');
+    if (current === 'light' || current === 'dark') return current;
+
+    // Fallback to localStorage
     var saved = null;
     try {
       saved = localStorage.getItem(STORAGE_KEY);
     } catch (e) {}
 
-    if (saved === 'light' || saved === 'dark') return saved;
-
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-
-    return 'light';
+    return (saved === 'light') ? 'light' : 'dark';
   }
 
   /**
@@ -37,7 +36,7 @@
    * @returns {string} The applied theme
    */
   function setTheme(theme) {
-    if (theme !== 'light' && theme !== 'dark') theme = 'light';
+    if (theme !== 'light' && theme !== 'dark') theme = 'dark';
 
     root.setAttribute('data-theme', theme);
 
@@ -45,14 +44,22 @@
       localStorage.setItem(STORAGE_KEY, theme);
     } catch (e) {}
 
+    // Sync all toggle checkboxes (dark = checked, light = unchecked)
     var isDark = theme === 'dark';
     var toggles = document.querySelectorAll('.theme-checkbox');
-    toggles.forEach(function(cb) {
-      cb.checked = isDark;
-    });
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].checked = isDark;
+    }
 
     // Dispatch custom event for components that need to react
-    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: theme } }));
+    try {
+      window.dispatchEvent(new CustomEvent('sp:theme', { detail: { theme: theme } }));
+    } catch (e) {
+      // IE fallback
+      var evt = document.createEvent('CustomEvent');
+      evt.initCustomEvent('sp:theme', false, false, { theme: theme });
+      window.dispatchEvent(evt);
+    }
 
     return theme;
   }
@@ -62,51 +69,53 @@
    * @returns {string} The new theme
    */
   function toggleTheme() {
-    var current = root.getAttribute('data-theme') || getInitialTheme();
+    var current = getTheme();
     return setTheme(current === 'dark' ? 'light' : 'dark');
   }
 
   /**
-   * Get current theme
-   * @returns {string} Current theme ('light' or 'dark')
+   * Sync checkbox states to current theme (call after DOM ready)
    */
-  function getTheme() {
-    return root.getAttribute('data-theme') || getInitialTheme();
+  function syncToggles() {
+    var theme = getTheme();
+    var isDark = theme === 'dark';
+    var toggles = document.querySelectorAll('.theme-checkbox');
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].checked = isDark;
+    }
   }
 
-  // Initialize theme on load
-  setTheme(getInitialTheme());
-
-  // Listen for checkbox toggles
-  document.addEventListener('DOMContentLoaded', function() {
+  /**
+   * Initialize toggle event listeners
+   */
+  function initToggles() {
     var toggles = document.querySelectorAll('.theme-checkbox');
-    toggles.forEach(function(cb) {
-      cb.addEventListener('change', function() {
-        setTheme(cb.checked ? 'dark' : 'light');
-      });
-    });
-  });
+    for (var i = 0; i < toggles.length; i++) {
+      (function(cb) {
+        cb.addEventListener('change', function() {
+          setTheme(cb.checked ? 'dark' : 'light');
+        });
+      })(toggles[i]);
+    }
+  }
 
-  // Listen for system preference changes
-  if (window.matchMedia) {
-    var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', function(e) {
-      // Only auto-switch if user hasn't set a preference
-      var saved = null;
-      try {
-        saved = localStorage.getItem(STORAGE_KEY);
-      } catch (err) {}
-
-      if (!saved) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
+  // Sync checkbox states and bind events when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      syncToggles();
+      initToggles();
     });
+  } else {
+    // DOM already ready
+    syncToggles();
+    initToggles();
   }
 
   // Export functions for global access
   window.spTheme = {
     set: setTheme,
     get: getTheme,
-    toggle: toggleTheme
+    toggle: toggleTheme,
+    sync: syncToggles
   };
 })();

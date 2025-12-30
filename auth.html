@@ -149,7 +149,7 @@
   })();
 </script>
   <style>
-  /* ascunde orice ar putea „flash-ui” până redirecționează */
+  /* ascunde orice ar putea „flash-ui” pana redirectioneaza */
   html.auth-router-preload body { opacity: 0 !important; }
 </style>
 </head>
@@ -164,13 +164,13 @@
           <div class="cube_item cube_x"></div>
         </div>
         <style>
-  /* Părintele din Webflow care conține acest Code Embed */
+  /* Parintele din Webflow care contine acest Code Embed */
   .loader-code-block {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;   /* centru pe verticală */
-    justify-content: center; /* centru pe orizontală */
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
   }
   .cube {
     height: 80px;
@@ -183,9 +183,9 @@
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    /* stare inițială identică cu 0% din animație → nu mai sare prima dată */
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
     transform: scale(0.8);
-    /* transition nu mai afectează transform, doar culoarea */
+    /* transition nu mai afecteaza transform, doar culoarea */
     transition: background-color 0.2s ease-in;
   }
   .cube_x {
@@ -240,11 +240,11 @@
   if (mode === 'verifyEmail') target = '/confirmare-email';
   else if (mode === 'resetPassword') target = '/resetare-parola';
   if (target) {
-    // păstrăm EXACT query string-ul (oobCode, continueUrl, lang etc.)
+    // pastram EXACT query string-ul (oobCode, continueUrl, lang etc.)
     window.location.replace(target + window.location.search + window.location.hash);
     return;
   }
-  // fallback: dacă cineva intră manual pe /auth fără parametri
+  // fallback: daca cineva intra manual pe /auth fara parametri
   root.classList.remove('auth-router-preload');
 })();
 </script>

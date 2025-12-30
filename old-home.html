@@ -141,14 +141,14 @@
   label { margin-bottom: 0px !important; }
 </style>
   <div style="max-width:560px;margin:60px auto;font-family:monospace">
-    <h2>Importă JSON în Firestore: mediu_invatare_pages</h2>
-    <p>Deschide fișierul <i>mediu_invatare_pages_autostrazi_4-50.json</i>, copiază TOT conținutul și lipește-l mai jos.</p>
+    <h2>Importa JSON in Firestore: mediu_invatare_pages</h2>
+    <p>Deschide fisierul <i>mediu_invatare_pages_autostrazi_4-50.json</i>, copiaza TOT continutul si lipeste-l mai jos.</p>
     <label>
       <b>Pages JSON (array):</b><br>
       <textarea id="pagesTextareaMediu" rows="22" style="width:100%;font-size:15px"></textarea>
     </label>
     <br><br>
-    <button id="importBtnMediu" style="margin:24px 0;padding:12px 32px;font-size:16px;">Importă în Firestore</button>
+    <button id="importBtnMediu" style="margin:24px 0;padding:12px 32px;font-size:16px;">Importa in Firestore</button>
     <div id="statusMediu" style="margin-top:20px;color:#0c0;font-size:16px"></div>
   </div>
 </head>
@@ -391,20 +391,20 @@
     <div class="fs_accordion-2_embed w-embed w-script">
       <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // Selectează toate componentele de tip acordeon din pagina
+  // Selecteaza toate componentele de tip acordeon din pagina
   document.querySelectorAll('.fs_accordion-2_component').forEach(function(component) {
-    // Pentru fiecare item din acordeon (poți avea mai multe)
+    // Pentru fiecare item din acordeon (poti avea mai multe)
     component.querySelectorAll('.fs_accordion-2_item').forEach(function(item) {
       const header = item.querySelector('.fs_accordion-2_header');
       const content = item.querySelector('.fs_accordion-2_content');
       const arrow = item.querySelector('.fs_accordion-2_arrow-wrapper');
-      // Inițial închide conținutul și scoate clasa activă de pe arrow
+      // Initial inchide continutul si scoate clasa activa de pe arrow
       content.style.display = 'none';
       arrow?.classList.remove('is-active-accordion');
       // Toggle la click pe header (sau arrow)
       header.addEventListener('click', function() {
         const isOpen = content.style.display === 'block';
-        // Închide toate celelalte din acest acordeon (single open)
+        // Inchide toate celelalte din acest acordeon (single open)
         component.querySelectorAll('.fs_accordion-2_content').forEach(function(otherContent) {
           if (otherContent !== content) {
             otherContent.style.display = 'none';
@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", function() {
             otherArrow.classList.remove('is-active-accordion');
           }
         });
-        // Deschide/închide pe cel curent
+        // Deschide/inchide pe cel curent
         if (!isOpen) {
           content.style.display = 'block';
           arrow?.classList.add('is-active-accordion');
@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function() {
           arrow?.classList.remove('is-active-accordion');
         }
       });
-      // Permite și click pe arrow (opțional, dacă nu e cuprins deja în header)
+      // Permite si click pe arrow (optional, daca nu e cuprins deja in header)
       if (arrow && !arrow.contains(header)) {
         arrow.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -481,27 +481,27 @@ document.addEventListener("DOMContentLoaded", function() {
     const val = document.getElementById(id).value.trim();
     if (!val) return null;
     const arr = JSON.parse(val);
-    if (!Array.isArray(arr)) throw new Error('Trebuie să fie un ARRAY JSON!');
+    if (!Array.isArray(arr)) throw new Error('Trebuie sa fie un ARRAY JSON!');
     return arr;
   }
-  // util: împărțire în loturi
+  // util: impartire in loturi
   const chunk = (arr, n) => Array.from({length: Math.ceil(arr.length/n)},(_,i)=>arr.slice(i*n,(i+1)*n));
   document.getElementById('importBtnMediu').onclick = async () => {
-    statusMediu('Se încarcă...');
+    statusMediu('Se incarca...');
     try {
       const u = auth.currentUser;
-      if (!u) { statusMediu('Nu ești logat. Apasă „Login cu Google”.', 'red'); return; }
-      await u.getIdToken(true); // refresh token după publish la reguli
+      if (!u) { statusMediu('Nu esti logat. Apasa „Login cu Google”.', 'red'); return; }
+      await u.getIdToken(true); // refresh token dupa publish la reguli
       const pages = parseTextareaJSON('pagesTextareaMediu');
-      if (!pages) { statusMediu('Lipește JSON-ul în textarea!', 'red'); return; }
+      if (!pages) { statusMediu('Lipeste JSON-ul in textarea!', 'red'); return; }
       const CH_SLUG = 'conducerea-pe-autostrazi-si-drumuri-rapide';
       const bad = pages.filter(p => p.chapterSlug !== CH_SLUG || !p.Index || !p.Slug);
       if (bad.length) {
         statusMediu(`Unele obiecte nu au chapterSlug/Index/Slug corect. Erori: ${bad.length}`, 'red'); 
         return;
       }
-      if (!confirm(`Import ${pages.length} pagini în "mediu_invatare_pages"?`)) return;
-      // normalizare blândă (îți păstrez exact structura câmpurilor)
+      if (!confirm(`Import ${pages.length} pagini in "mediu_invatare_pages"?`)) return;
+      // normalizare blanda (iti pastrez exact structura campurilor)
       const normalized = pages.map(p => ({
         Chapter:        String(p.Chapter || ''),
         chapterSlug:    CH_SLUG,
@@ -520,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // verificare unicitate Slug
       const slugs = new Set();
       for (const p of normalized) {
-        if (!p.Slug) throw new Error(`Slug lipsă la Index ${p.Index}`);
+        if (!p.Slug) throw new Error(`Slug lipsa la Index ${p.Index}`);
         if (slugs.has(p.Slug)) throw new Error(`Slug duplicat: ${p.Slug}`);
         slugs.add(p.Slug);
       }
@@ -534,7 +534,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         await b.commit();
         done += pack.length;
-        statusMediu(`Import în curs… ${done}/${total}`);
+        statusMediu(`Import in curs… ${done}/${total}`);
       }
       statusMediu('✔️ Import completat cu succes!');
     } catch (e) {

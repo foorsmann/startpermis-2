@@ -170,7 +170,7 @@
     align-items: center;
     justify-content: center;
   }
-  /* ✅ prevenim chenarul punctat și pe tablet & down */
+  /* ✅ prevenim chenarul punctat si pe tablet & down */
   .st-sunMoonThemeToggleBtn,
   .st-sunMoonThemeToggleBtn:focus,
   .st-sunMoonThemeToggleBtn:focus-visible,
@@ -196,7 +196,7 @@
   .st-sunMoonThemeToggleBtn svg {
     width: 100%;
     height: 100%;
-    transform: rotate(0deg); /* ➜ începe drept */
+    transform: rotate(0deg); /* ➜ incepe drept */
     transition: none;
   }
   .st-sunMoonThemeToggleBtn svg .icon-sun,
@@ -215,7 +215,7 @@
     opacity: 0;
     transform: scale(0.7);
   }
-  /* DARK MODE (checkbox NEBIFAT) → lună */
+  /* DARK MODE (checkbox NEBIFAT) → luna */
   .st-sunMoonThemeToggleBtn .themeToggleInput:not(:checked) + svg .icon-sun {
     opacity: 0;
     transform: scale(0.7);
@@ -230,7 +230,7 @@
   .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg {
     color: #e7bc22;
   }
-  /* Animații doar după .theme-ready */
+  /* Animatii doar dupa .theme-ready */
   body.theme-ready .st-sunMoonThemeToggleBtn svg {
     transition: transform 0.4s ease;
   }
@@ -253,8 +253,8 @@
 </style>
               <div class="theme-switch">
                 <label class="themeToggle st-sunMoonThemeToggleBtn" for="theme-checkbox-tablet">
-                  <!--  păstrăm id + clasa .theme-checkbox  -->
-                  <input type="checkbox" id="theme-checkbox-tablet" class="themeToggleInput theme-checkbox" aria-label="Comută tema">
+                  <!--  pastram id + clasa .theme-checkbox  -->
+                  <input type="checkbox" id="theme-checkbox-tablet" class="themeToggleInput theme-checkbox" aria-label="Comuta tema">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 72 72" fill="currentColor" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" aria-hidden="true">
                     <g class="icon-sun">
                       <circle cx="36" cy="36" r="18.586"></circle>
@@ -292,7 +292,7 @@
     padding: 7px;
     aspect-ratio: 1 / 1;
     display: inline-block;
-    color: #d4d4d4; /* folosit ca currentColor în SVG */
+    color: #d4d4d4; /* folosit ca currentColor in SVG */
   }
   .st-sunMoonThemeToggleBtn {
     position: relative;
@@ -301,7 +301,7 @@
     align-items: center;
     justify-content: center;
   }
-  /* ✅ Prevenim chenarul punctat de focus în toate browserele */
+  /* ✅ Prevenim chenarul punctat de focus in toate browserele */
   .st-sunMoonThemeToggleBtn,
   .st-sunMoonThemeToggleBtn:focus,
   .st-sunMoonThemeToggleBtn:focus-visible,
@@ -318,8 +318,8 @@
     -moz-appearance: none;
     appearance: none;
   }
-  /* input-ul – rămâne checkbox & clasa .theme-checkbox
-     ca să nu stricăm legătura cu JS-ul existent */
+  /* input-ul – ramane checkbox & clasa .theme-checkbox
+     ca sa nu stricam legatura cu JS-ul existent */
   .st-sunMoonThemeToggleBtn .themeToggleInput {
     position: absolute;
     inset: 0;
@@ -327,12 +327,12 @@
     cursor: pointer;
   }
   /* =============================
-     Stare inițială (fără animații)
+     Stare initiala (fara animatii)
      ============================= */
   .st-sunMoonThemeToggleBtn svg {
     width: 100%;
     height: 100%;
-    transform: rotate(0deg); /* ➜ începe drept, la 0° */
+    transform: rotate(0deg); /* ➜ incepe drept, la 0° */
     transition: none;
   }
   .st-sunMoonThemeToggleBtn svg .icon-sun,
@@ -342,9 +342,9 @@
     opacity: 0;
     transition: none;
   }
-  /* LOGICĂ:
+  /* LOGICA:
      - CHECKED      = LIGHT MODE  → soare
-     - NOT CHECKED  = DARK MODE   → lună
+     - NOT CHECKED  = DARK MODE   → luna
   */
   /* LIGHT MODE (checkbox BIFAT) → soare vizibil */
   .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg .icon-sun {
@@ -355,7 +355,7 @@
     opacity: 0;
     transform: scale(0.7);
   }
-  /* DARK MODE (checkbox NEBIFAT) → lună vizibilă */
+  /* DARK MODE (checkbox NEBIFAT) → luna vizibila */
   .st-sunMoonThemeToggleBtn .themeToggleInput:not(:checked) + svg .icon-sun {
     opacity: 0;
     transform: scale(0.7);
@@ -364,15 +364,15 @@
     opacity: 1;
     transform: scale(1);
   }
-  /* Culori diferite în funcție de stare */
+  /* Culori diferite in functie de stare */
   .st-sunMoonThemeToggleBtn .themeToggleInput:not(:checked) + svg {
-    color: #d4d4d4;   /* icon gri când e dark mode (lună) */
+    color: #d4d4d4;   /* icon gri cand e dark mode (luna) */
   }
   .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg {
-    color: #e7bc22;   /* galben brand când e light mode (soare) */
+    color: #e7bc22;   /* galben brand cand e light mode (soare) */
   }
   /* =============================
-     Animații DOAR după .theme-ready
+     Animatii DOAR dupa .theme-ready
      ============================= */
   body.theme-ready .st-sunMoonThemeToggleBtn svg {
     transition: transform 0.4s ease;
@@ -381,8 +381,8 @@
   body.theme-ready .st-sunMoonThemeToggleBtn svg .icon-moon {
     transition: transform 0.4s ease, opacity 0.3s ease;
   }
-  /* ➜ abia după ce body are .theme-ready
-        apare înclinarea la toggle */
+  /* ➜ abia dupa ce body are .theme-ready
+        apare inclinarea la toggle */
   body.theme-ready
     .st-sunMoonThemeToggleBtn
     .themeToggleInput:checked
@@ -398,9 +398,9 @@
 </style>
                 <div class="theme-switch">
                   <label class="themeToggle st-sunMoonThemeToggleBtn" for="theme-checkbox-desktop">
-                    <!--  IMPORTANT: păstrăm id + clasa .theme-checkbox  -->
-                    <input type="checkbox" id="theme-checkbox-desktop" class="themeToggleInput theme-checkbox" aria-label="Comută tema">
-                    <!--  SVG cu SOARE (light) + LUNĂ (dark)  -->
+                    <!--  IMPORTANT: pastram id + clasa .theme-checkbox  -->
+                    <input type="checkbox" id="theme-checkbox-desktop" class="themeToggleInput theme-checkbox" aria-label="Comuta tema">
+                    <!--  SVG cu SOARE (light) + LUNA (dark)  -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 72 72" fill="currentColor" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" aria-hidden="true">
                       <!--  Soare: LIGHT MODE (checkbox bifat) – NOUL SOARE  -->
                       <g class="icon-sun">
@@ -414,7 +414,7 @@
                         <path d="M56.491,63.584l-7.504,-7.504c-0.783,-0.783 -0.783,-2.054 -0,-2.837l4.256,-4.256c0.783,-0.783 2.054,-0.783 2.837,0l7.504,7.504c0.783,0.783 0.783,2.054 0,2.837l-4.256,4.256c-0.783,0.783 -2.054,0.783 -2.837,-0Z"></path>
                         <path d="M15.92,23.014l-7.504,-7.504c-0.783,-0.783 -0.783,-2.054 -0,-2.837l4.256,-4.256c0.783,-0.783 2.054,-0.783 2.837,0l7.504,7.504c0.783,0.783 0.783,2.054 0,2.837l-4.256,4.256c-0.783,0.783 -2.054,0.783 -2.837,-0Z"></path>
                       </g>
-                      <!--  Lună nouă: DARK MODE (checkbox nebifat)  -->
+                      <!--  Luna noua: DARK MODE (checkbox nebifat)  -->
                       <g class="icon-moon">
                         <path d="M25.187,70.345c-14.592,-4.596 -25.187,-18.243 -25.187,-34.345c0,-8.19 2.741,-15.745 7.354,-21.796l0.998,0.998c0.792,0.792 2.079,0.792 2.871,0l4.306,-4.306c0.792,-0.792 0.792,-2.079 0,-2.871l-0.951,-0.951c5.02,-3.725 11.041,-6.175 17.584,-6.87l2.579,2.579c0.695,0.695 1.824,0.695 2.519,0l2.579,-2.579c18.067,1.919 32.162,17.225 32.162,35.797c0,0.217 -0.002,0.434 -0.006,0.65l-3.65,3.65c-0.695,0.695 -0.695,1.824 0,2.519l2.449,2.449c-1.788,6.718 -5.472,12.667 -10.443,17.236l-2.917,-2.917c-0.579,-0.579 -1.519,-0.579 -2.098,0l-3.146,3.146c-0.579,0.579 -0.579,1.519 0,2.098l2.147,2.147c-5.372,3.189 -11.642,5.02 -18.337,5.02c-0.627,0 -1.25,-0.016 -1.87,-0.048l1.348,-1.348c0.695,-0.695 0.695,-1.824 0,-2.519l-3.779,-3.779c-0.695,-0.695 -1.824,-0.695 -2.519,0l-3.779,3.779c-0.614,0.614 -0.686,1.567 -0.214,2.26Zm-14.645,-33.296c0.579,-0.579 0.579,-1.519 -0,-2.098l-3.146,-3.146c-0.579,-0.579 -1.519,-0.579 -2.098,0l-3.146,3.146c-0.579,0.579 -0.579,1.519 0,2.098l3.146,3.146c0.579,0.579 1.519,0.579 2.098,0l3.146,-3.146Zm11.324,17.205c0.792,-0.792 0.792,-2.079 0,-2.871l-4.306,-4.306c-0.792,-0.792 -2.079,-0.792 -2.871,0l-4.306,4.306c-0.792,0.792 -0.792,2.079 0,2.871l4.306,4.306c0.792,0.792 2.079,0.792 2.871,0l4.306,-4.306Zm24.734,-16.063c0.695,-0.695 0.695,-1.824 0,-2.519l-3.779,-3.779c-0.695,-0.695 -1.824,-0.695 -2.519,0l-3.779,3.779c-0.695,0.695 -0.695,1.824 0,2.519l3.779,3.779c0.695,0.695 1.824,0.695 2.519,0l3.779,-3.779Zm19.516,-14.241c1.142,-1.142 1.142,-2.995 0,-4.137l-6.205,-6.205c-1.142,-1.142 -2.995,-1.142 -4.137,0l-6.205,6.205c-1.142,1.142 -1.142,2.995 0,4.137l6.205,6.205c1.142,1.142 2.995,1.142 4.137,0l6.205,-6.205Zm-36.158,-4.403c0.333,-0.333 0.333,-0.874 0,-1.207l-1.81,-1.81c-0.333,-0.333 -0.874,-0.333 -1.207,0l-1.81,1.81c-0.333,0.333 -0.333,0.874 0,1.207l1.81,1.81c0.333,0.333 0.874,0.333 1.207,0l1.81,-1.81Z"></path>
                       </g>
@@ -484,25 +484,25 @@
           </div>
           <div class="code-embed w-embed w-script">
             <style>
-  /* Default: considerăm utilizatorul NElogat.
-     Meniul de utilizator NU contează în layout până nu decide Firebase. */
+  /* Default: consideram utilizatorul NElogat.
+     Meniul de utilizator NU conteaza in layout pana nu decide Firebase. */
   .user-logged-in-menu{
     display: none;
   }
-  /* Ascunse la încărcare – UI real */
+  /* Ascunse la incarcare – UI real */
   .auth-btn,
   .user-logged-in-menu { visibility: hidden; }
-  /* Devine vizibil după verificarea Firebase */
+  /* Devine vizibil dupa verificarea Firebase */
   body.auth-checked .auth-btn,
   body.auth-checked .user-logged-in-menu { visibility: visible; }
-  /* Pe durata tranzițiilor globale (load / login) ascund UI și arăt spinnerul */
+  /* Pe durata tranzitiilor globale (load / login) ascund UI si arat spinnerul */
   body.auth-loading .auth-btn,
   body.auth-loading .user-logged-in-menu { visibility: hidden !important; }
   /* Wrapperul cu email – pentru tooltip custom */
   .client-email-wrapper {
     position: relative;
   }
-  /* Email-ul pe un singur rând, tăiat elegant cu "…" dacă e prea lung */
+  /* Email-ul pe un singur rand, taiat elegant cu "…" daca e prea lung */
   .client-email-text {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -510,17 +510,17 @@
     overflow: hidden;   /* necesar pentru ellipsis */
     display: block;     /* box stabil, nu inline */
   }
-  /* Stabilizare layout pentru linia de email în dropdown (fără flicker) */
+  /* Stabilizare layout pentru linia de email in dropdown (fara flicker) */
   .account-links {
-    min-width: 0;       /* important la flex: permite copilului să se micșoreze */
+    min-width: 0;       /* important la flex: permite copilului sa se micsoreze */
   }
   .account-links .client-email-wrapper {
     max-width: 100%;
   }
   .account-links .client-email-text {
-    max-width: 100%;    /* se limitează la lățimea wrapperului */
+    max-width: 100%;    /* se limiteaza la latimea wrapperului */
   }
-  /* Tooltip custom (folosit și la hover, și la click/tap) */
+  /* Tooltip custom (folosit si la hover, si la click/tap) */
   .ms-email-tooltip{
     position:absolute;
     left:50%;
@@ -544,13 +544,13 @@
   .client-email-wrapper.ms-tooltip-open .ms-email-tooltip{
     display:block;
   }
-  /* ===== Spinner CSS vechi – fallback, nu îl folosim direct ===== */
+  /* ===== Spinner CSS vechi – fallback, nu il folosim direct ===== */
   .ms-spinner{
     width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;
     border-radius:50%;display:inline-block;animation:msSpin .6s linear infinite;
   }
   @keyframes msSpin{to{transform:rotate(360deg)}}
-  /* Lottie loader container (doar iconița) */
+  /* Lottie loader container (doar iconita) */
   .ms-spinner-lottie{
     width:15px;
     height:15px;
@@ -579,14 +579,14 @@
       padding:0 !important;
       border:1px solid #313131 !important;
       box-sizing:border-box;
-      display:inline-flex; /* fără !important, ca JS să poată ascunde */
+      display:inline-flex; /* fara !important, ca JS sa poata ascunde */
       align-items:center;
       justify-content:center;
       border-radius:6px;
       background:#111;
       overflow:hidden;
     }
-    /* ascund săgeata Webflow */
+    /* ascund sageata Webflow */
     .user-logged-in-menu .icon.w-icon-dropdown-toggle{ display:none; }
     /* text -> icon (auth + swap) */
     .auth-btn,
@@ -634,8 +634,8 @@
     min-width: auto;
   }
 </style>
-            <!--  ▸ PUS într-un Embed, la finalul navbar-ului sau la finalul Body  -->
-            <!--  1) PRELOAD — icoane hover, invizibile dar încărcate în cache  -->
+            <!--  ▸ PUS intr-un Embed, la finalul navbar-ului sau la finalul Body  -->
+            <!--  1) PRELOAD — icoane hover, invizibile dar incarcate in cache  -->
             <div class="dropdown-icons-preload" aria-hidden="true">
               <img src="images/module-one-icon-hover.svg" alt="">
               <img src="images/module-two-icon-hover.svg" alt="">
@@ -707,11 +707,11 @@
   }
 }
 /* ============================
-   MOBILE / TABLETĂ (≤ 991px)
+   MOBILE / TABLETA (≤ 991px)
    DOAR pressed (active) pt. item-ele din dropdown
    ============================ */
 @media screen and (max-width: 991px) {
-  /* Text: doar când e apăsat (tap) */
+  /* Text: doar cand e apasat (tap) */
   .first-module-link-tb:active .first-module-text,
   .second-module-link-tb:active .second-module-text,
   .third-module-link-tb:active .third-module-text,
@@ -720,7 +720,7 @@
   .log-out-wrapper:active .logout-text {
     color: #e7bc22;
   }
-  /* Icon: doar când e apăsat (tap) */
+  /* Icon: doar cand e apasat (tap) */
   .first-module-link-tb:active .icon-dropdown {
     content: url("https://cdn.prod.website-files.com/68589124f5ef093107d3fdc2/692808ff0235c80396da52b8_module-one-icon-hover.svg");
   }
@@ -753,14 +753,14 @@
     padding:0 !important;
     border:1px solid #313131 !important;
     box-sizing:border-box;
-    display:inline-flex; /* aici era problema cu Webflow, dar îl rezolvăm mai jos cu PATCH */
+    display:inline-flex; /* aici era problema cu Webflow, dar il rezolvam mai jos cu PATCH */
     align-items:center;
     justify-content:center;
     border-radius:6px;
     background:#111;
     overflow:hidden;
   }
-  /* ascund săgeata Webflow și aici */
+  /* ascund sageata Webflow si aici */
   .user-logged-in-menu .icon.w-icon-dropdown-toggle{ display:none; }
   /* text -> icon (exact ca pe mobil) */
   .auth-btn,
@@ -828,11 +828,11 @@
 }
 </style>
             <!--  =========================
-     STĂRI user-logged-in-menu
+     STARI user-logged-in-menu
      ≥1150px vs <1150px
      =========================  -->
             <style>
-/* Tranziții generale pentru butonul "Contul meu" */
+/* Tranzitii generale pentru butonul "Contul meu" */
 .user-logged-in-menu.w-dropdown-toggle{
   transition:
     background-color 0.15s ease,
@@ -842,7 +842,7 @@
     transform 0.10s ease;
   transform-origin: center center;
 }
-/* DESKTOP MARE – de la 1150px în sus */
+/* DESKTOP MARE – de la 1150px in sus */
 @media (min-width: 1151px){
    .menu-links{
    display: none;
@@ -856,7 +856,7 @@
     border: 2px solid #ffffff;
     box-shadow: inset 0 0 4px #0000007d;
   }
-  /* Pressed: verde mai închis + text 70% + border 70% alb */
+  /* Pressed: verde mai inchis + text 70% + border 70% alb */
   .user-logged-in-menu.w-dropdown-toggle:active{
     background: #0e8d52;
     color: rgba(255, 255, 255, 0.7);
@@ -882,7 +882,7 @@
 </style>
             <!--  ==========================================================
      PATCH FINAL: auth-btn icon-only sub 1150px
-     (același control ca swap-btn, icon doar prin ::before)
+     (acelasi control ca swap-btn, icon doar prin ::before)
      ==========================================================  -->
             <style>
 @media (max-width: 1150px){
@@ -903,8 +903,8 @@
     overflow:hidden;
     vertical-align:middle;
   }
-  /* NU mai anulăm ::before,
-     ca să ai același control ca la swap-btn */
+  /* NU mai anulam ::before,
+     ca sa ai acelasi control ca la swap-btn */
 }
 </style>
             <!--  Lottie-web (bodymovin)  -->
@@ -917,7 +917,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const emailWrappers   = [...document.querySelectorAll('.client-email-wrapper')];
   const logoutAreas     = [...document.querySelectorAll('.log-out-wrapper')];
   const swapBtns        = [...document.querySelectorAll('.swap-btn')];
-  /* JSON-ul Lottie pentru loader – exact animația ta */
+  /* JSON-ul Lottie pentru loader – exact animatia ta */
   const MS_SPINNER_LOTTIE = {
     "nm":"Main Scene",
     "ddd":0,
@@ -1053,23 +1053,23 @@ document.addEventListener('DOMContentLoaded', function () {
     phantom: null,          // doar mobil
     spinnerTimer: null,
     hardFailTimer: null,
-    spinnerAnim: null       // referință la animația Lottie
+    spinnerAnim: null       // referinta la animatia Lottie
   };
   /* Helpers */
   function inMobile(){ return window.matchMedia('(max-width: 991px)').matches; }
-  // "are box" chiar dacă visibility:hidden (dar NU dacă display:none)
+  // "are box" chiar daca visibility:hidden (dar NU daca display:none)
   function hasBox(el){ return !!(el && el.getClientRects && el.getClientRects().length); }
   function getWrapperFor(el){
-    // încercăm mai întâi .profile-buttons ca wrapper principal
+    // incercam mai intai .profile-buttons ca wrapper principal
     return document.querySelector('.profile-buttons') ||
            (el && el.closest && el.closest('.profile-buttons')) ||
            (el && el.parentElement) ||
            null;
   }
-  /* Formatare email pentru afișare în dropdown (scurt + …, cu domeniul întreg) */
+  /* Formatare email pentru afisare in dropdown (scurt + …, cu domeniul intreg) */
   function formatEmailForDisplay(email){
     if (!email) return '';
-    // Dacă e deja destul de scurt, îl lăsăm întreg
+    // Daca e deja destul de scurt, il lasam intreg
     if (email.length <= 13) return email;
     const parts = email.split('@');
     if (parts.length !== 2) return email;
@@ -1088,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', function () {
       overlay.innerHTML = '<div class="ms-spinner-lottie"></div>';
       wrapper.appendChild(overlay);
     }
-    // inițializează Lottie dacă avem librăria și nu am mai făcut-o
+    // initializeaza Lottie daca avem libraria si nu am mai facut-o
     if (window.lottie && !overlay._msAnim) {
       const container = overlay.querySelector('.ms-spinner-lottie');
       if (container){
@@ -1096,17 +1096,17 @@ document.addEventListener('DOMContentLoaded', function () {
           container: container,
           renderer: 'svg',
           loop: true,
-          autoplay: false,           // CONTROLĂM MANUAL
+          autoplay: false,           // CONTROLAM MANUAL
           animationData: MS_SPINNER_LOTTIE
         });
-        anim.setSpeed(1.3);          // viteză X 1.3
+        anim.setSpeed(1.3);          // viteza X 1.3
         overlay._msAnim = anim;
         STATE.spinnerAnim = anim;
       }
     }
     return overlay;
   }
-  // phantom — doar pe mobil, ca fallback când nici auth, nici menu nu au box
+  // phantom — doar pe mobil, ca fallback cand nici auth, nici menu nu au box
   function ensurePhantom(wrapper){
     if (!wrapper) return null;
     let ph = wrapper.querySelector('.ms-auth-phantom');
@@ -1124,11 +1124,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     STATE.phantom = null;
   }
-  // overlay-ul trebuie să acopere EXACT elementul-ancoră (butonul activ)
+  // overlay-ul trebuie sa acopere EXACT elementul-ancora (butonul activ)
   function positionOverlay(overlay, parent){
     if (!overlay || !parent) return;
-    // dacă avem un anchor valid (butonul pe care se face loading), îl folosim,
-    // altfel cădem înapoi pe parent (comportamentul vechi)
+    // daca avem un anchor valid (butonul pe care se face loading), il folosim,
+    // altfel cadem inapoi pe parent (comportamentul vechi)
     const anchor =
       (STATE.anchorEl &&
        STATE.anchorEl.getClientRects &&
@@ -1168,7 +1168,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return getWrapperFor(authBtns[0] || loggedMenus[0]);
   }
-  // options.global === false -> NU intrăm în modul "auth-loading" pe body
+  // options.global === false -> NU intram in modul "auth-loading" pe body
   function showSpinner(anchorEl, options){
     const useGlobal = !options || options.global !== false;
     const wrapper = getWrapperFor(anchorEl || authBtns[0] || loggedMenus[0]);
@@ -1183,7 +1183,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add('auth-loading');
       startWatchdogs();
     }
-    // pornește animația DE LA ÎNCEPUT, doar când avem nevoie de spinner
+    // porneste animatia DE LA INCEPUT, doar cand avem nevoie de spinner
     if (STATE.spinnerAnim){
       try{
         STATE.spinnerAnim.stop();
@@ -1196,8 +1196,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.remove('auth-loading');
     STATE.anchorEl = null;
     clearWatchdogs();
-    removePhantom(); // phantom se folosește doar pe mobil și doar ca fallback
-    // oprim animația când ascundem spinnerul
+    removePhantom(); // phantom se foloseste doar pe mobil si doar ca fallback
+    // oprim animatia cand ascundem spinnerul
     if (STATE.spinnerAnim){
       try{ STATE.spinnerAnim.stop(); }catch(e){}
     }
@@ -1207,7 +1207,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const displayEmail = formatEmailForDisplay(email || '');
     authBtns.forEach(el => { if (el) el.style.display = 'none'; });
     loggedMenus.forEach(el => { if (el) el.style.display = 'flex'; });
-    // text scurt în dropdown
+    // text scurt in dropdown
     emailHolders.forEach(el => {
       if (!el) return;
       el.textContent = displayEmail;
@@ -1260,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.w-dropdown.w--open, .w-dropdown-toggle.w--open')
       .forEach(el => el.classList.remove('w--open'));
   }
-  /* ===== Auth snapshot (forțat) ===== */
+  /* ===== Auth snapshot (fortat) ===== */
   function forceRenderSnapshot(){
     if (window.firebase && firebase.auth){
       const u = firebase.auth().currentUser;
@@ -1269,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', function () {
       safeShowLoggedOut();
     }
   }
-  /* Start – spinner până vine auth (global) */
+  /* Start – spinner pana vine auth (global) */
   const defaultAnchor =
     document.querySelector('.user-logged-in-menu') ||
     document.querySelector('.auth-btn');
@@ -1294,12 +1294,12 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.addEventListener('click', ()=>{
       setAuthIntent('login');
       showSpinner(btn); // global loading pentru login
-      // redirect spre pagina de login – e setat în Webflow / link
+      // redirect spre pagina de login – e setat in Webflow / link
     });
   });
   /* Tooltip email – hover + click/tap */
   emailWrappers.forEach(w => {
-    // Hover – deschide/închide doar dacă NU e pinned
+    // Hover – deschide/inchide doar daca NU e pinned
     w.addEventListener('mouseenter', function(){
       const hasEmail = !!w.getAttribute('data-email-full');
       if (!hasEmail) return;
@@ -1314,21 +1314,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // Click – pin/unpin tooltipul
     w.addEventListener('click', function(e){
-      e.stopPropagation(); // să nu se închidă imediat din document.click
+      e.stopPropagation(); // sa nu se inchida imediat din document.click
       const hasEmail = !!w.getAttribute('data-email-full');
       if (!hasEmail) return;
       const isPinned = w.classList.contains('ms-tooltip-pinned');
       if (isPinned){
-        // dacă e deja pinned, îl închidem
+        // daca e deja pinned, il inchidem
         w.classList.remove('ms-tooltip-pinned','ms-tooltip-open');
       } else {
-        // închidem altele și îl deschidem pinned pe acesta
+        // inchidem altele si il deschidem pinned pe acesta
         closeAllEmailTooltips();
         w.classList.add('ms-tooltip-pinned','ms-tooltip-open');
       }
     });
   });
-  // Click oriunde în afara dropdownului → închide tooltipurile pinned
+  // Click oriunde in afara dropdownului → inchide tooltipurile pinned
   document.addEventListener('click', function(){
     closeAllEmailTooltips();
   });
@@ -1337,7 +1337,7 @@ document.addEventListener('DOMContentLoaded', function () {
       closeAllEmailTooltips();
     }
   });
-  /* Logout – fără redirect, doar sign-out + actualizare UI locală */
+  /* Logout – fara redirect, doar sign-out + actualizare UI locala */
   logoutAreas.forEach(el=>{
     el.addEventListener('click', async (e)=>{
       e.preventDefault();
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', function () {
           await firebase.auth().signOut();
         }
       }catch(_){}
-      // Actualizăm imediat UI-ul pe varianta "neautentificat", fără reload de pagină
+      // Actualizam imediat UI-ul pe varianta "neautentificat", fara reload de pagina
       showLoggedOutUI();
       STATE.isLoggingOut = false;
     });
@@ -1382,26 +1382,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.body.classList.contains('auth-loading')) forceRenderSnapshot();
   });
   /* =====================================================
-     ÎNCHIDERE MENIU PROFIL LA CLICK PE .close-btn-background
-     – folosește mecanismul Webflow (click pe toggle) + cleanup
+     INCHIDERE MENIU PROFIL LA CLICK PE .close-btn-background
+     – foloseste mecanismul Webflow (click pe toggle) + cleanup
      ===================================================== */
   function closeUserDropdown() {
     // Toggle deschis
     var openToggle = document.querySelector(
       '.user-logged-in-menu.w-dropdown-toggle.w--open'
     );
-    // Lista deschisă
+    // Lista deschisa
     var openList = document.querySelector(
       '.dropdown-list.w-dropdown-list.w--open'
     );
-    // Dacă nu e nimic deschis, nu facem nimic
+    // Daca nu e nimic deschis, nu facem nimic
     if (!openToggle && !openList) return;
-    // 1) Folosim mecanismul Webflow -> simulăm click pe toggle
+    // 1) Folosim mecanismul Webflow -> simulam click pe toggle
     if (openToggle) {
       openToggle.click();
     }
-    // 2) Safety net: după ce Webflow procesează click-ul,
-    //    eliminăm orice .w--open rămas pe elementele relevante
+    // 2) Safety net: dupa ce Webflow proceseaza click-ul,
+    //    eliminam orice .w--open ramas pe elementele relevante
     setTimeout(function () {
       var t = document.querySelector(
         '.user-logged-in-menu.w-dropdown-toggle.w--open'
@@ -1419,7 +1419,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, 20);
   }
-  // Atașăm logica pe toate elementele .close-btn-background (overlay de închidere)
+  // Atasam logica pe toate elementele .close-btn-background (overlay de inchidere)
   var closeOverlays = document.querySelectorAll('.close-btn-background');
   closeOverlays.forEach(function (overlay) {
     overlay.addEventListener('click', function (e) {
@@ -1437,9 +1437,9 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
   <div class="top-btn-wrapper">
     <div class="top-btn"></div>
-    <div class="top-btn-code w-embed w-script"><!--  Pune asta în elementul Embed: .top-btn-code  -->
+    <div class="top-btn-code w-embed w-script"><!--  Pune asta in elementul Embed: .top-btn-code  -->
       <style>
-  /* Ascundem butonul când nu e "is-visible" */
+  /* Ascundem butonul cand nu e "is-visible" */
   .top-btn{
     opacity:0;
     pointer-events:none;
@@ -1455,7 +1455,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <script>
 (function () {
   var btn = document.querySelector('.top-btn');
-  if (!btn) return;   // dacă pe o pagină nu există, nu face nimic
+  if (!btn) return;   // daca pe o pagina nu exista, nu face nimic
   // A11y & fallback-uri
   btn.setAttribute('role', 'button');
   if (!btn.getAttribute('aria-label')) {
@@ -1472,7 +1472,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function scrolledPastFirstViewport() {
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    // 0.98 pentru a evita “clipirea” la limită
+    // 0.98 pentru a evita “clipirea” la limita
     return y > vvh() * 0.98;
   }
   function setVisible(yes) {
@@ -1482,11 +1482,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!btn.classList.contains('is-visible')) {
         btn.classList.add('is-visible');
       }
-      // readmis în tab-order + vizibil pentru AT
+      // readmis in tab-order + vizibil pentru AT
       btn.setAttribute('tabindex', '0');
       btn.removeAttribute('aria-hidden');
     } else {
-      // dacă butonul (sau un copil) are focus, îl pierdem înainte de aria-hidden
+      // daca butonul (sau un copil) are focus, il pierdem inainte de aria-hidden
       if (hasFocusInside) {
         try { ae.blur(); } catch (e) {}
       }
@@ -1498,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.setAttribute('aria-hidden', 'true');
     }
   }
-  // Inițializare la load
+  // Initializare la load
   setVisible(scrolledPastFirstViewport());
   // Scroll/resize cu rAF (performant)
   var ticking = false;
@@ -1582,13 +1582,13 @@ document.addEventListener('DOMContentLoaded', function () {
           <div class="cube_item cube_x"></div>
         </div>
         <style>
-  /* Părintele din Webflow care conține acest Code Embed */
+  /* Parintele din Webflow care contine acest Code Embed */
   .loader-code-block {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;   /* centru pe verticală */
-    justify-content: center; /* centru pe orizontală */
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
   }
   .cube {
     height: 80px;
@@ -1601,9 +1601,9 @@ document.addEventListener('DOMContentLoaded', function () {
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    /* stare inițială identică cu 0% din animație → nu mai sare prima dată */
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
     transform: scale(0.8);
-    /* transition nu mai afectează transform, doar culoarea */
+    /* transition nu mai afecteaza transform, doar culoarea */
     transition: background-color 0.2s ease-in;
   }
   .cube_x {
@@ -1727,14 +1727,14 @@ Webflow.push(async function () {
   const RADIUS_PX = 3;
   const ANIM_DUR = 900;                 // ms
   const DEFAULT_TOTAL_QUESTIONS = 26;   // fallback
-  const GAP_PX = 3;                     // spațiul negru dintre segmente (doar când ambele există)
+  const GAP_PX = 3;                     // spatiul negru dintre segmente (doar cand ambele exista)
   const GAP_COLOR = '#050505';
-  const ROUNDING_FIX_PX = 0.5;          // mic surplus pe roșu ca să nu rămână dungi de 1px
+  const ROUNDING_FIX_PX = 0.5;          // mic surplus pe rosu ca sa nu ramana dungi de 1px
   const COLLECTION_TESTS     = 'simulare_chestionare_tests';
   const COLLECTION_QUESTIONS = 'simulare_chestionare_pages';
   const USER_ANSWERS_SUBCOL  = 'answers_chestionare';
-  // Dacă regulile tale Firestore cer email verificat pentru user-data, lasă TRUE.
-  // IMPORTANT: aici NU mai blocăm click-ul; doar evităm citirea progresului dacă e cazul.
+  // Daca regulile tale Firestore cer email verificat pentru user-data, lasa TRUE.
+  // IMPORTANT: aici NU mai blocam click-ul; doar evitam citirea progresului daca e cazul.
   const REQUIRE_EMAIL_VERIFIED_FOR_USERDATA = true;
   /* ========================== DOM HOOKS ========================== */
   const loaderEl = document.querySelector('.lesson-loader');
@@ -1752,7 +1752,7 @@ Webflow.push(async function () {
   const topBtnWrapEl = document.querySelector('.top-btn-wrapper');
   const titleDescEls = Array.from(document.querySelectorAll('.title-and-description'));
   if (!listEl) return;
-  // Păstrăm fundalul static din Webflow
+  // Pastram fundalul static din Webflow
   const bgEl = listEl.querySelector('.background-color') || null;
   /* ========================== SHOW/HIDE HELPERS ========================== */
   function showMainUI() {
@@ -1786,7 +1786,7 @@ Webflow.push(async function () {
     loaderEl.style.setProperty('display', 'none', 'important');
     document.body.removeAttribute('aria-busy');
   }
-  // Curățăm DOAR elementele dinamice, păstrând .background-color
+  // Curatam DOAR elementele dinamice, pastrand .background-color
   function clearDynamicList() {
     const nodes = Array.from(listEl.children);
     for (const node of nodes) {
@@ -1814,7 +1814,7 @@ Webflow.push(async function () {
     const msg  = String(err?.message || err || '');
     return code === 'permission-denied' || /insufficient permissions|permission/i.test(msg);
   }
-  // Anti-flicker gate – la început ascund UI și arăt doar loaderul
+  // Anti-flicker gate – la inceput ascund UI si arat doar loaderul
   hideMainUI();
   showLoader();
   if (!listEl.style.position) listEl.style.position = 'relative';
@@ -1874,13 +1874,13 @@ Webflow.push(async function () {
       }
       if (uid === lastUid) return;
       lastUid = uid;
-      // ✅ Logout: reset instant (fără refresh)
+      // ✅ Logout: reset instant (fara refresh)
       if (!uid) {
         forceLoggedOut = true;
         resetProgressUIInPlaceToZero();
         return;
       }
-      // ✅ Login / schimbare cont: re-render ca să apară progresul corect
+      // ✅ Login / schimbare cont: re-render ca sa apara progresul corect
       forceLoggedOut = false;
       if (!isRendering) render(true, 'authchange');
     });
@@ -1917,7 +1917,7 @@ Webflow.push(async function () {
     }
     return { ok:true, reason:'ok' };
   }
-  /* ========================== NORMALIZĂRI & HELPERS ========================== */
+  /* ========================== NORMALIZARI & HELPERS ========================== */
   const testKey = (nr) => String(nr).trim();
   function getTestNumber(testDoc) {
     return (
@@ -1963,7 +1963,7 @@ Webflow.push(async function () {
     if (selIdx.length && corIdx.length) return arraysEq(selIdx, corIdx);
     return false;
   }
-  /* === animație „curată” cu scaleX, nu width === */
+  /* === animatie „curata” cu scaleX, nu width === */
   function animateBarOuter(barOuter, targetWidthPct, duration = ANIM_DUR) {
     const scaleTarget = Math.max(0, Math.min(1, targetWidthPct / 100));
     barOuter.style.transformOrigin = 'left center';
@@ -1998,9 +1998,9 @@ Webflow.push(async function () {
       });
       return map;
     } catch (e) {
-      // ✅ FIX: dacă Firestore refuză (user neverificat / reguli), nu mai crăpăm pagina
+      // ✅ FIX: daca Firestore refuza (user neverificat / reguli), nu mai crapam pagina
       if (isPermissionDenied(e)) {
-        console.warn('[Chestionare] Nu am permisiune să citesc answers_chestionare. Randăm fără progres user.');
+        console.warn('[Chestionare] Nu am permisiune sa citesc answers_chestionare. Randam fara progres user.');
         return {};
       }
       throw e;
@@ -2027,7 +2027,7 @@ Webflow.push(async function () {
     if (!Number.isFinite(v)) return String(n ?? '');
     return String(v).padStart(2, '0');
   }
-  /* ========================== CARD BUILDER (cu bară segmentată) ========================== */
+  /* ========================== CARD BUILDER (cu bara segmentata) ========================== */
   function buildCard({ nr, pCorrect, pWrong, pTotal, animated, correctCount, wrongCount, myRun }) {
     const card = document.createElement('div');
     card.className = 'simulare-chapter-page-card';
@@ -2046,7 +2046,7 @@ Webflow.push(async function () {
     numberEl.textContent = pad2(nr);
     textWrap.appendChild(titleEl);
     textWrap.appendChild(numberEl);
-    // === PROGRESS WRAPPER exact ca în Webflow ===
+    // === PROGRESS WRAPPER exact ca in Webflow ===
     const progressWrapper = document.createElement('div');
     progressWrapper.className = 'progress-wrapper';
     const progContainer = document.createElement('div');
@@ -2135,8 +2135,8 @@ Webflow.push(async function () {
     progContainer.appendChild(barOuter);
     progressWrapper.appendChild(progContainer);
     progressWrapper.appendChild(percentEl);
-    // ✅ IMPORTANT: AICI NU mai facem nicio alertă / redirect.
-    // Doar intrăm în pagina testului, iar "gate"-ul se va face în /teste-examen-chestionare.
+    // ✅ IMPORTANT: AICI NU mai facem nicio alerta / redirect.
+    // Doar intram in pagina testului, iar "gate"-ul se va face in /teste-examen-chestionare.
     const go = () => {
       if (myRun !== renderRunId) return;
       window.location.href = `/teste-examen-chestionare?test=${encodeURIComponent(nr)}`;
@@ -2150,7 +2150,7 @@ Webflow.push(async function () {
     });
     card.appendChild(textWrap);
     card.appendChild(progressWrapper);
-    // animațiile le facem după ce cardul e în DOM (în render), ca să fie consistent
+    // animatiile le facem dupa ce cardul e in DOM (in render), ca sa fie consistent
     card.__spAnim = { barOuter, percentEl, pTotal, pCorrect };
     return card;
   }
@@ -2168,15 +2168,15 @@ Webflow.push(async function () {
       clearDynamicList();
       const db = await waitForFirebase(10000);
       if (!db) {
-        showEmptyMessage('Nu s-au putut încărca chestionarele acum. Încearcă din nou.');
+        showEmptyMessage('Nu s-au putut incarca chestionarele acum. Incearca din nou.');
         showMainUI();
         requestAnimationFrame(hideLoader);
         return;
       }
       const user = await getCurrentUser(3000);
       const gate = getUserGate(user);
-      // ✅ dacă tocmai s-a dat logout, forțăm comportament neautentificat fără refresh
-      // ✅ dacă user e unverified și ai REQUIRE_EMAIL_VERIFIED_FOR_USERDATA, NU citim progresul
+      // ✅ daca tocmai s-a dat logout, fortam comportament neautentificat fara refresh
+      // ✅ daca user e unverified si ai REQUIRE_EMAIL_VERIFIED_FOR_USERDATA, NU citim progresul
       let uid = (!forceLoggedOut && gate.ok) ? user.uid : null;
       // Tests (lista de chestionare)
       let tests = [];
@@ -2185,15 +2185,15 @@ Webflow.push(async function () {
         testsSnap.forEach(doc => tests.push({ id: doc.id, ...doc.data() }));
       } catch (e) {
         if (isPermissionDenied(e)) {
-          showEmptyMessage('Trebuie să fii autentificat pentru a vedea această secțiune.');
+          showEmptyMessage('Trebuie sa fii autentificat pentru a vedea aceasta sectiune.');
         } else {
-          showEmptyMessage('Eroare la încărcarea listei de chestionare.');
+          showEmptyMessage('Eroare la incarcarea listei de chestionare.');
         }
         showMainUI();
         requestAnimationFrame(hideLoader);
         return;
       }
-      // ✅ FIX: dacă nu putem citi user answers (unverified/permisiuni), nu mai crapă pagina
+      // ✅ FIX: daca nu putem citi user answers (unverified/permisiuni), nu mai crapa pagina
       const answersMap = await getUserAnswersMap(db, uid);
       const qCountMap  = await getQuestionsCountMap(db, tests);
       const cardsForAnim = [];
@@ -2248,7 +2248,7 @@ Webflow.push(async function () {
       lastRenderTs = performance.now();
     } catch (err) {
       console.error('[Chestionare] Eroare:', err);
-      showEmptyMessage('A apărut o problemă. Reîncarcă pagina.');
+      showEmptyMessage('A aparut o problema. Reincarca pagina.');
       showMainUI();
       requestAnimationFrame(hideLoader);
     } finally {
@@ -2257,7 +2257,7 @@ Webflow.push(async function () {
   }
   // Prima rulare
   await render(true, 'initial');
-  // ✅ watcher după primul render
+  // ✅ watcher dupa primul render
   startAuthWatcher();
   // Back/forward cache sigur
   const onPageShow = (e) => {

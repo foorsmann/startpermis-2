@@ -145,20 +145,20 @@
   (function () {
     var root = document.documentElement;
     if (root.classList.contains('wf-design-mode')) return;
-    // Ascunde cardul complet până avem o stare reală (logat / delogat / etc.)
+    // Ascunde cardul complet pana avem o stare reala (logat / delogat / etc.)
     root.classList.add('ev-preload');
   })();
 </script>
   <style>
-  /* În preload: cardul e COMPLET ascuns (fără “Se procesează…”) */
+  /* In preload: cardul e COMPLET ascuns (fara “Se proceseaza…”) */
   html:not(.wf-design-mode).ev-preload .email-verification-card{
     display: none !important;
   }
-  /* După preload: cardul revine pe FLEX (chiar dacă e ascuns by default în Webflow) */
+  /* Dupa preload: cardul revine pe FLEX (chiar daca e ascuns by default in Webflow) */
   html:not(.wf-design-mode):not(.ev-preload) .email-verification-card{
     display: flex !important;
   }
-  /* Fade doar când are sens (aparitie + schimbare majoră de stare) */
+  /* Fade doar cand are sens (aparitie + schimbare majora de stare) */
   @keyframes spFadeInFirst {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -173,7 +173,7 @@
   html:not(.wf-design-mode) .email-verification-card.sp-fade-soft{
     animation: spFadeInSoft 170ms ease both;
   }
-  /* Respectă “Reduce motion” */
+  /* Respecta “Reduce motion” */
   @media (prefers-reduced-motion: reduce){
     html:not(.wf-design-mode) .email-verification-card.sp-fade-first,
     html:not(.wf-design-mode) .email-verification-card.sp-fade-soft{

@@ -145,20 +145,20 @@
   (function () {
     var root = document.documentElement;
     if (root.classList.contains('wf-design-mode')) return;
-    // Ascunde card-ul complet până avem o stare finală (succes/eroare)
+    // Ascunde card-ul complet pana avem o stare finala (succes/eroare)
     root.classList.add('ev-preload');
   })();
 </script>
   <style>
-  /* În preload: card-ul e COMPLET ascuns */
+  /* In preload: card-ul e COMPLET ascuns */
   html:not(.wf-design-mode).ev-preload .email-validation-card{
     display: none !important;
   }
-  /* După preload: card-ul revine pe FLEX */
+  /* Dupa preload: card-ul revine pe FLEX */
   html:not(.wf-design-mode):not(.ev-preload) .email-validation-card{
     display: flex !important;
   }
-  /* Fade doar la apariția cardului (fără “Se procesează…”) */
+  /* Fade doar la aparitia cardului (fara “Se proceseaza…”) */
   @keyframes spFadeInFirst {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -173,7 +173,7 @@
   html:not(.wf-design-mode) .email-validation-card.sp-fade-soft{
     animation: spFadeInSoft 170ms ease both;
   }
-  /* Respectă “Reduce motion” */
+  /* Respecta “Reduce motion” */
   @media (prefers-reduced-motion: reduce){
     html:not(.wf-design-mode) .email-validation-card.sp-fade-first,
     html:not(.wf-design-mode) .email-validation-card.sp-fade-soft{

@@ -145,9 +145,9 @@
 <body class="body-16">
   <div class="top-btn-wrapper">
     <div class="top-btn"></div>
-    <div class="top-btn-code w-embed w-script"><!--  Pune asta în elementul Embed: .top-btn-code  -->
+    <div class="top-btn-code w-embed w-script"><!--  Pune asta in elementul Embed: .top-btn-code  -->
       <style>
-  /* Ascundem butonul când nu e "is-visible" */
+  /* Ascundem butonul cand nu e "is-visible" */
   .top-btn{
     opacity:0;
     pointer-events:none;
@@ -163,7 +163,7 @@
       <script>
 (function () {
   var btn = document.querySelector('.top-btn');
-  if (!btn) return;   // dacă pe o pagină nu există, nu face nimic
+  if (!btn) return;   // daca pe o pagina nu exista, nu face nimic
   // A11y & fallback-uri
   btn.setAttribute('role', 'button');
   if (!btn.getAttribute('aria-label')) {
@@ -180,7 +180,7 @@
   }
   function scrolledPastFirstViewport() {
     var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    // 0.98 pentru a evita “clipirea” la limită
+    // 0.98 pentru a evita “clipirea” la limita
     return y > vvh() * 0.98;
   }
   function setVisible(yes) {
@@ -190,11 +190,11 @@
       if (!btn.classList.contains('is-visible')) {
         btn.classList.add('is-visible');
       }
-      // readmis în tab-order + vizibil pentru AT
+      // readmis in tab-order + vizibil pentru AT
       btn.setAttribute('tabindex', '0');
       btn.removeAttribute('aria-hidden');
     } else {
-      // dacă butonul (sau un copil) are focus, îl pierdem înainte de aria-hidden
+      // daca butonul (sau un copil) are focus, il pierdem inainte de aria-hidden
       if (hasFocusInside) {
         try { ae.blur(); } catch (e) {}
       }
@@ -206,7 +206,7 @@
       btn.setAttribute('aria-hidden', 'true');
     }
   }
-  // Inițializare la load
+  // Initializare la load
   setVisible(scrolledPastFirstViewport());
   // Scroll/resize cu rAF (performant)
   var ticking = false;

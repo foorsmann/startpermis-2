@@ -142,10 +142,10 @@
   label { margin-bottom: 0px !important; }
 </style><!--  ====== AUTOTEST: FIXURI + A11Y + SANITIZARE (deasupra scriptului principal) ======  -->
   <style>
-  /* Fallback discret pentru feedback creat dinamic (nu afectează layout-ul mobil) */
+  /* Fallback discret pentru feedback creat dinamic (nu afecteaza layout-ul mobil) */
   .feedback-wrapper{display:none;gap:8px;align-items:center}
   .feedback-wrapper .correct-answer-static{opacity:.85}
-  /* Focus vizibil la tastatură pe elemente non-<button> pe care le accesibilizăm */
+  /* Focus vizibil la tastatura pe elemente non-<button> pe care le accesibilizam */
   .explanation-btn[role="button"]:focus,
   .explanation-btn-mobile[role="button"]:focus,
   .ask-ai-btn[role="button"]:focus,
@@ -154,7 +154,7 @@
     outline:2px solid #7aa2ff; outline-offset:2px;
   }
 </style>
-  <!--  ====== AUTOTEST: STILURI & SCRIPT PRINCIPAL (versiunea ta + modificări integrate) ======  -->
+  <!--  ====== AUTOTEST: STILURI & SCRIPT PRINCIPAL (versiunea ta + modificari integrate) ======  -->
   <style>
 body.page-loading .question-section{display:none!important}
 .plyr__poster{pointer-events:none!important}
@@ -184,7 +184,7 @@ body.page-loading .question-section{display:none!important}
 .submit-next-buttons.single-btn-state .explanation-btn,.submit-next-buttons.single-btn-state .ask-ai-btn{opacity:0;pointer-events:none}
 .submit-next-buttons .submit-btn{grid-column:2/3;width:100%;justify-self:stretch}
 .submit-next-buttons.single-btn-state .submit-btn{grid-column:1/2!important}
-/* IMPORTANT: pe mobil lăsăm Webflow să controleze layout-ul .submit-next-buttons-mobile */
+/* IMPORTANT: pe mobil lasam Webflow sa controleze layout-ul .submit-next-buttons-mobile */
 @media (max-width:530px){
   .submit-next-buttons{display:none}
   .submit-next-buttons-mobile{display:grid}
@@ -404,13 +404,13 @@ body.page-loading .question-section{display:none!important}
           <div class="cube_item cube_x"></div>
         </div>
         <style>
-  /* Părintele din Webflow care conține acest Code Embed */
+  /* Parintele din Webflow care contine acest Code Embed */
   .loader-code-block {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;   /* centru pe verticală */
-    justify-content: center; /* centru pe orizontală */
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
   }
   .cube {
     height: 80px;
@@ -423,9 +423,9 @@ body.page-loading .question-section{display:none!important}
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    /* stare inițială identică cu 0% din animație → nu mai sare prima dată */
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
     transform: scale(0.8);
-    /* transition nu mai afectează transform, doar culoarea */
+    /* transition nu mai afecteaza transform, doar culoarea */
     transition: background-color 0.2s ease-in;
   }
   .cube_x {
@@ -475,20 +475,20 @@ body.page-loading .question-section{display:none!important}
   function safeTextHTML(raw){ const d=document.createElement('div'); d.textContent=String(raw==null?'':raw); return d.innerHTML; }
   document.addEventListener('DOMContentLoaded',function(){
     const root=document.querySelector('.question-section')||document;
-    // 1) Asigurăm feedback minim ca să nu pice hidratarea
+    // 1) Asiguram feedback minim ca sa nu pice hidratarea
     (function ensureFeedback(){
       let wrap=root.querySelector('.feedback-wrapper, .answer-feedback, .result-feedback');
       if(!wrap){
         const host=root.querySelector('.question-wrapper, .question-item, .question')||root;
         wrap=document.createElement('div'); wrap.className='feedback-wrapper';
-        const s=document.createElement('div'); s.className='correct-answer-static'; s.textContent='Răspunsul corect este:';
+        const s=document.createElement('div'); s.className='correct-answer-static'; s.textContent='Raspunsul corect este:';
         const a=document.createElement('div'); a.className='correct-answer';
         wrap.appendChild(s); wrap.appendChild(a);
         const anchor=root.querySelector('.explanation-anchor, .explain-anchor');
         if(anchor&&anchor.parentElement) anchor.parentElement.appendChild(wrap);
         else host.appendChild(wrap);
       }else{
-        if(!wrap.querySelector('.correct-answer-static')){ const s=document.createElement('div'); s.className='correct-answer-static'; s.textContent='Răspunsul corect este:'; wrap.appendChild(s); }
+        if(!wrap.querySelector('.correct-answer-static')){ const s=document.createElement('div'); s.className='correct-answer-static'; s.textContent='Raspunsul corect este:'; wrap.appendChild(s); }
         if(!wrap.querySelector('.correct-answer')){ const a=document.createElement('div'); a.className='correct-answer'; wrap.appendChild(a); }
       }
     })();
@@ -506,7 +506,7 @@ body.page-loading .question-section{display:none!important}
           el.setAttribute('role','button');
           el.setAttribute('tabindex','0');
           if(!el.getAttribute('aria-label')&&!el.textContent.trim()){
-            if(el.className.includes('explain')) el.setAttribute('aria-label','Explicație');
+            if(el.className.includes('explain')) el.setAttribute('aria-label','Explicatie');
             else if(el.className.includes('ai')) el.setAttribute('aria-label','AI Chat');
             else el.setAttribute('aria-label','Buton');
           }
@@ -530,7 +530,7 @@ body.page-loading .question-section{display:none!important}
       mo.observe(acc,{attributes:true,attributeFilter:['class']});
       header.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); header.click(); }});
     })();
-    // 4) Sanitizare „din afară”: interceptăm doar inserările în zonele de Q/A/Explanation
+    // 4) Sanitizare „din afara”: interceptam doar inserarile in zonele de Q/A/Explanation
     (function patchInsertAdjacentHTML(){
       const orig=Element.prototype.insertAdjacentHTML;
       const SANITIZE_SEL='.question-text, .question-title, .question_richtext, .option-item, .option-item-exam, [data-option-item], .custom-accordion-body, .accordion-body';
@@ -539,7 +539,7 @@ body.page-loading .question-section{display:none!important}
         return orig.call(this,position,html);
       };
     })();
-    // 5) Aliasuri tolerante (inofensive dacă structura e deja corectă)
+    // 5) Aliasuri tolerante (inofensive daca structura e deja corecta)
     (function aliases(){
       const aliasMap=[
         ['.option-card-exam','option-card'],
@@ -571,7 +571,7 @@ body.page-loading .question-section{display:none!important}
   s.src   = src;
   s.defer = true;
   s.crossOrigin = "anonymous";
-  // fallback opțional (ex: jsDelivr/GitHub) dacă primul CDN nu se încarcă
+  // fallback optional (ex: jsDelivr/GitHub) daca primul CDN nu se incarca
   s.onerror = function(){
     var b = document.createElement("script");
     b.defer = true;
@@ -582,6 +582,6 @@ body.page-loading .question-section{display:none!important}
   document.body.appendChild(s);
 })();
 </script>
-  <noscript>Activează JavaScript pentru a rula lecția.</noscript>
+  <noscript>Activeaza JavaScript pentru a rula lectia.</noscript>
 </body>
 </html>

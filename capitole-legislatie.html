@@ -152,9 +152,9 @@
 .chapter-final-screen .chapter-progress-percent{display:none!important}
 .chapter-final-screen .progress-counter-final{display:inline-flex;align-items:center;gap:.25rem}
 .chapter-final-screen .progress-counter-final .exam-final-percent{display:inline-block;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
-/* ——— Border radius adăugat ——— */
+/* ——— Border radius adaugat ——— */
 .lesson-section,.chapter-final-screen{border-radius:3px}
-/* ——— NEW: pressed feedback (fără să strice nimic) ——— */
+/* ——— NEW: pressed feedback (fara sa strice nimic) ——— */
 .custom-accordion-header{touch-action:manipulation}
 .custom-accordion-header,.custom-accordion-content{
   transform:translateZ(0);
@@ -239,13 +239,13 @@
           <div class="cube_item cube_x"></div>
         </div>
         <style>
-  /* Părintele din Webflow care conține acest Code Embed */
+  /* Parintele din Webflow care contine acest Code Embed */
   .loader-code-block {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;   /* centru pe verticală */
-    justify-content: center; /* centru pe orizontală */
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
   }
   .cube {
     height: 80px;
@@ -258,9 +258,9 @@
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    /* stare inițială identică cu 0% din animație → nu mai sare prima dată */
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
     transform: scale(0.8);
-    /* transition nu mai afectează transform, doar culoarea */
+    /* transition nu mai afecteaza transform, doar culoarea */
     transition: background-color 0.2s ease-in;
   }
   .cube_x {
@@ -320,10 +320,10 @@ Webflow.push(async function(){'use strict';
   if(!chapterId){alert('Capitolul nu a fost specificat.');return;}
   const db=window.db||firebase.firestore();
   const user=firebase.auth().currentUser||await new Promise(res=>firebase.auth().onAuthStateChanged(res));
-  if(!user){alert('Trebuie să fii autentificat.');window.location.href='/login';return;}
+  if(!user){alert('Trebuie sa fii autentificat.');window.location.href='/login';return;}
 if (window.installSingleActiveLock) {
   window.installSingleActiveLock({
-    lockKey: "legislatie:" + String(chapterId), // unică per capitol
+    lockKey: "legislatie:" + String(chapterId), // unica per capitol
     redirectUrl: "https://webarcs-ultra-awesome-site.webflow.io/codul-rutier"
   });
 }
@@ -338,14 +338,14 @@ if (window.installSingleActiveLock) {
   const prevBtn=document.querySelector('.prev-btn');
   const loader=document.querySelector('.lesson-loader');
   const finalScreen=document.querySelector('.chapter-final-screen');
-  const backBtn=document.querySelector('close-btn'); // (nefolosit, păstrat)
+  const backBtn=document.querySelector('close-btn'); // (nefolosit, pastrat)
   // Final/progress din FINAL SCREEN
   const chapterElFinal=document.querySelector('.chapter-text-final');
   const counterElFinal=document.querySelector('.progress-counter-final');
   const barOuterFinal=document.querySelector('.chapter-final-screen .chapter-progress-bar-outer');
   const barGreenFinal=document.querySelector('.chapter-final-screen .progress-green');
   const chapterProgressContainerFinal=document.querySelector('.chapter-final-screen .chapter-progress-container');
-  // ——— Asigurăm <span class="exam-final-percent"> ca și copil în .progress-counter-final ———
+  // ——— Asiguram <span class="exam-final-percent"> ca si copil in .progress-counter-final ———
   let percentElFinal=null;
   function ensureFinalPercentEl(){
     if(!counterElFinal) return null;
@@ -397,7 +397,7 @@ if (window.installSingleActiveLock) {
   /* ================== UI helpers ================== */
   function setChapterProgressUI(title,progress){
     if(chapterEl) chapterEl.textContent=title;
-    if(counterEl) counterEl.textContent=progress; // doar pe ecranul de lecție
+    if(counterEl) counterEl.textContent=progress; // doar pe ecranul de lectie
     if(chapterElFinal) chapterElFinal.textContent=title;
   }
   function cleanVideoWrapper(){
@@ -424,10 +424,10 @@ if (window.installSingleActiveLock) {
     header.addEventListener('pointerup',rm,{passive:true});
     header.addEventListener('pointercancel',rm,{passive:true});
     header.addEventListener('pointerleave',rm,{passive:true});
-    // accesibilitate: tastatură
+    // accesibilitate: tastatura
     header.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter') add();});
     header.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter') rm();});
-    // safety: eliberează cu mic delay după click (tap)
+    // safety: elibereaza cu mic delay dupa click (tap)
     header.addEventListener('click',()=>{setTimeout(rm,90)},{passive:true});
     header.dataset.pressBound='1';
   }
@@ -445,10 +445,10 @@ if (window.installSingleActiveLock) {
       const content=accordion.querySelector('.custom-accordion-content');
       const arrow=accordion.querySelector('.custom-accordion-arrow');
       if(!header||!content||!arrow) return;
-      // ——— NEW: legăm feedback-ul „pressed” pe header + content ———
+      // ——— NEW: legam feedback-ul „pressed” pe header + content ———
       bindPressFeedback(header,content);
       header.onclick=function(e){
-        e.stopPropagation(); // păstrat, NU schimbăm logica existentă
+        e.stopPropagation(); // pastrat, NU schimbam logica existenta
         vibroLight();
         const isOpen=accordion.classList.toggle('open');
         if(isOpen){
@@ -476,7 +476,7 @@ if (window.installSingleActiveLock) {
       });
     },{capture:true});
   }
-  /* ================== Auto-pause video în viewport ================== */
+  /* ================== Auto-pause video in viewport ================== */
   function initLegislateVideoViewportAutoPause(){
     const lessonContent=document.querySelector('.lesson-content');
     if(!lessonContent||!videoWrapper) return;
@@ -502,7 +502,7 @@ if (window.installSingleActiveLock) {
     observeVideos();
     window.__observeLegislateVideos=observeVideos;
   }
-  /* ================== RENDER fallback (fără pagini) ================== */
+  /* ================== RENDER fallback (fara pagini) ================== */
   function renderNoPages(){
     section.classList.remove('visible');
     setChapterProgressUI('','--/--');
@@ -529,7 +529,7 @@ if (window.installSingleActiveLock) {
     const idx=chapters.findIndex(c=>c.id===chapterId);
     return (idx===chapters.length-1);
   }
-  /* ================== Animare bară + procent FINAL ================== */
+  /* ================== Animare bara + procent FINAL ================== */
   function animateChapterProgressBar(barOuter,barGreen,percentEl,percentDone,duration=900){
     if(!barOuter||!barGreen||!percentEl) return;
     barGreen.style.display="block";
@@ -592,7 +592,7 @@ if (window.installSingleActiveLock) {
     }
     const progressText=`${pad2(ptr+1)}/${pad2(pagesIndexes.length)}`;
     setChapterProgressUI(chapterTitle||'',progressText);
-    titleEl.textContent=page.question||'(fără titlu)';
+    titleEl.textContent=page.question||'(fara titlu)';
     cleanVideoWrapper();
     let videoSet=false;
     if(page.video&&page.video.trim().length>5){
@@ -667,13 +667,13 @@ if (window.installSingleActiveLock) {
           body.innerHTML = sanitizeHTML(page.content);
         }
       }
-      initLegislateCustomAccordions();  // <- re-leagă și efectul .is-pressed
+      initLegislateCustomAccordions();  // <- re-leaga si efectul .is-pressed
       hideLoader();
       if(window.__observeLegislateVideos) window.__observeLegislateVideos();
       section.classList.add('visible');
       section.style.setProperty('display','flex','important');
     },10);
-    // Preload următoarea pagină în buffer
+    // Preload urmatoarea pagina in buffer
     const nextPtr=ptr+1;
     if(nextPtr<pagesIndexes.length){
       const nextIdx=pagesIndexes[nextPtr];
@@ -707,7 +707,7 @@ if (window.installSingleActiveLock) {
       finalScreen.style.display='flex';
       window._chapterFinalized=true;
       saveUserProgress('done');
-      // procent & bară pe FINAL din date locale
+      // procent & bara pe FINAL din date locale
       showChapterProgressFinalLocal({done:true,pagePointer:pagesIndexes.length-1});
     }
   }
@@ -747,7 +747,7 @@ if (window.installSingleActiveLock) {
       section.style.display='none';
       finalScreen.style.display='flex';
       hideLoader();
-      // procent & bară pe FINAL calculat local
+      // procent & bara pe FINAL calculat local
       showChapterProgressFinalLocal({done:true,pagePointer:pagesIndexes.length-1});
     }else{
       window._chapterFinalized=false;
@@ -778,14 +778,14 @@ if (window.installSingleActiveLock) {
         await db.collection('users').doc(user.uid).collection('progress_legislatie').doc(chapterId).delete();
         window.location.reload();
       }catch(e){
-        alert("Eroare la resetarea progresului. Încearcă din nou.");
+        alert("Eroare la resetarea progresului. Incearca din nou.");
         alertWrapper.style.display='none';
         finalScreen.style.display='flex';
       }
     };
   }
 }); // final Webflow.push
-// Forțăm ieșirea la /legislatie pe back
+// Fortam iesirea la /legislatie pe back
 window.addEventListener('popstate',function(){window.location.href='/legislatie';});
 </script>
 </body>

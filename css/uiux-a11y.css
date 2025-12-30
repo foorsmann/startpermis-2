@@ -49,8 +49,14 @@ html[data-theme="light"] .skip-link {
    ========================================================================== */
 
 .sp-breadcrumb {
-  padding: 12px 0;
-  margin-bottom: 16px;
+  padding: 12px 24px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 767px) {
+  .sp-breadcrumb {
+    padding: 12px 16px;
+  }
 }
 
 .sp-breadcrumb__list {

@@ -4045,7 +4045,7 @@ img {
   z-index: 1;
   opacity: .07;
   filter: contrast(200%);
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   flex-flow: column;
@@ -6260,7 +6260,7 @@ img {
 .icons-background {
   background-color: var(--dark-theme--active-black);
   opacity: .01;
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 800px;
@@ -6386,7 +6386,7 @@ img {
 .background-pattern {
   z-index: 10;
   filter: none;
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: auto 50vh;
@@ -6609,7 +6609,7 @@ img {
 .title-background {
   opacity: .05;
   filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 500px;
@@ -6731,7 +6731,7 @@ img {
   opacity: .7;
   filter: contrast(200%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-repeat: repeat;
   background-size: auto;
   background-attachment: scroll;
@@ -7492,7 +7492,7 @@ img {
 .email-verification-background {
   z-index: 1;
   opacity: .25;
-  background-image: url('../images/email-verification-background.png');
+  background-image: url('../images/email-verification-background.webp');
   background-position: 50%;
   background-size: 600px;
   position: absolute;
@@ -7503,7 +7503,7 @@ img {
   z-index: 1;
   opacity: .28;
   filter: none;
-  background-image: url('../images/reset-password-background.png');
+  background-image: url('../images/reset-password-background.webp');
   background-position: 50%;
   background-size: 700px;
   position: absolute;
@@ -7559,7 +7559,7 @@ img {
   opacity: .53;
   filter: contrast(105%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   width: 100%;
@@ -7649,7 +7649,7 @@ img {
   opacity: .53;
   filter: contrast(105%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   width: 100%;
@@ -7672,7 +7672,7 @@ img {
 .title-background-v2 {
   opacity: .05;
   filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 700px;
@@ -7684,7 +7684,7 @@ img {
 .title-background-v3 {
   opacity: .05;
   filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 500px;
@@ -7697,7 +7697,7 @@ img {
   opacity: .53;
   filter: contrast(105%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   width: 100%;
@@ -7719,7 +7719,7 @@ img {
 .title-background-v2-copy {
   opacity: .05;
   filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 700px;
@@ -7733,7 +7733,7 @@ img {
   opacity: .53;
   filter: contrast(105%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   width: 100%;
@@ -8150,7 +8150,7 @@ img {
   z-index: 0;
   opacity: .05;
   filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: 700px;
@@ -8163,7 +8163,7 @@ img {
   opacity: .09;
   filter: contrast(105%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-position: 50%;
   background-size: 100px;
   width: 100%;
@@ -8271,7 +8271,7 @@ img {
 .background-pattern-settings {
   z-index: 10;
   filter: none;
-  background-image: url('../images/Background-cu-elemente-ss.png');
+  background-image: url('../images/Background-cu-elemente-ss.webp');
   background-position: 50%;
   background-repeat: repeat;
   background-size: auto 50vh;
@@ -8286,7 +8286,7 @@ img {
   opacity: .7;
   filter: contrast(200%);
   pointer-events: none;
-  background-image: url('../images/grraa.png');
+  background-image: url('../images/grraa.webp');
   background-repeat: repeat;
   background-size: auto;
   background-attachment: scroll;

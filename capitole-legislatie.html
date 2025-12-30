@@ -643,7 +643,29 @@ if (window.installSingleActiveLock) {
       const accordion=document.querySelector('.legislatie-custom-accordion');
       if(accordion){
         const body=accordion.querySelector('.custom-accordion-body');
-        if(body) body.innerHTML=page.content||'';
+        if(body) {
+          // SECURITY FIX: Sanitize HTML content before inserting into DOM
+          // This prevents XSS attacks from malicious content in Firestore
+          const sanitizeHTML = (html) => {
+            const div = document.createElement('div');
+            div.textContent = html || '';
+            // For trusted admin content, we parse and rebuild safe HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = html || '';
+            // Remove potentially dangerous elements
+            temp.querySelectorAll('script, iframe, object, embed, form, input, button, style, link, meta, base').forEach(el => el.remove());
+            // Remove dangerous attributes
+            temp.querySelectorAll('*').forEach(el => {
+              [...el.attributes].forEach(attr => {
+                if (attr.name.startsWith('on') || attr.name === 'href' && attr.value.startsWith('javascript:') || attr.name === 'src' && attr.value.startsWith('javascript:')) {
+                  el.removeAttribute(attr.name);
+                }
+              });
+            });
+            return temp.innerHTML;
+          };
+          body.innerHTML = sanitizeHTML(page.content);
+        }
       }
       initLegislateCustomAccordions();  // <- re-leagă și efectul .is-pressed
       hideLoader();

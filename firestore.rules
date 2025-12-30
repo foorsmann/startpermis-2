@@ -11,11 +11,19 @@ service cloud.firestore {
       return isSignedIn() && request.auth.token.email_verified == true;
     }
 
+    // SECURITY: Admin check using Custom Claims (preferred) with email fallback
+    // To set admin claims, use Firebase Admin SDK:
+    // admin.auth().setCustomUserClaims(uid, { admin: true })
     function isAdmin() {
       return isEmailVerified()
-        && (request.auth.token.email in [
-          "webarcdesign.ro@gmail.com"
-        ]);
+        && (
+          // Primary: Check for admin custom claim
+          (request.auth.token.admin == true)
+          // Fallback: Allow specific email (remove after migrating to Custom Claims)
+          || (request.auth.token.email in [
+            "webarcdesign.ro@gmail.com"
+          ])
+        );
     }
 
     function isOwner(uid) {

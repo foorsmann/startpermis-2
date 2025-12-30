@@ -87,8 +87,11 @@
     });
   }
 
+  // Store unsubscribe function to prevent memory leaks
+  var unsubscribeAuth = null;
+
   waitForAuth(8000).then(function(auth) {
-    auth.onAuthStateChanged(function(user) {
+    unsubscribeAuth = auth.onAuthStateChanged(function(user) {
       clearTimeout(failSafe);
 
       // Anonymous -> allow page, save snapshot
@@ -119,5 +122,13 @@
   }).catch(function() {
     clearTimeout(failSafe);
     showPage();
+  });
+
+  // Cleanup on page unload to prevent memory leaks
+  window.addEventListener('pagehide', function() {
+    if (typeof unsubscribeAuth === 'function') {
+      unsubscribeAuth();
+      unsubscribeAuth = null;
+    }
   });
 })();

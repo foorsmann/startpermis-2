@@ -57,6 +57,13 @@
       var key = sanitizeKey(lockKey);
       var lockRef = db.ref("chapterLocks").child(user.uid).child(key);
 
+      // Track event handlers for cleanup to prevent memory leaks
+      var eventHandlers = {
+        visibilitychange: null,
+        focus: null,
+        pagehide: null
+      };
+
       function claim() {
         try {
           lockRef.set({
@@ -78,6 +85,23 @@
         }, redirectDelayMs);
       }
 
+      // Cleanup function to remove all listeners
+      function cleanup() {
+        try {
+          // Remove Firebase RTDB listener
+          lockRef.off("value");
+          lockRef.remove();
+        } catch(_) {}
+
+        // Remove DOM event listeners
+        if (eventHandlers.visibilitychange) {
+          document.removeEventListener("visibilitychange", eventHandlers.visibilitychange);
+        }
+        if (eventHandlers.focus) {
+          window.removeEventListener("focus", eventHandlers.focus);
+        }
+      }
+
       lockRef.on("value", function(snap) {
         var v = snap.val();
         if (!v) {
@@ -87,12 +111,21 @@
         if (v.sessionId !== SID) kick();
       });
 
-      document.addEventListener("visibilitychange", function() {
+      eventHandlers.visibilitychange = function() {
         if (!document.hidden) claim();
-      }, { passive: true });
+      };
+      document.addEventListener("visibilitychange", eventHandlers.visibilitychange, { passive: true });
 
-      window.addEventListener("focus", claim, { passive: true });
+      eventHandlers.focus = claim;
+      window.addEventListener("focus", eventHandlers.focus, { passive: true });
 
+      // Use pagehide instead of beforeunload for better cleanup
+      eventHandlers.pagehide = function() {
+        cleanup();
+      };
+      window.addEventListener("pagehide", eventHandlers.pagehide);
+
+      // Also handle beforeunload for older browsers
       window.addEventListener("beforeunload", function() {
         try {
           lockRef.remove();

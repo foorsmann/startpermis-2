@@ -140,25 +140,25 @@
     color: var(--light-theme--red-color);
   }
   label { margin-bottom: 0px !important; }
-</style><!--  ✅ RESETARE PAROLĂ — FADE GATE (HEAD)  -->
+</style><!--  ✅ RESETARE PAROLA — FADE GATE (HEAD)  -->
   <script>
   (function () {
     var root = document.documentElement;
     if (root.classList.contains('wf-design-mode')) return;
-    // Ascunde card-ul complet până avem o stare finală
+    // Ascunde card-ul complet pana avem o stare finala
     root.classList.add('ev-preload');
   })();
 </script>
   <style>
-  /* În preload: card-ul e COMPLET ascuns */
+  /* In preload: card-ul e COMPLET ascuns */
   html:not(.wf-design-mode).ev-preload .password-reset-card{
     display: none !important;
   }
-  /* După preload: card-ul revine pe FLEX */
+  /* Dupa preload: card-ul revine pe FLEX */
   html:not(.wf-design-mode):not(.ev-preload) .password-reset-card{
     display: flex !important;
   }
-  /* Fade doar când are sens (aparitie + schimbare majoră) */
+  /* Fade doar cand are sens (aparitie + schimbare majora) */
   @keyframes spFadeInFirst {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -173,7 +173,7 @@
   html:not(.wf-design-mode) .password-reset-card.sp-fade-soft{
     animation: spFadeInSoft 170ms ease both;
   }
-  /* Respectă “Reduce motion” */
+  /* Respecta “Reduce motion” */
   @media (prefers-reduced-motion: reduce){
     html:not(.wf-design-mode) .password-reset-card.sp-fade-first,
     html:not(.wf-design-mode) .password-reset-card.sp-fade-soft{

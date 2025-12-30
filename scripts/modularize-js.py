@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Script pentru modularizarea JavaScript-ului din fișierele HTML.
-Înlocuiește scripturile inline cu referințe externe.
+Script pentru modularizarea JavaScript-ului din fisierele HTML.
+Inlocuieste scripturile inline cu referinte externe.
 """
 
 import os
@@ -17,7 +17,7 @@ PATTERNS = {
     },
     'firebase_config': {
         'start': r'<script>\s*\n?\s*const firebaseConfig\s*=\s*\{',
-        'end': r'console\.log\(["\']Firebase\s+inițializat:["\'].*?\);\s*</script>',
+        'end': r'console\.log\(["\']Firebase\s+initializat:["\'].*?\);\s*</script>',
         'replacement': '<!-- Firebase Configuration -->\n  <script src="js/firebase-config.js"></script>'
     },
     'auth_guard_footer': {
@@ -38,7 +38,7 @@ PATTERNS = {
 }
 
 def process_file(filepath):
-    """Procesează un singur fișier HTML."""
+    """Proceseaza un singur fisier HTML."""
     print(f"Processing: {filepath}")
 
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -47,18 +47,18 @@ def process_file(filepath):
     original_content = content
     replacements_made = []
 
-    # Procesăm fiecare pattern
+    # Procesam fiecare pattern
     for name, pattern in PATTERNS.items():
         # Construim regex-ul complet
         full_pattern = f"({pattern['start']})(.*?)({pattern['end']})"
 
         match = re.search(full_pattern, content, re.DOTALL)
         if match:
-            # Înlocuim întregul match cu replacement-ul
+            # Inlocuim intregul match cu replacement-ul
             content = re.sub(full_pattern, pattern['replacement'], content, count=1, flags=re.DOTALL)
             replacements_made.append(name)
 
-    # Salvăm doar dacă am făcut modificări
+    # Salvam doar daca am facut modificari
     if content != original_content:
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(content)
@@ -69,8 +69,8 @@ def process_file(filepath):
         return 0
 
 def main():
-    """Funcția principală."""
-    # Găsim toate fișierele HTML
+    """Functia principala."""
+    # Gasim toate fisierele HTML
     html_files = glob.glob('*.html')
 
     total_replacements = 0

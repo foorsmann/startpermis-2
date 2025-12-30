@@ -1,4 +1,4 @@
-# RAPORT COMPLET DE ANALIZĂ - START PERMIS
+# RAPORT COMPLET DE ANALIZA - START PERMIS
 
 **Data Analizei:** 30 Decembrie 2025
 **Versiune:** 1.0
@@ -7,27 +7,27 @@
 
 ## 1. EXECUTIVE SUMMARY
 
-**Proiectul Start Permis** este o platformă educațională pentru obținerea permisului auto, migrată de pe Webflow la Firebase Hosting. Analiza completă a identificat o **fundație solidă** cu autentificare Firebase, reguli de securitate bine structurate și funcționalități core funcționale.
+**Proiectul Start Permis** este o platforma educationala pentru obtinerea permisului auto, migrata de pe Webflow la Firebase Hosting. Analiza completa a identificat o **fundatie solida** cu autentificare Firebase, reguli de securitate bine structurate si functionalitati core functionale.
 
-**Status General:** Proiectul este **~85% production-ready**, cu câteva probleme critice de securitate și optimizare care necesită atenție imediată.
+**Status General:** Proiectul este **~85% production-ready**, cu cateva probleme critice de securitate si optimizare care necesita atentie imediata.
 
 **Puncte Forte:**
-- Autentificare completă (signup, login, Google OAuth, email verification, password reset)
-- Reguli Firestore/Storage bine structurate cu validare strictă
+- Autentificare completa (signup, login, Google OAuth, email verification, password reset)
+- Reguli Firestore/Storage bine structurate cu validare stricta
 - App Check cu reCAPTCHA v3 implementat corect
-- Theme switching (dark/light) funcțional
+- Theme switching (dark/light) functional
 - Single-tab lock pentru prevenirea accesului simultan
 
 **Probleme Critice Identificate:**
-1. **XSS Vulnerability** în `capitole-legislatie.html` - `innerHTML` cu date din Firestore
-2. **~1,300 linii de JavaScript inline** în login.html și sign-up.html care necesită modularizare
-3. **CSP cu `unsafe-inline`** care reduce protecția XSS
-4. **Admin email hardcodat** în toate rules files
-5. **Memory leaks** potențiale din event listeners neîndepărtate
+1. **XSS Vulnerability** in `capitole-legislatie.html` - `innerHTML` cu date din Firestore
+2. **~1,300 linii de JavaScript inline** in login.html si sign-up.html care necesita modularizare
+3. **CSP cu `unsafe-inline`** care reduce protectia XSS
+4. **Admin email hardcodat** in toate rules files
+5. **Memory leaks** potentiale din event listeners neindepartate
 
 ---
 
-## 2. STRUCTURĂ PROIECT
+## 2. STRUCTURA PROIECT
 
 | Categorie | Count | Dimensiune |
 |-----------|-------|------------|
@@ -38,11 +38,11 @@
 | Imagini | 59 | 7.3 MB |
 | Fonturi | 11 | 1.7 MB |
 
-### Structura Arborescentă
+### Structura Arborescenta
 
 ```
 /home/user/startpermis-2/
-├── Fișiere de Configurare (rădăcină)
+├── Fisiere de Configurare (radacina)
 │   ├── .firebaserc
 │   ├── firebase.json
 │   ├── database.rules.json
@@ -52,11 +52,11 @@
 │   ├── package.json
 │   └── .env.example
 │
-├── Pagini HTML (23 fișiere)
+├── Pagini HTML (23 fisiere)
 │   ├── index.html - Homepage
 │   ├── login.html, sign-up.html - Autentificare
 │   ├── mediu-invatare.html - Learning environment
-│   ├── teste-*.html - Teste și chestionare
+│   ├── teste-*.html - Teste si chestionare
 │   └── ... (alte pagini)
 │
 ├── css/ (335 KB)
@@ -73,29 +73,29 @@
 │   ├── single-active-lock.js
 │   └── webflow.js, plyr.min.js (externe)
 │
-├── images/ (7.3 MB - 59 fișiere)
-├── fonts/ (1.7 MB - 11 fișiere)
-├── documents/ (421 KB - animații Lottie)
-└── .github/workflows/ (3 fișiere CI/CD)
+├── images/ (7.3 MB - 59 fisiere)
+├── fonts/ (1.7 MB - 11 fisiere)
+├── documents/ (421 KB - animatii Lottie)
+└── .github/workflows/ (3 fisiere CI/CD)
 ```
 
-### Fișiere Nefolosite Identificate
-- `old-home.html` - pagină orfană (546 linii)
+### Fisiere Nefolosite Identificate
+- `old-home.html` - pagina orfana (546 linii)
 - 22 imagini nefolosite (~37% din total)
-- Google Fonts încărcate dar nefolosite (Kanit, Montserrat, Inter)
+- Google Fonts incarcate dar nefolosite (Kanit, Montserrat, Inter)
 
 ---
 
 ## 3. CONFIGURARE FIREBASE
 
-| Fișier | Status | Probleme |
+| Fisier | Status | Probleme |
 |--------|--------|----------|
-| firebase.json | ⚠️ | CSP cu `unsafe-inline`, localhost în production |
+| firebase.json | ⚠️ | CSP cu `unsafe-inline`, localhost in production |
 | .firebaserc | ✅ | OK - project ID corect (`scaoalauto`) |
 | firestore.rules | ⚠️ | Admin email hardcodat |
 | database.rules.json | ⚠️ | Future timestamps permitite |
 | storage.rules | ⚠️ | Admin email hardcodat |
-| firestore.indexes.json | ⚠️ | Doar 1 index, lipsă TTL |
+| firestore.indexes.json | ⚠️ | Doar 1 index, lipsa TTL |
 
 ### Security Headers (firebase.json)
 - ✅ Strict-Transport-Security (HSTS)
@@ -107,9 +107,9 @@
 
 ## 4. JAVASCRIPT & MODULARIZARE
 
-| Fișier | Linii | Status | Probleme |
+| Fisier | Linii | Status | Probleme |
 |--------|-------|--------|----------|
-| firebase-config.js | 157 | ⚠️ | 15 console.log în producție |
+| firebase-config.js | 157 | ⚠️ | 15 console.log in productie |
 | auth-guard-head.js | 92 | ✅ | OK |
 | auth-guard-footer.js | 123 | ⚠️ | Memory leak |
 | single-active-lock.js | 108 | ⚠️ | Memory leak |
@@ -123,9 +123,9 @@
 
 ## 5. SECURITATE
 
-### Vulnerabilități Identificate
+### Vulnerabilitati Identificate
 
-| Vulnerabilitate | Severity | Locație |
+| Vulnerabilitate | Severity | Locatie |
 |-----------------|----------|---------|
 | XSS via innerHTML | **CRITICAL** | capitole-legislatie.html:646 |
 | CSP unsafe-inline | HIGH | firebase.json |
@@ -133,18 +133,18 @@
 | localStorage auth snapshot | MEDIUM | auth-guard-*.js |
 | Future timestamps permise | MEDIUM | database.rules.json |
 
-### Ce Funcționează Bine
+### Ce Functioneaza Bine
 - Firebase Auth cu email verification obligatoriu
 - App Check cu reCAPTCHA v3
-- Reguli Firestore cu validare strictă
+- Reguli Firestore cu validare stricta
 - Storage rules cu file size limits
 - Single-tab lock pentru prevenirea abuzului
 
 ---
 
-## 6. FUNCȚIONALITĂȚI
+## 6. FUNCTIONALITATI
 
-| Funcție | Status |
+| Functie | Status |
 |---------|--------|
 | Signup/Login | ✅ Complet |
 | Google OAuth | ✅ Complet |
@@ -153,7 +153,7 @@
 | User Profiles | ✅ Complet |
 | Content Loading | ✅ Complet |
 | Progress Tracking | ✅ Complet |
-| Chapter Dependencies | ❌ LIPSĂ |
+| Chapter Dependencies | ❌ LIPSA |
 | Contact Forms | ✅ Complet |
 | Theme Switching | ✅ Complet |
 | Navigation | ✅ Complet |
@@ -166,7 +166,7 @@
 |----------|--------|
 | firebase-hosting-production.yml | ⚠️ continue-on-error problematic |
 | firebase-hosting-pull-request.yml | ✅ OK |
-| firebase-validate.yml | ⚠️ Nu rulează linting |
+| firebase-validate.yml | ⚠️ Nu ruleaza linting |
 
 ---
 
@@ -174,40 +174,40 @@
 
 | Categorie | Status |
 |-----------|--------|
-| Firebase Config | ⚠️ Necesită îmbunătățiri |
+| Firebase Config | ⚠️ Necesita imbunatatiri |
 | Firestore Rules | ⚠️ Admin hardcodat |
 | JavaScript | ❌ Memory leaks, inline masiv |
-| HTML | ⚠️ Meta tags lipsă |
+| HTML | ⚠️ Meta tags lipsa |
 | CSS | ⚠️ Imagini neoptimizate |
 | Security | ❌ XSS vulnerability |
 | CI/CD | ⚠️ Error handling slab |
 
 ---
 
-## 9. RECOMANDĂRI PRIORITARE
+## 9. RECOMANDARI PRIORITARE
 
 ### HIGH (Imediat)
-1. Fix XSS în capitole-legislatie.html
+1. Fix XSS in capitole-legislatie.html
 2. Extrage JavaScript inline
 3. Fix memory leaks
-4. Migrează admin la Custom Claims
+4. Migreaza admin la Custom Claims
 
 ### MEDIUM (Luna aceasta)
-1. Adaugă meta descriptions
-2. Optimizează imagini
+1. Adauga meta descriptions
+2. Optimizeaza imagini
 3. Fix CI/CD error handling
-4. Îndepărtează console.log
+4. Indeparteaza console.log
 
-### LOW (Trimestrul următor)
-1. Curăță fișiere nefolosite
+### LOW (Trimestrul urmator)
+1. Curata fisiere nefolosite
 2. Upgrade jQuery
-3. Implementează chapter dependencies
+3. Implementeaza chapter dependencies
 
 ---
 
 ## 10. CONCLUZIE
 
-**Proiectul este ~85% production-ready** dar necesită fixuri critice înainte de lansare:
+**Proiectul este ~85% production-ready** dar necesita fixuri critice inainte de lansare:
 1. XSS vulnerability
 2. Memory leaks
 3. Admin email hardcodat

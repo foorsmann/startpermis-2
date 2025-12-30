@@ -152,7 +152,7 @@ body.exam-ready .question-section-exam{opacity:1!important;visibility:visible!im
 .lesson-loader{z-index:20000}
 body:not(.exam-ready) .lesson-loader{opacity:1!important;visibility:visible!important;pointer-events:auto!important;display:flex!important}
 </style>
-  <!--  ===================== STARE UNICĂ: DISABLED + TRANZIȚII (min) =====================  -->
+  <!--  ===================== STARE UNICA: DISABLED + TRANZITII (min) =====================  -->
   <style>
 .submit-answer-btn[disabled],
 .submit-answer-btn[aria-disabled=true],
@@ -182,7 +182,7 @@ body:not(.exam-ready) .lesson-loader{opacity:1!important;visibility:visible!impo
 }
 .timer-and-counter .counter-label,.timer-mobile-text .counter-label{display:block;margin-top:4px}
 </style>
-  <!--  ===================== WRAPPER IMAGINE ÎNTREBARE (min) =====================  -->
+  <!--  ===================== WRAPPER IMAGINE INTREBARE (min) =====================  -->
   <style>
 .simulation-image-wrapper.is-hidden,.simulation-image-wrapper[hidden],.simulation-image-wrapper:empty{display:none!important}
 </style>
@@ -196,7 +196,7 @@ body.modal-open{overflow:hidden!important;touch-action:none!important}
 .alert-wrapper[role=dialog]{outline:none}
 </style>
   <style>
-/* NU permite selectarea / callout pe butoane, carduri și controllere */
+/* NU permite selectarea / callout pe butoane, carduri si controllere */
 .answer-later-btn,
 .change-answer-btn,
 .submit-answer-btn,
@@ -211,17 +211,17 @@ body.modal-open{overflow:hidden!important;touch-action:none!important}
   user-select: none;
   -webkit-user-select: none;   /* iOS/Safari */
   -ms-user-select: none;       /* vechi Edge/IE */
-  -webkit-touch-callout: none; /* dezactivează meniu long-press pe iOS */
+  -webkit-touch-callout: none; /* dezactiveaza meniu long-press pe iOS */
   -webkit-tap-highlight-color: transparent; /* scoate flash-ul gri/albastru pe tap */
 }
-/* (Opțional) img să nu se tragă/“selecteze” accidental pe mobil */
+/* (Optional) img sa nu se traga/“selecteze” accidental pe mobil */
 .question-image, .simulation-image-wrapper img {
   -webkit-user-drag: none;
   user-drag: none;
 }
 </style>
   <style>
-/* Min-height doar când întrebarea NU are imagine */
+/* Min-height doar cand intrebarea NU are imagine */
 .question-section-exam.no-image .options-wrapper-exam {
   min-height: 40vh;
 }
@@ -370,13 +370,13 @@ body.modal-open{overflow:hidden!important;touch-action:none!important}
           <div class="cube_item cube_x"></div>
         </div>
         <style>
-  /* Părintele din Webflow care conține acest Code Embed */
+  /* Parintele din Webflow care contine acest Code Embed */
   .loader-code-block {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;   /* centru pe verticală */
-    justify-content: center; /* centru pe orizontală */
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
   }
   .cube {
     height: 80px;
@@ -389,9 +389,9 @@ body.modal-open{overflow:hidden!important;touch-action:none!important}
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    /* stare inițială identică cu 0% din animație → nu mai sare prima dată */
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
     transform: scale(0.8);
-    /* transition nu mai afectează transform, doar culoarea */
+    /* transition nu mai afecteaza transform, doar culoarea */
     transition: background-color 0.2s ease-in;
   }
   .cube_x {
@@ -462,7 +462,7 @@ body.modal-open{overflow:hidden!important;touch-action:none!important}
   addEventListener('pageshow',e=>{ if(e&&e.persisted) go(); },{passive:true});
 })();
 </script>
-  <!--  ===================== APP SCRIPT (fix scroll după Reset + procent pe .progress-counter-final) =====================  -->
+  <!--  ===================== APP SCRIPT (fix scroll dupa Reset + procent pe .progress-counter-final) =====================  -->
   <script>
 Webflow.push(async function(){
 'use strict';
@@ -591,7 +591,7 @@ function ensureFinalPercentEl(){
   finalPercentEl = percentDisplayEl.querySelector('.exam-final-percent');
   if (!finalPercentEl){
     finalPercentEl = document.createElement('span');
-    finalPercentEl.className = 'exam-final-percent';   // ← clasă proprie, stilizabilă din Webflow
+    finalPercentEl.className = 'exam-final-percent';   // ← clasa proprie, stilizabila din Webflow
     finalPercentEl.textContent = percentDisplayEl.textContent.trim() || '0%';
     percentDisplayEl.textContent = '';
     percentDisplayEl.appendChild(finalPercentEl);
@@ -654,7 +654,7 @@ const LS_ANS =`${LS_PREFIX}:answers:${LS_USER}:${numarChestionar}`;
 const LS_PROG=`${LS_PREFIX}:progress:${LS_USER}:${numarChestionar}`;
 const LS_TIMER=`${LS_PREFIX}:timer:${LS_USER}:${numarChestionar}`;
 const LS_UI  =`${LS_PREFIX}:ui:${LS_USER}:${numarChestionar}`;
-/* ===== Helpers corect/greșit ===== */
+/* ===== Helpers corect/gresit ===== */
 function parseCorrectIndexes(q){
   const letters=String(q['Correct Answers']||q.correct||'').toUpperCase().match(/[A-Z]/g)||[];
   return letters.map(l=>l.charCodeAt(0)-65).filter(i=>i>=0);
@@ -709,7 +709,7 @@ function clearAllVisual(){
     card.style.removeProperty('display');
   });
 }
-/* ===== Navigator ne-răspunse ===== */
+/* ===== Navigator ne-raspunse ===== */
 function findNextUnansweredIndex(from){
   for(let i=from+1;i<answers.length;i++) if(answers[i]===null) return i;
   for(let i=0;i<from;i++) if(answers[i]===null) return i;
@@ -946,7 +946,7 @@ function renderQuestion(idx){
         questionImageWrapper.setAttribute('hidden','hidden');
         questionImageWrapper.style.display='none';
       }
-      // ←—— dacă a eșuat încărcarea, marcăm „no-image”
+      // ←—— daca a esuat incarcarea, marcam „no-image”
       questionSection?.classList.add('no-image');
     }catch(_){ } };
   }else{
@@ -1199,7 +1199,7 @@ function forceUnlockScroll(){
     document.body.style.overflow=''; document.body.style.touchAction='';
   }catch(_){}
 }
-/* ====== Resetări (modal) ====== */
+/* ====== Resetari (modal) ====== */
 resetChapterBtn?.addEventListener('click',openResetAlert);
 async function doHardResetTest(){
   enterTransitionLock(); stopTimer(); clearTimerStorage(); forceUnlockScroll();
@@ -1219,7 +1219,7 @@ async function doHardResetTest(){
 }
 confirmResetBtn?.addEventListener('click',doHardResetTest);
 backToFinalBtn?.addEventListener('click',()=>{ closeResetAlert(); showFinalLayout(); forceUnlockScroll(); });
-/* ====== Reset doar greșite ====== */
+/* ====== Reset doar gresite ====== */
 resetWrongBtn?.addEventListener('click',async()=>{
   wrongIndexes=computeWrongIndexes(); if(!wrongIndexes.length) return;
   enterTransitionLock();
@@ -1267,7 +1267,7 @@ async function waitFirstPaintAssets(){
   }catch(_){}
   if(promises.length) await Promise.allSettled(promises);
 }
-/* ====== Guard: zero întrebări ====== */
+/* ====== Guard: zero intrebari ====== */
 if(questions.length===0){
   showEmptyFinal(); await waitFirstPaintAssets();
   requestAnimationFrame(()=>{ document.body.classList.add('exam-ready'); setTimeout(()=> loader?.style.setProperty('display','none','important'),60); });
@@ -1317,7 +1317,7 @@ function hideSimulationWrapper(){
     questionImageWrapper.setAttribute('hidden','hidden');
     questionImageWrapper.style.display='none';
   }
-  // ←—— marchează „no-image”
+  // ←—— marcheaza „no-image”
   questionSection?.classList.add('no-image');
 }
 function showSimulationWrapper(){

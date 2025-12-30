@@ -37,7 +37,7 @@
     return false;
   }
   /* ===================== LOGS (DISABLED) ===================== */
-  var ENABLE_CONSOLE = false; // lasă pe false ca să NU mai apară loguri
+  var ENABLE_CONSOLE = false; // lasa pe false ca sa NU mai apara loguri
   var DEBUG = getDebugFlag();
   function dlog(){  if (ENABLE_CONSOLE) console.log.apply(console,  ['[Sign-up]'].concat([].slice.call(arguments))); }
   function dwarn(){ if (ENABLE_CONSOLE) console.warn.apply(console, ['[Sign-up]'].concat([].slice.call(arguments))); }

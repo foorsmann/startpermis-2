@@ -19,49 +19,68 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
-      
+
       - name: Deploy Firestore Rules
+        id: firestore_rules
         run: firebase deploy --only firestore:rules --project scaoalauto
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
-      
+
       - name: Deploy Realtime Database Rules
+        id: database_rules
         run: firebase deploy --only database --project scaoalauto
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
-      
+
       - name: Deploy Storage Rules
+        id: storage_rules
         run: firebase deploy --only storage --project scaoalauto
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
-      
+
       - name: Deploy Firestore Indexes
+        id: firestore_indexes
         run: firebase deploy --only firestore:indexes --project scaoalauto
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
-      
+
       - name: Deploy to Firebase Hosting
+        id: hosting
         run: firebase deploy --only hosting --project scaoalauto
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      
+
       - name: Deployment Summary
+        if: always()
         run: |
-          echo "## Deployment Complete! 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Project:** scaoalauto" >> $GITHUB_STEP_SUMMARY
-          echo "**URLs:**" >> $GITHUB_STEP_SUMMARY
-          echo "- https://scaoalauto.web.app" >> $GITHUB_STEP_SUMMARY
-          echo "- https://scaoalauto.firebaseapp.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Firestore Rules | ${{ steps.firestore_rules.outcome == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Database Rules | ${{ steps.database_rules.outcome == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Storage Rules | ${{ steps.storage_rules.outcome == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Firestore Indexes | ${{ steps.firestore_indexes.outcome == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Hosting | ${{ steps.hosting.outcome == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "### 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**URLs:**" >> $GITHUB_STEP_SUMMARY
+            echo "- https://scaoalauto.web.app" >> $GITHUB_STEP_SUMMARY
+            echo "- https://scaoalauto.firebaseapp.com" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi

@@ -9,6 +9,13 @@
 (function() {
   'use strict';
 
+  // Production-safe logger - only logs in development
+  var IS_DEV = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  var logger = {
+    log: IS_DEV ? console.log.bind(console) : function() {},
+    warn: IS_DEV ? console.warn.bind(console) : function() {}
+  };
+
   function sanitizeKey(k) {
     // eslint-disable-next-line no-useless-escape
     return String(k || "global").replace(/[.#$\[\]\/]/g, "-");
@@ -29,12 +36,12 @@
     var redirectDelayMs = (opts && opts.redirectDelayMs) || 0;
 
     if (!firebase || !firebase.database) {
-      console.warn("[lock] RTDB unavailable.");
+      logger.warn("[lock] RTDB unavailable.");
       return;
     }
 
     if (!lockKey || !redirectUrl) {
-      console.warn("[lock] lockKey/redirectUrl missing.");
+      logger.warn("[lock] lockKey/redirectUrl missing.");
       return;
     }
 
@@ -47,7 +54,7 @@
 
     userReady.then(function(user) {
       if (!user || !user.uid) {
-        console.warn("[lock] User not logged in; lock will apply after login.");
+        logger.warn("[lock] User not logged in; lock will apply after login.");
         return;
       }
 
@@ -75,7 +82,7 @@
             lockRef.onDisconnect().remove();
           } catch(_) {}
         } catch(e) {
-          console.warn("[lock] set failed:", e);
+          logger.warn("[lock] set failed:", e);
         }
       }
 
@@ -137,5 +144,5 @@
   };
 
   window.installSingleActiveLock.version = "v2:chapterLocks";
-  console.log("[lock] Helper ready:", window.installSingleActiveLock.version);
+  logger.log("[lock] Helper ready:", window.installSingleActiveLock.version);
 })();

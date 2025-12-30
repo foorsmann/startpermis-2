@@ -29,64 +29,114 @@ jobs:
         run: npm install -g firebase-tools
 
       - name: Validate firebase.json
+        id: firebase_json
         run: |
           echo "Validating firebase.json..."
           node -e "JSON.parse(require('fs').readFileSync('firebase.json', 'utf8'))"
-          echo "✅ firebase.json is valid JSON"
+          echo "firebase_json=valid" >> $GITHUB_OUTPUT
 
       - name: Validate Firestore Rules Syntax
+        id: firestore_rules
         run: |
           echo "Validating firestore.rules..."
           if [ -f "firestore.rules" ]; then
-            firebase --project=scaoalauto firestore:rules:get 2>/dev/null || echo "⚠️ Could not validate against Firebase (expected for PRs)"
-            echo "✅ firestore.rules exists"
+            # Check for basic syntax issues
+            if grep -q "rules_version" firestore.rules && grep -q "service cloud.firestore" firestore.rules; then
+              echo "firestore_rules=valid" >> $GITHUB_OUTPUT
+            else
+              echo "::error::firestore.rules missing required declarations"
+              exit 1
+            fi
           else
-            echo "❌ firestore.rules not found"
+            echo "::error::firestore.rules not found"
             exit 1
           fi
 
       - name: Validate Database Rules Syntax
+        id: database_rules
         run: |
           echo "Validating database.rules.json..."
           if [ -f "database.rules.json" ]; then
             node -e "JSON.parse(require('fs').readFileSync('database.rules.json', 'utf8'))"
-            echo "✅ database.rules.json is valid JSON"
+            echo "database_rules=valid" >> $GITHUB_OUTPUT
           else
-            echo "❌ database.rules.json not found"
+            echo "::error::database.rules.json not found"
             exit 1
           fi
 
       - name: Validate Storage Rules
+        id: storage_rules
         run: |
           echo "Validating storage.rules..."
           if [ -f "storage.rules" ]; then
-            echo "✅ storage.rules exists"
+            if grep -q "rules_version" storage.rules && grep -q "service firebase.storage" storage.rules; then
+              echo "storage_rules=valid" >> $GITHUB_OUTPUT
+            else
+              echo "::error::storage.rules missing required declarations"
+              exit 1
+            fi
           else
-            echo "❌ storage.rules not found"
+            echo "::error::storage.rules not found"
             exit 1
           fi
 
-      - name: Check for common issues
+      - name: Lint JavaScript Files
+        id: js_lint
         run: |
-          echo "Checking for common issues..."
+          echo "Checking JavaScript syntax..."
+          errors=0
+          for file in js/firebase-config.js js/auth-guard-head.js js/auth-guard-footer.js js/single-active-lock.js js/theme.js js/login-handler.js js/signup-handler.js; do
+            if [ -f "$file" ]; then
+              if node --check "$file" 2>/dev/null; then
+                echo "✅ $file - syntax OK"
+              else
+                echo "::error file=$file::JavaScript syntax error"
+                errors=$((errors + 1))
+              fi
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            exit 1
+          fi
+          echo "js_lint=valid" >> $GITHUB_OUTPUT
 
-          # Check for exposed secrets (basic check)
-          if grep -r "FIREBASE_TOKEN" --include="*.html" --include="*.js" .; then
-            echo "⚠️ Warning: Found potential secret exposure"
+      - name: Check for Security Issues
+        id: security_check
+        run: |
+          echo "Checking for common security issues..."
+          issues=0
+
+          # Check for exposed secrets in source files
+          if grep -rE "(FIREBASE_TOKEN|api[_-]?key\s*=\s*['\"][^'\"]+['\"])" --include="*.html" --include="*.js" . 2>/dev/null | grep -v "firebase-config.js" | grep -v "node_modules"; then
+            echo "::warning::Potential secret exposure detected"
+            issues=$((issues + 1))
+          fi
+
+          # Check for console.log in production (excluding wrapped loggers)
+          prod_logs=$(grep -rn "console\.\(log\|warn\|error\)" js/*.js 2>/dev/null | grep -v "logger\." | grep -v "ENABLE_CONSOLE" | grep -v "IS_DEV" | grep -v "\.min\.js" | grep -v "webflow\.js" | grep -v "plyr" || true)
+          if [ -n "$prod_logs" ]; then
+            echo "::warning::Unprotected console statements found in production code"
+            echo "$prod_logs"
           fi
 
           # Check HTML files exist
-          if [ -f "index.html" ]; then
-            echo "✅ index.html exists"
-          else
-            echo "❌ index.html not found"
+          if [ ! -f "index.html" ]; then
+            echo "::error::index.html not found"
             exit 1
           fi
 
-          echo "✅ All checks passed"
+          echo "security_check=passed" >> $GITHUB_OUTPUT
 
       - name: Validation Summary
+        if: always()
         run: |
-          echo "## Validation Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "## Validation Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "All Firebase configuration files are valid." >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| firebase.json | ${{ steps.firebase_json.outputs.firebase_json == 'valid' && '✅ Valid' || '❌ Invalid' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| firestore.rules | ${{ steps.firestore_rules.outputs.firestore_rules == 'valid' && '✅ Valid' || '❌ Invalid' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| database.rules.json | ${{ steps.database_rules.outputs.database_rules == 'valid' && '✅ Valid' || '❌ Invalid' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| storage.rules | ${{ steps.storage_rules.outputs.storage_rules == 'valid' && '✅ Valid' || '❌ Invalid' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| JavaScript Lint | ${{ steps.js_lint.outputs.js_lint == 'valid' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Check | ${{ steps.security_check.outputs.security_check == 'passed' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY

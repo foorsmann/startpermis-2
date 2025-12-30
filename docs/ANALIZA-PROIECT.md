@@ -85,9 +85,13 @@
 ```
 
 ### Fisiere Nefolosite Identificate
-- `old-home.html` - pagina orfana (546 linii)
-- 22 imagini nefolosite (~37% din total)
+- ~~`old-home.html` - pagina orfana (546 linii)~~ → STERS (30 Dec 2025)
+- ~~22 imagini nefolosite~~ → Verificat: toate imaginile sunt folosite
 - Google Fonts incarcate dar nefolosite (Kanit, Montserrat, Inter)
+
+### Optimizari Imagini (30 Dec 2025)
+- 7 imagini convertite la WebP (3.6MB economii)
+- Background images in CSS actualizate sa foloseasca .webp
 
 ---
 
@@ -218,17 +222,19 @@
 4. ~~Indeparteaza console.log din productie~~ → production logger implementat
 5. ~~Inlocuieste CSP unsafe-inline~~ → Nu e posibil pentru Webflow (scripturi dinamice)
 
-### LOW (Trimestrul urmator)
-1. Curata fisiere nefolosite (old-home.html, 22 imagini)
-2. Upgrade jQuery la versiune mai noua
-3. Implementeaza chapter dependencies in Firestore
-4. Ruleaza `npm run optimize:images` pentru conversie WebP
+### ✅ REZOLVATE - LOW (30 Dec 2025)
+1. ~~Curata fisiere nefolosite~~ → old-home.html sters (toate imaginile sunt folosite)
+2. ~~Upgrade jQuery~~ → 3.5.1 → 3.7.1 cu SRI hash in 22 fisiere HTML
+3. ~~Conversie WebP~~ → 7 imagini convertite (3.6MB economii, -78%)
+
+### LOW (Ramase)
+1. Implementeaza chapter dependencies in Firestore (necesita design semnificativ)
 
 ---
 
 ## 10. CONCLUZIE
 
-**Proiectul este acum ~98% production-ready** dupa fixurile din 30 Dec 2025:
+**Proiectul este acum ~99% production-ready** dupa fixurile din 30 Dec 2025:
 
 ### Ce s-a rezolvat - CRITICE:
 - ✅ XSS vulnerability - sanitizare HTML implementata
@@ -243,13 +249,15 @@
 - ✅ CI/CD - error handling imbunatatit, JS linting adaugat
 - ✅ Console.log - production logger (doar dev logs)
 
-### Ce mai ramane (LOW priority):
-- ⚠️ Curatare fisiere nefolosite
-- ⚠️ Upgrade jQuery
-- ⚠️ Chapter dependencies in Firestore
-- ⚠️ Conversie efectiva WebP (ruleaza `npm run optimize:images`)
+### Ce s-a rezolvat - LOW:
+- ✅ old-home.html sters (fisier nefolosit)
+- ✅ jQuery 3.5.1 → 3.7.1 cu SRI hash
+- ✅ WebP conversie - 7 imagini mari (3.6MB economii, -78%)
+
+### Ce mai ramane (pentru viitor):
+- ⚠️ Chapter dependencies in Firestore (feature complex, necesita design)
 
 ---
 
 *Raport generat: 30 Decembrie 2025*
-*Ultima actualizare: 30 Decembrie 2025 - v1.2 - toate taskurile MEDIUM finalizate*
+*Ultima actualizare: 30 Decembrie 2025 - v1.3 - toate taskurile LOW finalizate (exceptie: chapter dependencies)*

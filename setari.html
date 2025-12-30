@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon Dec 29 2025 03:35:29 GMT+0000 (Coordinated Universal Time)  -->
-<html data-wf-page="68da6e4df02ab283a556cc81" data-wf-site="68589124f5ef093107d3fdc2" lang="ro">
+<html data-wf-page="68da6e4df02ab283a556cc81" data-wf-site="68589124f5ef093107d3fdc2" lang="ro" class="settings-preload">
 <head>
   <meta charset="utf-8">
   <meta name="description" content="Gestioneaza setarile contului tau Start Permis - profil, preferinte si notificari.">
@@ -25,6 +25,21 @@
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+  }
+</style>
+  <style>
+  /* Preload: ascunde layout-ul si arata loader-ul pana se hidrateaza datele */
+  html.settings-preload .navbar-no-shadow-unlinked,
+  html.settings-preload .section-settings,
+  html.settings-preload .footer-main-unlinked,
+  html.settings-preload .grain-overlay-settings,
+  html.settings-preload .top-btn-wrapper {
+    display: none !important;
+  }
+  html.settings-preload .lesson-loader {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
 </style>
   <link rel="stylesheet" href="css/plyr-3.7.8.css">
@@ -1612,6 +1627,63 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
     </div>
   </div>
+  <div class="lesson-loader">
+    <div class="loader-code-block">
+      <div class="code-embed-3 w-embed">
+        <div class="cube">
+          <div class="cube_item cube_x"></div>
+          <div class="cube_item cube_y"></div>
+          <div class="cube_item cube_y"></div>
+          <div class="cube_item cube_x"></div>
+        </div>
+        <style>
+  /* Parintele din Webflow care contine acest Code Embed */
+  .loader-code-block {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;   /* centru pe verticala */
+    justify-content: center; /* centru pe orizontala */
+  }
+  .cube {
+    height: 80px;
+    width: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .cube_item {
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    /* stare initiala identica cu 0% din animatie → nu mai sare prima data */
+    transform: scale(0.8);
+    /* transition nu mai afecteaza transform, doar culoarea */
+    transition: background-color 0.2s ease-in;
+  }
+  .cube_x {
+    background-color: #e7bc22;
+    animation: animateLoaders 1s infinite;
+  }
+  .cube_y {
+    background-color: #e9e9e9;
+    animation: animateLoaders 1s 0.5s infinite;
+  }
+  @keyframes animateLoaders {
+    0% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(0.8);
+    }
+  }
+</style>
+      </div>
+    </div>
+  </div>
   <section class="section-settings">
     <div class="container-settings">
       <div class="settings-title">
@@ -1808,9 +1880,59 @@ document.addEventListener('DOMContentLoaded', function () {
   <script src="js/plyr.polyfilled-3.7.8.min.js"></script>
   <!-- Theme Manager -->
   <script src="js/theme.js"></script>
-  <script>
+<script>
 Webflow.push(function () {
   'use strict';
+  /* ===================== PRELOAD & LOADER ===================== */
+  var loaderEl = document.querySelector('.lesson-loader');
+  var navbarEl = document.querySelector('.navbar-no-shadow-unlinked');
+  var sectionEl = document.querySelector('.section-settings');
+  var footerEl = document.querySelector('.footer-main-unlinked');
+  var grainEl = document.querySelector('.grain-overlay-settings');
+  var topBtnEl = document.querySelector('.top-btn-wrapper');
+  function cacheDisplay(el){
+    if (!el) return;
+    var cs = window.getComputedStyle(el);
+    var val = (cs && cs.display && cs.display !== 'none') ? cs.display : '';
+    el.dataset._initDisplay = val;
+  }
+  function showLoader(){
+    if (!loaderEl) return;
+    loaderEl.style.setProperty('display', 'flex', 'important');
+    loaderEl.style.setProperty('justify-content', 'center', 'important');
+    loaderEl.style.setProperty('align-items', 'center', 'important');
+    loaderEl.style.setProperty('position', 'fixed', 'important');
+    loaderEl.style.setProperty('inset', '0', 'important');
+    loaderEl.style.setProperty('z-index', '99999999', 'important');
+    document.body.setAttribute('aria-busy', 'true');
+  }
+  function hideLoader(){
+    if (!loaderEl) return;
+    loaderEl.style.setProperty('display', 'none', 'important');
+    document.body.removeAttribute('aria-busy');
+  }
+  function hideMainUI(){
+    [navbarEl, sectionEl, footerEl, grainEl, topBtnEl].forEach(function(el){
+      if (!el) return;
+      cacheDisplay(el);
+      el.style.setProperty('display', 'none', 'important');
+    });
+    showLoader();
+  }
+  function showMainUI(){
+    [navbarEl, sectionEl, footerEl, grainEl, topBtnEl].forEach(function(el){
+      if (!el) return;
+      var orig = el.dataset._initDisplay || '';
+      if (orig) {
+        el.style.setProperty('display', orig, 'important');
+      } else {
+        el.style.removeProperty('display');
+      }
+    });
+    hideLoader();
+    document.documentElement.classList.remove('settings-preload');
+  }
+  hideMainUI();
   /* ===================== CONFIG ===================== */
   var LOGIN_URL = '/login';
   var LS = {
@@ -2120,328 +2242,335 @@ Webflow.push(function () {
   }
   /* ===================== INIT ===================== */
   (async function init(){
-    var ok = await waitForFirebase(10000);
-    if (!ok) { showErr('Firebase nu este disponibil. Reincarca pagina.', 5000); return; }
-    var auth = firebase.auth();
-    var db = firebase.firestore();
-    var user = await getUser(5000);
-    if (!user) { window.location.replace(LOGIN_URL); return; }
-    try{ await user.reload(); }catch(_){}
-    renderProfile(user);
-    /* ----------------- TOGGLES: LS -> UI ----------------- */
-    var themeLS = getLSText(LS.THEME, 'dark');
-    setToggle(tgTheme, themeLS === 'light'); // checked = light
-    setToggle(tgSounds, getLSBool(LS.SOUNDS, true));
-    setToggle(tgHaptics, getLSBool(LS.HAPTICS, true));
-    setToggle(tgCorrectAnim, getLSBool(LS.CORRECT_ANIM, true));
-    /* ----------------- TOGGLES: Firestore -> hydrate ----------------- */
-    var hydrating = true;
-    var prefs = await loadPrefs(user.uid);
-    if (prefs) {
-      if (prefs.theme === 'light' || prefs.theme === 'dark') {
-        setLSText(LS.THEME, prefs.theme);
-        applyTheme(prefs.theme);
-        setToggle(tgTheme, prefs.theme === 'light');
-      }
-      if (typeof prefs.uiSounds === 'boolean') {
-        setLSBool(LS.SOUNDS, prefs.uiSounds);
-        setToggle(tgSounds, prefs.uiSounds);
-      }
-      if (typeof prefs.haptics === 'boolean') {
-        setLSBool(LS.HAPTICS, prefs.haptics);
-        setToggle(tgHaptics, prefs.haptics);
-      }
-      if (typeof prefs.correctAnim === 'boolean') {
-        setLSBool(LS.CORRECT_ANIM, prefs.correctAnim);
-        setToggle(tgCorrectAnim, prefs.correctAnim);
-      }
-    }
-    hydrating = false;
-    /* ----------------- APPLY EXISTING COOLDOWNS (ON LOAD) ----------------- */
-    // verify cooldown (daca ai buton)
-    if (btnResendVerify) {
-      try{
-        var lastV = await getLastVerifySentAt(user.uid);
-        var untilV = lastV + VERIFY_COOLDOWN_MS;
-        if (now() < untilV) {
-          startButtonCooldown(btnResendVerify, untilV, function(sec){
-            return 'Poti retrimite in ' + sec + 's';
-          });
+    try{
+      var ok = await waitForFirebase(10000);
+      if (!ok) { showErr('Firebase nu este disponibil. Reincarca pagina.', 5000); showMainUI(); return; }
+      var auth = firebase.auth();
+      var db = firebase.firestore();
+      var user = await getUser(5000);
+      if (!user) { window.location.replace(LOGIN_URL); return; }
+      try{ await user.reload(); }catch(_){}
+      renderProfile(user);
+      /* ----------------- TOGGLES: LS -> UI ----------------- */
+      var themeLS = getLSText(LS.THEME, 'dark');
+      setToggle(tgTheme, themeLS === 'light'); // checked = light
+      setToggle(tgSounds, getLSBool(LS.SOUNDS, true));
+      setToggle(tgHaptics, getLSBool(LS.HAPTICS, true));
+      setToggle(tgCorrectAnim, getLSBool(LS.CORRECT_ANIM, true));
+      /* ----------------- TOGGLES: Firestore -> hydrate ----------------- */
+      var hydrating = true;
+      var prefs = await loadPrefs(user.uid);
+      if (prefs) {
+        if (prefs.theme === 'light' || prefs.theme === 'dark') {
+          setLSText(LS.THEME, prefs.theme);
+          applyTheme(prefs.theme);
+          setToggle(tgTheme, prefs.theme === 'light');
         }
-      }catch(_){}
-    }
-    // reset password cooldown
-    if (btnSendReset) {
-      try{
-        var lastR = getLastResetSentAt();
-        var untilR = lastR + RESET_COOLDOWN_MS;
-        if (now() < untilR) {
-          startButtonCooldown(btnSendReset, untilR, function(sec){
-            return 'Poti retrimite in ' + sec + 's';
-          });
+        if (typeof prefs.uiSounds === 'boolean') {
+          setLSBool(LS.SOUNDS, prefs.uiSounds);
+          setToggle(tgSounds, prefs.uiSounds);
         }
-      }catch(_){}
-    }
-    /* ===================== EVENTS ===================== */
-    // Copy UID (✅ uppercase la copiere)
-    if (btnCopyUid) {
-      btnCopyUid.addEventListener('click', async function(){
+        if (typeof prefs.haptics === 'boolean') {
+          setLSBool(LS.HAPTICS, prefs.haptics);
+          setToggle(tgHaptics, prefs.haptics);
+        }
+        if (typeof prefs.correctAnim === 'boolean') {
+          setLSBool(LS.CORRECT_ANIM, prefs.correctAnim);
+          setToggle(tgCorrectAnim, prefs.correctAnim);
+        }
+      }
+      hydrating = false;
+      /* ----------------- APPLY EXISTING COOLDOWNS (ON LOAD) ----------------- */
+      // verify cooldown (daca ai buton)
+      if (btnResendVerify) {
         try{
-          // folosim raw daca exista, altfel current user
-          var raw = (elAdvancedUid && elAdvancedUid.dataset.uidRaw) ? elAdvancedUid.dataset.uidRaw : (user && user.uid ? user.uid : '');
-          var uidUpper = String(raw || '').trim().toUpperCase();
-          if (!uidUpper) { showErr('UID indisponibil.', 3000); return; }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(uidUpper);
-          } else {
-            var ta = document.createElement('textarea');
-            ta.value = uidUpper;
-            ta.setAttribute('readonly','true');
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-          }
-          showMsg('Cod client copiat.', 2500);
-        }catch(_){
-          showErr('Nu am putut copia. Incearca manual.', 3500);
-        }
-      });
-    }
-    // Resend verification (cooldown local + optional RTDB)
-    if (btnResendVerify) {
-      btnResendVerify.addEventListener('click', async function(){
-        lockEl(btnResendVerify, true);
-        showMsg('', 0); showErr('', 0);
-        try{
-          user = auth.currentUser || user;
-          if (!user) { window.location.replace(LOGIN_URL); return; }
-          await user.reload();
-          if (user.emailVerified) {
-            renderProfile(user);
-            showMsg('Emailul este deja verificat.', 3000);
-            lockEl(btnResendVerify, false);
-            return;
-          }
-          var lastSent = await getLastVerifySentAt(user.uid);
-          var untilTs = lastSent + VERIFY_COOLDOWN_MS;
-          if (now() < untilTs) {
-            startButtonCooldown(btnResendVerify, untilTs, function(sec){
+          var lastV = await getLastVerifySentAt(user.uid);
+          var untilV = lastV + VERIFY_COOLDOWN_MS;
+          if (now() < untilV) {
+            startButtonCooldown(btnResendVerify, untilV, function(sec){
               return 'Poti retrimite in ' + sec + 's';
             });
-            showErr('Asteapta putin inainte sa retrimiti emailul.', 3500);
-            return;
           }
-          await user.sendEmailVerification();
-          var ts = now();
-          // chiar daca RTDB e blocat de rules, LS se salveaza si cooldown porneste
-          await setLastVerifySentAt(user.uid, ts);
-          showMsg('Ti-am retrimis emailul de verificare. Verifica si Spam.', 4500);
-          startButtonCooldown(btnResendVerify, ts + VERIFY_COOLDOWN_MS, function(sec){
-            return 'Poti retrimite in ' + sec + 's';
-          });
-        }catch(e){
-          showErr(formatAuthErr(e), 5000);
-          lockEl(btnResendVerify, false);
-        }
-      });
-    }
-    // Change email (reauth + updateEmail + refresh token + update Firestore + send verify)
-    if (btnChangeEmail) {
-      btnChangeEmail.addEventListener('click', async function(){
-        lockEl(btnChangeEmail, true);
-        showMsg('', 0); showErr('', 0);
+        }catch(_){}
+      }
+      // reset password cooldown
+      if (btnSendReset) {
         try{
-          user = auth.currentUser || user;
-          if (!user) { window.location.replace(LOGIN_URL); return; }
-          var newEmail = normalizeEmail(inNewEmail ? inNewEmail.value : '');
-          if (!newEmail) { showErr('Introdu emailul nou.', 3500); return; }
-          if (newEmail === normalizeEmail(user.email)) { showErr('Emailul nou este identic cu cel curent.', 3500); return; }
-          await safeDoSensitive(async function(){
-            await user.updateEmail(newEmail);
-          });
-          // refresh token (ca rules-urile pe email sa nu respinga update-ul)
-          try{ await user.getIdToken(true); }catch(_){}
-          // update in users/{uid}.email
+          var lastR = getLastResetSentAt();
+          var untilR = lastR + RESET_COOLDOWN_MS;
+          if (now() < untilR) {
+            startButtonCooldown(btnSendReset, untilR, function(sec){
+              return 'Poti retrimite in ' + sec + 's';
+            });
+          }
+        }catch(_){}
+      }
+      /* ===================== EVENTS ===================== */
+      // Copy UID (✅ uppercase la copiere)
+      if (btnCopyUid) {
+        btnCopyUid.addEventListener('click', async function(){
           try{
-            await db.collection('users').doc(user.uid).set({ email: newEmail }, { merge: true });
-          }catch(_){}
-          // trimite verificare pe email nou + cooldown
+            // folosim raw daca exista, altfel current user
+            var raw = (elAdvancedUid && elAdvancedUid.dataset.uidRaw) ? elAdvancedUid.dataset.uidRaw : (user && user.uid ? user.uid : '');
+            var uidUpper = String(raw || '').trim().toUpperCase();
+            if (!uidUpper) { showErr('UID indisponibil.', 3000); return; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(uidUpper);
+            } else {
+              var ta = document.createElement('textarea');
+              ta.value = uidUpper;
+              ta.setAttribute('readonly','true');
+              ta.style.position = 'fixed';
+              ta.style.left = '-9999px';
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            showMsg('Cod client copiat.', 2500);
+          }catch(_){
+            showErr('Nu am putut copia. Incearca manual.', 3500);
+          }
+        });
+      }
+      // Resend verification (cooldown local + optional RTDB)
+      if (btnResendVerify) {
+        btnResendVerify.addEventListener('click', async function(){
+          lockEl(btnResendVerify, true);
+          showMsg('', 0); showErr('', 0);
           try{
-            await user.sendEmailVerification();
-            var ts = now();
-            await setLastVerifySentAt(user.uid, ts);
-            if (btnResendVerify) {
-              startButtonCooldown(btnResendVerify, ts + VERIFY_COOLDOWN_MS, function(sec){
+            user = auth.currentUser || user;
+            if (!user) { window.location.replace(LOGIN_URL); return; }
+            await user.reload();
+            if (user.emailVerified) {
+              renderProfile(user);
+              showMsg('Emailul este deja verificat.', 3000);
+              lockEl(btnResendVerify, false);
+              return;
+            }
+            var lastSent = await getLastVerifySentAt(user.uid);
+            var untilTs = lastSent + VERIFY_COOLDOWN_MS;
+            if (now() < untilTs) {
+              startButtonCooldown(btnResendVerify, untilTs, function(sec){
                 return 'Poti retrimite in ' + sec + 's';
               });
+              showErr('Asteapta putin inainte sa retrimiti emailul.', 3500);
+              return;
             }
-          }catch(_){}
-          try{ await user.reload(); }catch(_){}
-          renderProfile(user);
-          if (inNewEmail) inNewEmail.value = '';
-          showMsg('Email actualizat. Ti-am trimis un email de verificare pe noua adresa.', 6500);
-        }catch(e){
-          showErr(formatAuthErr(e), 6000);
-        }finally{
-          lockEl(btnChangeEmail, false);
-        }
-      });
-    }
-    // ✅ Send password reset email + COOLDOWN UI
-    if (btnSendReset) {
-      btnSendReset.addEventListener('click', async function(){
-        lockEl(btnSendReset, true);
-        showMsg('', 0); showErr('', 0);
-        try{
-          user = auth.currentUser || user;
-          if (!user || !user.email) { showErr('Nu exista email asociat acestui cont.', 4000); return; }
-          // cooldown check
-          var last = getLastResetSentAt();
-          var untilTs = last + RESET_COOLDOWN_MS;
-          if (now() < untilTs) {
-            startButtonCooldown(btnSendReset, untilTs, function(sec){
+            await user.sendEmailVerification();
+            var ts = now();
+            // chiar daca RTDB e blocat de rules, LS se salveaza si cooldown porneste
+            await setLastVerifySentAt(user.uid, ts);
+            showMsg('Ti-am retrimis emailul de verificare. Verifica si Spam.', 4500);
+            startButtonCooldown(btnResendVerify, ts + VERIFY_COOLDOWN_MS, function(sec){
               return 'Poti retrimite in ' + sec + 's';
             });
-            showErr('Asteapta putin inainte sa trimiti din nou.', 3500);
-            return;
+          }catch(e){
+            showErr(formatAuthErr(e), 5000);
+            lockEl(btnResendVerify, false);
           }
-          await auth.sendPasswordResetEmail(user.email);
-          var ts = now();
-          setLastResetSentAt(ts);
-          showMsg('Ti-am trimis link de resetare parola (verifica si Spam).', 5500);
-          startButtonCooldown(btnSendReset, ts + RESET_COOLDOWN_MS, function(sec){
-            return 'Poti retrimite in ' + sec + 's';
-          });
-        }catch(e){
-          showErr(formatAuthErr(e), 6000);
-          lockEl(btnSendReset, false);
-        }
-      });
-    }
-    // Pref toggles: localStorage + Firestore
-    function onPrefChange(){
-      if (hydrating) return;
-      user = auth.currentUser || user;
-      if (!user) return;
-      var theme = (tgTheme && tgTheme.checked) ? 'light' : 'dark';
-      var sounds = tgSounds ? !!tgSounds.checked : getLSBool(LS.SOUNDS, true);
-      var haptics = tgHaptics ? !!tgHaptics.checked : getLSBool(LS.HAPTICS, true);
-      var correctAnim = tgCorrectAnim ? !!tgCorrectAnim.checked : getLSBool(LS.CORRECT_ANIM, true);
-      setLSText(LS.THEME, theme);
-      applyTheme(theme);
-      setLSBool(LS.SOUNDS, sounds);
-      setLSBool(LS.HAPTICS, haptics);
-      setLSBool(LS.CORRECT_ANIM, correctAnim);
-      savePrefsDebounced(user.uid, {
-        theme: theme,
-        uiSounds: sounds,
-        haptics: haptics,
-        correctAnim: correctAnim
-      });
-      showMsg('Preferintele au fost salvate.', 1800);
-    }
-    if (tgTheme) tgTheme.addEventListener('change', onPrefChange);
-    if (tgSounds) tgSounds.addEventListener('change', onPrefChange);
-    if (tgHaptics) tgHaptics.addEventListener('change', onPrefChange);
-    if (tgCorrectAnim) tgCorrectAnim.addEventListener('change', onPrefChange);
-    // Resetari progres
-    async function handleReset(which, btn){
-      user = auth.currentUser || user;
-      if (!user) { window.location.replace(LOGIN_URL); return; }
-      var label = (which === 'cod') ? 'Codul Rutier'
-                : (which === 'mediu') ? 'Mediu Invatare'
-                : 'Teste Examen';
-      var okc = confirm('Sigur vrei sa resetezi progresul pentru: ' + label + '?\n\nActiunea este ireversibila.');
-      if (!okc) return;
-      lockEl(btn, true);
-      showMsg('Se reseteaza progresul…', 0);
-      showErr('', 0);
-      try{
-        await resetModule(user.uid, which);
-        showMsg('Progres resetat pentru: ' + label + '.', 4500);
-      }catch(e){
-        showErr('Nu am putut reseta progresul. Incearca din nou.', 5000);
-      }finally{
-        lockEl(btn, false);
+        });
       }
-    }
-    if (btnResetCod) btnResetCod.addEventListener('click', function(){ handleReset('cod', btnResetCod); });
-    if (btnResetMediu) btnResetMediu.addEventListener('click', function(){ handleReset('mediu', btnResetMediu); });
-    if (btnResetExamen) btnResetExamen.addEventListener('click', function(){ handleReset('examen', btnResetExamen); });
-    // Sign out (data-sp-signout)
-    if (btnSignout) {
-      btnSignout.addEventListener('click', async function(e){
-        try{ if (e && e.preventDefault) e.preventDefault(); }catch(_){}
-        lockEl(btnSignout, true);
-        showMsg('', 0); showErr('', 0);
-        try{
-          await auth.signOut();
-          window.location.replace(LOGIN_URL);
-        }catch(_){
-          showErr('Nu am putut face deconectarea. Reincarca pagina.', 5000);
-          lockEl(btnSignout, false);
-        }
-      });
-    }
-    // Delete account + data + RTDB cleanup
-    if (btnDeleteAccount) {
-      btnDeleteAccount.addEventListener('click', async function(){
+      // Change email (reauth + updateEmail + refresh token + update Firestore + send verify)
+      if (btnChangeEmail) {
+        btnChangeEmail.addEventListener('click', async function(){
+          lockEl(btnChangeEmail, true);
+          showMsg('', 0); showErr('', 0);
+          try{
+            user = auth.currentUser || user;
+            if (!user) { window.location.replace(LOGIN_URL); return; }
+            var newEmail = normalizeEmail(inNewEmail ? inNewEmail.value : '');
+            if (!newEmail) { showErr('Introdu emailul nou.', 3500); return; }
+            if (newEmail === normalizeEmail(user.email)) { showErr('Emailul nou este identic cu cel curent.', 3500); return; }
+            await safeDoSensitive(async function(){
+              await user.updateEmail(newEmail);
+            });
+            // refresh token (ca rules-urile pe email sa nu respinga update-ul)
+            try{ await user.getIdToken(true); }catch(_){}
+            // update in users/{uid}.email
+            try{
+              await db.collection('users').doc(user.uid).set({ email: newEmail }, { merge: true });
+            }catch(_){}
+            // trimite verificare pe email nou + cooldown
+            try{
+              await user.sendEmailVerification();
+              var ts = now();
+              await setLastVerifySentAt(user.uid, ts);
+              if (btnResendVerify) {
+                startButtonCooldown(btnResendVerify, ts + VERIFY_COOLDOWN_MS, function(sec){
+                  return 'Poti retrimite in ' + sec + 's';
+                });
+              }
+            }catch(_){}
+            try{ await user.reload(); }catch(_){}
+            renderProfile(user);
+            if (inNewEmail) inNewEmail.value = '';
+            showMsg('Email actualizat. Ti-am trimis un email de verificare pe noua adresa.', 6500);
+          }catch(e){
+            showErr(formatAuthErr(e), 6000);
+          }finally{
+            lockEl(btnChangeEmail, false);
+          }
+        });
+      }
+      // ✅ Send password reset email + COOLDOWN UI
+      if (btnSendReset) {
+        btnSendReset.addEventListener('click', async function(){
+          lockEl(btnSendReset, true);
+          showMsg('', 0); showErr('', 0);
+          try{
+            user = auth.currentUser || user;
+            if (!user || !user.email) { showErr('Nu exista email asociat acestui cont.', 4000); return; }
+            // cooldown check
+            var last = getLastResetSentAt();
+            var untilTs = last + RESET_COOLDOWN_MS;
+            if (now() < untilTs) {
+              startButtonCooldown(btnSendReset, untilTs, function(sec){
+                return 'Poti retrimite in ' + sec + 's';
+              });
+              showErr('Asteapta putin inainte sa trimiti din nou.', 3500);
+              return;
+            }
+            await auth.sendPasswordResetEmail(user.email);
+            var ts = now();
+            setLastResetSentAt(ts);
+            showMsg('Ti-am trimis link de resetare parola (verifica si Spam).', 5500);
+            startButtonCooldown(btnSendReset, ts + RESET_COOLDOWN_MS, function(sec){
+              return 'Poti retrimite in ' + sec + 's';
+            });
+          }catch(e){
+            showErr(formatAuthErr(e), 6000);
+            lockEl(btnSendReset, false);
+          }
+        });
+      }
+      // Pref toggles: localStorage + Firestore
+      function onPrefChange(){
+        if (hydrating) return;
+        user = auth.currentUser || user;
+        if (!user) return;
+        var theme = (tgTheme && tgTheme.checked) ? 'light' : 'dark';
+        var sounds = tgSounds ? !!tgSounds.checked : getLSBool(LS.SOUNDS, true);
+        var haptics = tgHaptics ? !!tgHaptics.checked : getLSBool(LS.HAPTICS, true);
+        var correctAnim = tgCorrectAnim ? !!tgCorrectAnim.checked : getLSBool(LS.CORRECT_ANIM, true);
+        setLSText(LS.THEME, theme);
+        applyTheme(theme);
+        setLSBool(LS.SOUNDS, sounds);
+        setLSBool(LS.HAPTICS, haptics);
+        setLSBool(LS.CORRECT_ANIM, correctAnim);
+        savePrefsDebounced(user.uid, {
+          theme: theme,
+          uiSounds: sounds,
+          haptics: haptics,
+          correctAnim: correctAnim
+        });
+        showMsg('Preferintele au fost salvate.', 1800);
+      }
+      if (tgTheme) tgTheme.addEventListener('change', onPrefChange);
+      if (tgSounds) tgSounds.addEventListener('change', onPrefChange);
+      if (tgHaptics) tgHaptics.addEventListener('change', onPrefChange);
+      if (tgCorrectAnim) tgCorrectAnim.addEventListener('change', onPrefChange);
+      // Resetari progres
+      async function handleReset(which, btn){
         user = auth.currentUser || user;
         if (!user) { window.location.replace(LOGIN_URL); return; }
-        var ok1 = confirm('Sigur vrei sa stergi contul si toate datele?\n\nAceasta actiune este ireversibila.');
-        if (!ok1) return;
-        var ok2 = confirm('Confirmare finala: STERG definitiv contul si datele?');
-        if (!ok2) return;
-        lockEl(btnDeleteAccount, true);
-        showMsg('Se sterg datele…', 0);
+        var label = (which === 'cod') ? 'Codul Rutier'
+                  : (which === 'mediu') ? 'Mediu Invatare'
+                  : 'Teste Examen';
+        var okc = confirm('Sigur vrei sa resetezi progresul pentru: ' + label + '?\n\nActiunea este ireversibila.');
+        if (!okc) return;
+        lockEl(btn, true);
+        showMsg('Se reseteaza progresul…', 0);
         showErr('', 0);
-        var uid = user.uid;
-        var userDoc = db.collection('users').doc(uid);
         try{
-          // subcolectii folosite acum
-          await deleteCollectionAll(userDoc.collection('progress_legislatie')).catch(function(){});
-          await deleteCollectionAll(userDoc.collection('progress_mediu')).catch(function(){});
-          await deleteCollectionAll(userDoc.collection('answers_mediu')).catch(function(){});
-          await deleteCollectionAll(userDoc.collection('progress_chestionare')).catch(function(){});
-          await deleteCollectionAll(userDoc.collection('answers_chestionare')).catch(function(){});
-          // (optional) daca ai colectii AI in viitor
-          await deleteCollectionAll(userDoc.collection('ai_history')).catch(function(){});
-          await deleteCollectionAll(userDoc.collection('aiHistory')).catch(function(){});
-          // sterge doc-ul user
-          await userDoc.delete().catch(function(){});
-          // cleanup RTDB
-          try{
-            if (firebase.database) {
-              var rtdb = firebase.database();
-              await Promise.all([
-                rtdb.ref(RTDB_PATHS.sessionLocks + '/' + uid).remove().catch(function(){}),
-                rtdb.ref(RTDB_PATHS.chapterLocks + '/' + uid).remove().catch(function(){}),
-                rtdb.ref(RTDB_PATHS.emailVerification + '/' + uid).remove().catch(function(){})
-              ]);
-            }
-          }catch(_){}
-          // sterge cont Auth (reauth daca cere)
-          await safeDoSensitive(async function(){
-            user = auth.currentUser || user;
-            if (!user) throw new Error('Nu esti autentificat.');
-            await user.delete();
-          });
-          // curatam localStorage (doar dupa delete cont)
-          try{
-            Object.keys(LS).forEach(function(k){
-              try{ localStorage.removeItem(LS[k]); }catch(_){}
-            });
-          }catch(_){}
-          showMsg('Contul a fost sters. Te redirectionez…', 2500);
-          setTimeout(function(){ window.location.replace('/'); }, 900);
+          await resetModule(user.uid, which);
+          showMsg('Progres resetat pentru: ' + label + '.', 4500);
         }catch(e){
-          showErr(formatAuthErr(e), 7000);
-          lockEl(btnDeleteAccount, false);
+          showErr('Nu am putut reseta progresul. Incearca din nou.', 5000);
+        }finally{
+          lockEl(btn, false);
         }
-      });
+      }
+      if (btnResetCod) btnResetCod.addEventListener('click', function(){ handleReset('cod', btnResetCod); });
+      if (btnResetMediu) btnResetMediu.addEventListener('click', function(){ handleReset('mediu', btnResetMediu); });
+      if (btnResetExamen) btnResetExamen.addEventListener('click', function(){ handleReset('examen', btnResetExamen); });
+      // Sign out (data-sp-signout)
+      if (btnSignout) {
+        btnSignout.addEventListener('click', async function(e){
+          try{ if (e && e.preventDefault) e.preventDefault(); }catch(_){}
+          lockEl(btnSignout, true);
+          showMsg('', 0); showErr('', 0);
+          try{
+            await auth.signOut();
+            window.location.replace(LOGIN_URL);
+          }catch(_){
+            showErr('Nu am putut face deconectarea. Reincarca pagina.', 5000);
+            lockEl(btnSignout, false);
+          }
+        });
+      }
+      // Delete account + data + RTDB cleanup
+      if (btnDeleteAccount) {
+        btnDeleteAccount.addEventListener('click', async function(){
+          user = auth.currentUser || user;
+          if (!user) { window.location.replace(LOGIN_URL); return; }
+          var ok1 = confirm('Sigur vrei sa stergi contul si toate datele?\n\nAceasta actiune este ireversibila.');
+          if (!ok1) return;
+          var ok2 = confirm('Confirmare finala: STERG definitiv contul si datele?');
+          if (!ok2) return;
+          lockEl(btnDeleteAccount, true);
+          showMsg('Se sterg datele…', 0);
+          showErr('', 0);
+          var uid = user.uid;
+          var userDoc = db.collection('users').doc(uid);
+          try{
+            // subcolectii folosite acum
+            await deleteCollectionAll(userDoc.collection('progress_legislatie')).catch(function(){});
+            await deleteCollectionAll(userDoc.collection('progress_mediu')).catch(function(){});
+            await deleteCollectionAll(userDoc.collection('answers_mediu')).catch(function(){});
+            await deleteCollectionAll(userDoc.collection('progress_chestionare')).catch(function(){});
+            await deleteCollectionAll(userDoc.collection('answers_chestionare')).catch(function(){});
+            // (optional) daca ai colectii AI in viitor
+            await deleteCollectionAll(userDoc.collection('ai_history')).catch(function(){});
+            await deleteCollectionAll(userDoc.collection('aiHistory')).catch(function(){});
+            // sterge doc-ul user
+            await userDoc.delete().catch(function(){});
+            // cleanup RTDB
+            try{
+              if (firebase.database) {
+                var rtdb = firebase.database();
+                await Promise.all([
+                  rtdb.ref(RTDB_PATHS.sessionLocks + '/' + uid).remove().catch(function(){}),
+                  rtdb.ref(RTDB_PATHS.chapterLocks + '/' + uid).remove().catch(function(){}),
+                  rtdb.ref(RTDB_PATHS.emailVerification + '/' + uid).remove().catch(function(){})
+                ]);
+              }
+            }catch(_){}
+            // sterge cont Auth (reauth daca cere)
+            await safeDoSensitive(async function(){
+              user = auth.currentUser || user;
+              if (!user) throw new Error('Nu esti autentificat.');
+              await user.delete();
+            });
+            // curatam localStorage (doar dupa delete cont)
+            try{
+              Object.keys(LS).forEach(function(k){
+                try{ localStorage.removeItem(LS[k]); }catch(_){}
+              });
+            }catch(_){}
+            showMsg('Contul a fost sters. Te redirectionez…', 2500);
+            setTimeout(function(){ window.location.replace('/'); }, 900);
+          }catch(e){
+            showErr(formatAuthErr(e), 7000);
+            lockEl(btnDeleteAccount, false);
+          }
+        });
+      }
+      showMainUI();
+    }catch(e){
+      console.error(e);
+      showErr('A aparut o eroare. Reincarca pagina.', 6000);
+      showMainUI();
     }
   })();
 });

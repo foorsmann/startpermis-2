@@ -15,7 +15,8 @@
     "lint:html": "htmlhint \"*.html\"",
     "lint:css": "stylelint \"css/**/*.css\"",
     "lint:js": "eslint \"js/**/*.js\" \"scripts/**/*.js\"",
-    "lint": "npm run lint:js && npm run lint:css && npm run lint:html"
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
+    "optimize:images": "node scripts/optimize-images.js"
   },
   "repository": {
     "type": "git",

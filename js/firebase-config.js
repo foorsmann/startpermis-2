@@ -43,6 +43,26 @@
     return typeof firebase !== 'undefined' && typeof firebase.initializeApp === 'function' && Array.isArray(firebase.apps);
   }
 
+  // Domains allowed to run App Check (to avoid false positives on preview hosts
+  // that are not whitelisted in Firebase/App Check console)
+  var APP_CHECK_ALLOWED_HOSTS = [
+    'scaoalauto.web.app',
+    'scaoalauto.firebaseapp.com'
+  ];
+
+  function isAllowedHost() {
+    try {
+      var h = (location && location.hostname) || '';
+      if (!h) return false;
+      if (APP_CHECK_ALLOWED_HOSTS.indexOf(h) !== -1) return true;
+      // Permit localhost for debugging
+      if (h === 'localhost' || h === '127.0.0.1') return true;
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function activateAppCheck() {
     logger.log('[appcheck] Attempting activation...');
     try {
@@ -96,6 +116,12 @@
 
     // Check if App Check SDK is available
     if (typeof firebase.appCheck === 'function') {
+      if (!isAllowedHost()) {
+        logger.warn('[appcheck] Host not in allowlist; skipping activation to avoid reCAPTCHA/App Check errors on preview domains. Host =', location.hostname);
+        window.__spAppCheckSkippedForHost = true;
+        return;
+      }
+
       logger.log('[appcheck] SDK is available, activating...');
       activateAppCheck();
     } else {

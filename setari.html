@@ -1745,16 +1745,16 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="auth-card">
           <h3 class="auth-title">AUTENTIFICARE</h3>
           <div class="change-email-wrapper">
-            <div class="change-email-title">SCHIMBA EMAIL</div>
-            <div class="new-email-wrapper">
-              <div class="code-embed-7 w-embed">
-                <div class="sp-input-wrap">
-                  <input class="sp-input" type="email" inputmode="email" autocomplete="email" placeholder="EMAIL NOU" data-sp-new-email="">
+              <div class="change-email-title">SCHIMBA EMAIL</div>
+              <div class="new-email-wrapper">
+                <div class="code-embed-7 w-embed">
+                  <div class="sp-input-wrap">
+                  <input class="sp-input" type="email" inputmode="email" autocomplete="email" placeholder="EMAIL NOU" data-sp-new-email="" id="sp-new-email" name="sp-new-email">
+                  </div>
                 </div>
               </div>
+              <a href="#" data-sp-change-email="" class="change-email-btn w-button">ACTUALIZEAZA EMAIL</a>
             </div>
-            <a href="#" data-sp-change-email="" class="change-email-btn w-button">ACTUALIZEAZA EMAIL</a>
-          </div>
           <div class="reset-password-wrapper">
             <div class="reset-password-title">RESETEAZA PAROLA</div>
             <a data-sp-send-reset="" href="#" class="reset-password-btn w-button">TRIMITE LINK</a>
@@ -1766,28 +1766,28 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="option-wrapper">
               <div>TEMA DARK/LIGHT</div>
               <div class="w-embed"><label class="sp-switch" aria-label="Toggle">
-                  <input type="checkbox" data-sp-toggle-theme="">
+                  <input type="checkbox" data-sp-toggle-theme="" id="sp-toggle-theme" name="sp-toggle-theme">
                   <span class="sp-switch__track"><span class="sp-switch__thumb"></span></span>
                 </label></div>
             </div>
             <div class="option-wrapper">
               <div>ANIMATIE RASPUNS CORECT</div>
               <div class="w-embed"><label class="sp-switch" aria-label="Toggle">
-                  <input type="checkbox" data-sp-toggle-correctanim="">
+                  <input type="checkbox" data-sp-toggle-correctanim="" id="sp-toggle-correctanim" name="sp-toggle-correctanim">
                   <span class="sp-switch__track"><span class="sp-switch__thumb"></span></span>
                 </label></div>
             </div>
             <div class="option-wrapper">
               <div>VIBRATIE/RASPUNS HAPTIC</div>
               <div class="w-embed"><label class="sp-switch" aria-label="Toggle">
-                  <input type="checkbox" data-sp-toggle-haptics="">
+                  <input type="checkbox" data-sp-toggle-haptics="" id="sp-toggle-haptics" name="sp-toggle-haptics">
                   <span class="sp-switch__track"><span class="sp-switch__thumb"></span></span>
                 </label></div>
             </div>
             <div class="option-wrapper">
               <div>SUNETE UI</div>
               <div class="w-embed"><label class="sp-switch" aria-label="Toggle">
-                  <input type="checkbox" data-sp-toggle-sounds="">
+                  <input type="checkbox" data-sp-toggle-sounds="" id="sp-toggle-sounds" name="sp-toggle-sounds">
                   <span class="sp-switch__track"><span class="sp-switch__thumb"></span></span>
                 </label></div>
             </div>

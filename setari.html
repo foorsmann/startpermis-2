@@ -1002,6 +1002,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const authBtns        = [...document.querySelectorAll('.auth-btn')];
   const loggedMenus     = [...document.querySelectorAll('.user-logged-in-menu')];
   const emailHolders    = [...document.querySelectorAll('.client-email-text')];
+  const settingsEmailHolders = [...document.querySelectorAll('.user-email')];
   const emailWrappers   = [...document.querySelectorAll('.client-email-wrapper')];
   const logoutAreas     = [...document.querySelectorAll('.log-out-wrapper')];
   const swapBtns        = [...document.querySelectorAll('.swap-btn')];
@@ -1291,6 +1292,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
   /* ==== UI renderers ==== */
+  function syncEmailTooltipContent(fullEmail){
+    emailWrappers.forEach(w => {
+      if (!w) return;
+      let tip = w.querySelector('.ms-email-tooltip');
+      if (!tip){
+        tip = document.createElement('div');
+        tip.className = 'ms-email-tooltip';
+        w.appendChild(tip);
+      }
+      tip.textContent = fullEmail || '';
+      if (fullEmail){
+        w.setAttribute('data-email-full', fullEmail);
+        w.setAttribute('title', fullEmail);
+      }else{
+        w.removeAttribute('data-email-full');
+        w.removeAttribute('title');
+      }
+    });
+  }
   function showLoggedInUI(email){
     const displayEmail = formatEmailForDisplay(email || '');
     authBtns.forEach(el => { if (el) el.style.display = 'none'; });
@@ -1300,22 +1320,18 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!el) return;
       el.textContent = displayEmail;
     });
-    // tooltip custom cu email complet (hover + click/tap)
-    emailWrappers.forEach(w => {
-      if (!w) return;
-      let tip = w.querySelector('.ms-email-tooltip');
-      if (!tip){
-        tip = document.createElement('div');
-        tip.className = 'ms-email-tooltip';
-        w.appendChild(tip);
-      }
-      tip.textContent = email || '';
+    // email complet in pagina Setari (ellipsis + tooltip)
+    settingsEmailHolders.forEach(el => {
+      if (!el) return;
+      el.textContent = email || '';
       if (email){
-        w.setAttribute('data-email-full', email);
+        el.setAttribute('title', email);
       }else{
-        w.removeAttribute('data-email-full');
+        el.removeAttribute('title');
       }
     });
+    // tooltip custom cu email complet (hover + click/tap)
+    syncEmailTooltipContent(email || '');
     hideSpinner();
   }
   function showLoggedOutUI(){
@@ -1325,9 +1341,15 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!el) return;
       el.textContent = '';
     });
+    settingsEmailHolders.forEach(el => {
+      if (!el) return;
+      el.textContent = '';
+      el.removeAttribute('title');
+    });
     emailWrappers.forEach(w => {
       if (!w) return;
       w.removeAttribute('data-email-full');
+      w.removeAttribute('title');
       w.classList.remove('ms-tooltip-open','ms-tooltip-pinned');
       const tip = w.querySelector('.ms-email-tooltip');
       if (tip) tip.textContent = '';
@@ -1413,6 +1435,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // inchidem altele si il deschidem pinned pe acesta
         closeAllEmailTooltips();
         w.classList.add('ms-tooltip-pinned','ms-tooltip-open');
+      }
+    });
+    w.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+        e.preventDefault();
+        w.click();
       }
     });
   });
@@ -1696,7 +1724,10 @@ document.addEventListener('DOMContentLoaded', function () {
           <div class="email-profile-wrapper">
             <div class="profile-email-wrapper">
               <div class="email-label">EMAIL</div>
-              <div data-sp-email="" class="user-email"> </div>
+              <div class="client-email-wrapper profile-email-tooltip" tabindex="0">
+                <div data-sp-email="" class="user-email"> </div>
+                <div class="ms-email-tooltip"></div>
+              </div>
               <div data-sp-email-status="" class="text-status"> </div>
             </div>
             <a href="#" data-sp-resend-verify="" class="resend-verification-email w-button">Retrimite email de verificare</a>
@@ -2195,6 +2226,11 @@ Webflow.push(function () {
     if (!user) return;
     // email
     setText(elEmail, user.email || '');
+    if (elEmail) {
+      if (user.email) { elEmail.setAttribute('title', user.email); }
+      else { elEmail.removeAttribute('title'); }
+    }
+    syncEmailTooltipContent(user.email || '');
     // UID: il afisam cu uppercase + pastram raw in data-raw (daca ai nevoie vreodata)
     if (elAdvancedUid) {
       elAdvancedUid.dataset.uidRaw = user.uid || '';

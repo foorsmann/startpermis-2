@@ -625,12 +625,16 @@ if (window.installSingleActiveLock) {
       }else{imageEl.style.display='none';}
     }else{imageEl.style.display='none';}
     setTimeout(()=>{
-      videoWrapper.querySelectorAll('.plyr-player').forEach(player=>{
+      const plyrIconUrl='/images/plyr.svg';
+      const players=[...videoWrapper.querySelectorAll('.plyr-player')];
+      console.log('[plyr-debug] initializing players', { count: players.length, iconUrl: plyrIconUrl });
+      players.forEach(player=>{
         if(!player.plyr){
           player.plyr=new Plyr(player,{
             controls:['play','progress','current-time','mute','volume','fullscreen'],
-            ratio:'16:9',seekTime:5,settings:[]
+            ratio:'16:9',seekTime:5,settings:[],iconUrl:plyrIconUrl
           });
+          console.log('[plyr-debug] player created', { iconUrl: plyrIconUrl, source: player.currentSrc || player.querySelector('source')?.src });
         }
         player.addEventListener('click',function(e){
           if(e.target.closest('.plyr__controls')||e.target.classList.contains('plyr__control')||e.target.tagName==='BUTTON') return;

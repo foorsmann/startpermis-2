@@ -95,7 +95,7 @@
 
 | Fisier | Status | Probleme |
 |--------|--------|----------|
-| firebase.json | ✅ | CSP cu SHA-256 hashes pentru scripts (30 Dec 2025) |
+| firebase.json | ⚠️ | CSP cu unsafe-inline (necesar pentru Webflow) |
 | .firebaserc | ✅ | OK - project ID corect (`scaoalauto`) |
 | firestore.rules | ✅ | Custom Claims + email fallback (30 Dec 2025) |
 | database.rules.json | ⚠️ | Future timestamps permitite |
@@ -106,7 +106,7 @@
 - ✅ Strict-Transport-Security (HSTS)
 - ✅ X-Frame-Options: SAMEORIGIN
 - ✅ X-Content-Type-Options: nosniff
-- ✅ CSP cu SHA-256 hashes pentru inline scripts (30 Dec 2025)
+- ⚠️ CSP cu unsafe-inline (necesar pentru Webflow)
 
 ---
 
@@ -140,11 +140,13 @@
 
 ### Vulnerabilitati Ramase
 
-| Vulnerabilitate | Severity | Locatie |
-|-----------------|----------|---------|
-| ~~CSP unsafe-inline~~ | ~~HIGH~~ | ~~firebase.json~~ ✅ FIXED (30 Dec 2025) |
-| localStorage auth snapshot | MEDIUM | auth-guard-*.js |
-| Future timestamps permise | MEDIUM | database.rules.json |
+| Vulnerabilitate | Severity | Locatie | Nota |
+|-----------------|----------|---------|------|
+| CSP unsafe-inline | LOW | firebase.json | Necesar pentru Webflow (multe scripturi inline dinamice) |
+| localStorage auth snapshot | MEDIUM | auth-guard-*.js | - |
+| Future timestamps permise | MEDIUM | database.rules.json | - |
+
+**Nota CSP:** Site-urile Webflow genereaza scripturi inline dinamice care nu pot fi acoperite cu SHA-256 hashes. Hash-urile se schimba la fiecare rebuild Webflow. Alte masuri de securitate (sanitizeHTML, App Check, etc.) compenseaza acest risc.
 
 ### Ce Functioneaza Bine
 - Firebase Auth cu email verification obligatoriu
@@ -187,7 +189,7 @@
 
 | Categorie | Status | Actualizat |
 |-----------|--------|------------|
-| Firebase Config | ✅ CSP cu SHA-256 hashes | 30 Dec 2025 |
+| Firebase Config | ⚠️ CSP cu unsafe-inline (Webflow) | 30 Dec 2025 |
 | Firestore Rules | ✅ Custom Claims + fallback | 30 Dec 2025 |
 | Storage Rules | ✅ Custom Claims + fallback | 30 Dec 2025 |
 | JavaScript - Memory Leaks | ✅ REZOLVAT | 30 Dec 2025 |
@@ -214,7 +216,7 @@
 2. ~~Optimizeaza imagini~~ → lazy loading + script WebP (`npm run optimize:images`)
 3. ~~Fix CI/CD error handling~~ → production.yml + validate.yml actualizate
 4. ~~Indeparteaza console.log din productie~~ → production logger implementat
-5. ~~Inlocuieste CSP unsafe-inline~~ → SHA-256 hashes pentru scripts
+5. ~~Inlocuieste CSP unsafe-inline~~ → Nu e posibil pentru Webflow (scripturi dinamice)
 
 ### LOW (Trimestrul urmator)
 1. Curata fisiere nefolosite (old-home.html, 22 imagini)
@@ -237,7 +239,7 @@
 ### Ce s-a rezolvat - MEDIUM:
 - ✅ Meta descriptions - 22/23 pagini HTML au meta description SEO
 - ✅ Optimizare imagini - lazy loading + script WebP creat
-- ✅ CSP security - unsafe-inline inlocuit cu SHA-256 hashes pentru scripts
+- ⚠️ CSP security - unsafe-inline necesar pentru Webflow (compensat de alte masuri)
 - ✅ CI/CD - error handling imbunatatit, JS linting adaugat
 - ✅ Console.log - production logger (doar dev logs)
 

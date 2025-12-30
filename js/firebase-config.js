@@ -12,9 +12,9 @@
   // Production-safe logger - only logs in development
   var IS_DEV = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   var logger = {
-    log: IS_DEV ? logger.log.bind(console) : function() {},
-    warn: IS_DEV ? logger.warn.bind(console) : function() {},
-    error: IS_DEV ? logger.error.bind(console) : function() {}
+    log: IS_DEV ? console.log.bind(console) : function() {},
+    warn: IS_DEV ? console.warn.bind(console) : function() {},
+    error: IS_DEV ? console.error.bind(console) : function() {}
   };
 
   // Firebase configuration

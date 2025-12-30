@@ -176,6 +176,34 @@ html[data-theme="light"] .sp-breadcrumb__current {
   [class*="close-btn"] {
     min-width: 44px;
     min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* X/close icons - ensure parent link has touch target */
+  .x-icon {
+    pointer-events: none;
+  }
+
+  a:has(.x-icon),
+  button:has(.x-icon) {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Module card buttons */
+  .module-card-btn {
+    min-height: 44px;
+  }
+
+  /* Form submit buttons */
+  .ms-button,
+  .w-button {
+    min-height: 44px;
   }
 
   /* Social buttons */

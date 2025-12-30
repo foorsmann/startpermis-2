@@ -99,6 +99,12 @@ Configurate în `firebase.json`:
 - **CSS/JS**: 1 săptămână
 - **HTML**: No cache (always fresh)
 
+## Fonturi
+
+- **Google Fonts**: `Montserrat` (400–700), `Kanit` (200–700), `Inter` (400/600/700) încărcate prin `WebFont.load` doar cu variantele utilizate.
+- **Fonturi locale**: `Gismo Trial Semirectangular` (2 versiuni), `Gismo YYY Semirectangular`, `Ooogismo Trial Semirectangular`, `Globet FFP` (Regular/Bold), `BinariaDisplayStencil`, `MazzardSoftM` (Light/Light Italic), `TT Octosquares Trial Condensed` (700/900).
+- **Politică**: adaugă noi fonturi doar dacă există un stil care le folosește; șterge definițiile și fișierele neutilizate după exporturi Webflow pentru a evita request-uri 404 și asset-uri inutile.
+
 ## URLs Production
 
 - https://scaoalauto.web.app

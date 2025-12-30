@@ -1,0 +1,255 @@
+/**
+ * UI/UX Accessibility Enhancements - Sprint 1
+ * Start Permis Platform
+ *
+ * Contents:
+ * 1. Skip Links
+ * 2. Breadcrumbs
+ * 3. Touch Targets (Mobile)
+ * 4. Focus Improvements
+ */
+
+/* ==========================================================================
+   1. SKIP LINKS
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  padding: 12px 24px;
+  background-color: var(--dark-theme--active-color, #00b15f);
+  color: #fff;
+  font-family: var(--dark-theme--body, Kanit, sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 0;
+  outline: 2px solid var(--dark-theme--second-color, #e7bc22);
+  outline-offset: 2px;
+}
+
+/* Light theme support */
+html[data-theme="light"] .skip-link {
+  background-color: var(--light-theme--active-color, #00b15f);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   2. BREADCRUMBS
+   ========================================================================== */
+
+.sp-breadcrumb {
+  padding: 12px 0;
+  margin-bottom: 16px;
+}
+
+.sp-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--dark-theme--body, Kanit, sans-serif);
+  font-size: 13px;
+}
+
+.sp-breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dark-theme--text-color, #e9e9e9);
+}
+
+.sp-breadcrumb__item:not(:last-child)::after {
+  content: "/";
+  color: var(--dark-theme--border-color, #313131);
+  font-weight: 300;
+}
+
+.sp-breadcrumb__link {
+  color: var(--dark-theme--text-color, #e9e9e9);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.sp-breadcrumb__link:hover,
+.sp-breadcrumb__link:focus {
+  opacity: 1;
+  color: var(--dark-theme--active-color, #00b15f);
+}
+
+.sp-breadcrumb__link:focus-visible {
+  outline: 2px solid var(--dark-theme--active-color, #00b15f);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.sp-breadcrumb__current {
+  color: var(--dark-theme--text-color, #e9e9e9);
+  font-weight: 500;
+}
+
+/* Light theme breadcrumbs */
+html[data-theme="light"] .sp-breadcrumb__item {
+  color: var(--light-theme--text-color, #000);
+}
+
+html[data-theme="light"] .sp-breadcrumb__item:not(:last-child)::after {
+  color: var(--light-theme--border-color, #161616);
+}
+
+html[data-theme="light"] .sp-breadcrumb__link {
+  color: var(--light-theme--text-color, #000);
+}
+
+html[data-theme="light"] .sp-breadcrumb__link:hover,
+html[data-theme="light"] .sp-breadcrumb__link:focus {
+  color: var(--light-theme--active-color, #00b15f);
+}
+
+html[data-theme="light"] .sp-breadcrumb__current {
+  color: var(--light-theme--text-color, #000);
+}
+
+/* ==========================================================================
+   3. TOUCH TARGETS (Mobile)
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  /* Ensure minimum 44x44px touch targets for interactive elements */
+
+  /* Theme toggle buttons */
+  .st-sunMoonThemeToggleBtn,
+  .themeToggle {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Navigation menu button */
+  .menu-button,
+  .w-nav-button {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Icon buttons - wrapper approach */
+  .icon-button,
+  .eyes-wrapper,
+  .show-password-icon,
+  .hide-password-icon {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Back/close buttons */
+  .back-button,
+  .close-button,
+  [class*="back-btn"],
+  [class*="close-btn"] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Social buttons */
+  .social-button {
+    min-height: 44px;
+  }
+
+  /* Dropdown toggles */
+  .w-dropdown-toggle {
+    min-height: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  /* Checkbox/radio touch areas */
+  .w-checkbox,
+  .w-radio {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Links in navigation */
+  .nav-link,
+  .navbar-link,
+  .w-nav-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Breadcrumb links on mobile */
+  .sp-breadcrumb__link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 4px;
+  }
+}
+
+/* Extra small screens - more aggressive touch targets */
+@media (max-width: 479px) {
+  .st-sunMoonThemeToggleBtn,
+  .themeToggle,
+  .menu-button,
+  .w-nav-button {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* ==========================================================================
+   4. FOCUS IMPROVEMENTS
+   ========================================================================== */
+
+/* Ensure visible focus for keyboard users */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--dark-theme--active-color, #00b15f);
+  outline-offset: 2px;
+}
+
+html[data-theme="light"] a:focus-visible,
+html[data-theme="light"] button:focus-visible,
+html[data-theme="light"] input:focus-visible,
+html[data-theme="light"] select:focus-visible,
+html[data-theme="light"] textarea:focus-visible,
+html[data-theme="light"] [tabindex]:focus-visible {
+  outline-color: var(--light-theme--active-color, #00b15f);
+}
+
+/* Main content landmark styling - minimal */
+#main-content {
+  outline: none;
+}
+
+#main-content:focus {
+  outline: none;
+}

@@ -1292,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
   /* ==== UI renderers ==== */
-  const syncEmailTooltipContent = function(fullEmail){
+  function syncEmailTooltipContent(fullEmail){
     emailWrappers.forEach(w => {
       if (!w) return;
       let tip = w.querySelector('.ms-email-tooltip');
@@ -1310,7 +1310,7 @@ document.addEventListener('DOMContentLoaded', function () {
         w.removeAttribute('title');
       }
     });
-  };
+  }
   function showLoggedInUI(email){
     const displayEmail = formatEmailForDisplay(email || '');
     authBtns.forEach(el => { if (el) el.style.display = 'none'; });

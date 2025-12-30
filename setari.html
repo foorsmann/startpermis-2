@@ -1311,6 +1311,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  // safe fallback: expun helperul in window in caz ca alte scripturi il apeleaza
+  window.syncEmailTooltipContent = syncEmailTooltipContent;
   function showLoggedInUI(email){
     const displayEmail = formatEmailForDisplay(email || '');
     authBtns.forEach(el => { if (el) el.style.display = 'none'; });
@@ -2230,7 +2232,9 @@ Webflow.push(function () {
       if (user.email) { elEmail.setAttribute('title', user.email); }
       else { elEmail.removeAttribute('title'); }
     }
-    syncEmailTooltipContent(user.email || '');
+    if (typeof syncEmailTooltipContent === 'function') {
+      syncEmailTooltipContent(user.email || '');
+    }
     // UID: il afisam cu uppercase + pastram raw in data-raw (daca ai nevoie vreodata)
     if (elAdvancedUid) {
       elAdvancedUid.dataset.uidRaw = user.uid || '';

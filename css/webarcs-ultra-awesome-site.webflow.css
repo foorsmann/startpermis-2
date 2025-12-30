@@ -7898,10 +7898,31 @@ img {
 }
 
 .user-email {
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: block;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
   line-height: 1.2;
+}
+
+.profile-email-wrapper .client-email-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+}
+
+.profile-email-wrapper .ms-email-tooltip {
+  text-align: center;
 }
 
 .text-status {
@@ -13418,4 +13439,3 @@ img {
     justify-self: center;
   }
 }
-

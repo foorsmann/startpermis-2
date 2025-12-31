@@ -977,12 +977,8 @@ img {
   grid-row-gap: 15px;
   border: 2px solid var(--dark-theme--second-color);
   background-color: var(--dark-theme--main-color);
-  outline-color: var(--dark-theme--main-color);
-  outline-offset: 0px;
   cursor: default;
   border-radius: 10px;
-  outline-width: 4px;
-  outline-style: solid;
   flex-flow: column;
   justify-content: space-between;
   align-items: flex-start;

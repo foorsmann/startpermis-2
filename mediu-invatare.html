@@ -1276,6 +1276,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     document.querySelectorAll('.w-dropdown.w--open, .w-dropdown-toggle.w--open')
       .forEach(el => el.classList.remove('w--open'));
+    if (typeof updateDropdownBlurState === 'function') updateDropdownBlurState();
   }
   function disableProfileDropdown(){
     profileDropdowns.forEach(dropdown => {

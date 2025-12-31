@@ -4598,6 +4598,17 @@ img {
   inset: 0%;
 }
 
+.home-grain-overlay {
+  opacity: .04;
+  transition: opacity .2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-grain-overlay {
+    transition: none;
+  }
+}
+
 .circle-main {
   background-image: radial-gradient(circle, #102c35, #307d96 0%, #0888ff 0%, #004cda 100%, #20728d 100%, #53b2ff);
   justify-content: center;

@@ -11,6 +11,7 @@
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/webarcs-ultra-awesome-site.webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/sp-dropdown.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <script src="js/webfontloader-1.6.26.js" type="text/javascript"></script>
@@ -440,9 +441,9 @@
           </nav>
           <div id="w-node-_97821f09-5371-c0ba-a407-abd5e8abf3c1-e8abf3ac" class="profile-buttons">
             <a href="login.html" class="auth-btn w-button">AUTENTIFICARE</a>
-            <div data-delay="0" data-hover="false" id="profile-menu" data-w-id="97821f09-5371-c0ba-a407-abd5e8abf3c4" class="navbar-auth-invisible w-dropdown">
+            <div data-sp-dropdown id="profile-menu" class="navbar-auth-invisible w-dropdown">
               <div class="user-logged-in-menu w-dropdown-toggle">
-                <div class="swap-btn">CONTUL MEU</div><img loading="lazy" src="images/icon-dropdown-3-gray.svg" alt="" class="icon">
+                <div class="swap-btn">CONTUL MEU</div><img loading="lazy" src="images/icon-dropdown-3-gray.svg" alt="" class="icon sp-dropdown-arrow">
               </div>
               <nav class="dropdown-list w-dropdown-list">
                 <div class="close-btn-background">
@@ -1382,53 +1383,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('online', ()=>{
     if (document.body.classList.contains('auth-loading')) forceRenderSnapshot();
   });
-  /* =====================================================
-     INCHIDERE MENIU PROFIL LA CLICK PE .close-btn-background
-     – foloseste mecanismul Webflow (click pe toggle) + cleanup
-     ===================================================== */
-  function closeUserDropdown() {
-    // Toggle deschis
-    var openToggle = document.querySelector(
-      '.user-logged-in-menu.w-dropdown-toggle.w--open'
-    );
-    // Lista deschisa
-    var openList = document.querySelector(
-      '.dropdown-list.w-dropdown-list.w--open'
-    );
-    // Daca nu e nimic deschis, nu facem nimic
-    if (!openToggle && !openList) return;
-    // 1) Folosim mecanismul Webflow -> simulam click pe toggle
-    if (openToggle) {
-      openToggle.click();
-    }
-    // 2) Safety net: dupa ce Webflow proceseaza click-ul,
-    //    eliminam orice .w--open ramas pe elementele relevante
-    setTimeout(function () {
-      var t = document.querySelector(
-        '.user-logged-in-menu.w-dropdown-toggle.w--open'
-      );
-      var l = document.querySelector(
-        '.dropdown-list.w-dropdown-list.w--open'
-      );
-      if (t) t.classList.remove('w--open');
-      if (l) l.classList.remove('w--open');
-      var parent = null;
-      if (t) parent = t.closest('.w-dropdown');
-      if (!parent && l) parent = l.closest('.w-dropdown');
-      if (parent && parent.classList.contains('w--open')) {
-        parent.classList.remove('w--open');
-      }
-    }, 20);
-  }
-  // Atasam logica pe toate elementele .close-btn-background (overlay de inchidere)
-  var closeOverlays = document.querySelectorAll('.close-btn-background');
-  closeOverlays.forEach(function (overlay) {
-    overlay.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeUserDropdown();
-    });
-  });
 });
 </script>
           </div>
@@ -1717,6 +1671,8 @@ document.addEventListener('DOMContentLoaded', function () {
   <script src="js/plyr.polyfilled-3.7.8.min.js"></script>
   <!-- Theme Manager -->
   <script src="js/theme.js"></script>
+  <!-- Custom Dropdown System (independent of Webflow) -->
+  <script src="js/sp-dropdown.js"></script>
   <script>
 Webflow.push(async function () {
   'use strict';

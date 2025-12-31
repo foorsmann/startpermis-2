@@ -7767,7 +7767,7 @@ img {
   line-height: 1;
 }
 
-.navbar-logo-link.w--current {
+.navbar-logo-link {
   width: 10rem;
 }
 
@@ -10036,7 +10036,7 @@ img {
     position: absolute;
   }
 
-  .navbar-logo-link.w--current {
+  .navbar-logo-link {
     width: 9rem;
   }
 

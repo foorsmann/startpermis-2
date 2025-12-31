@@ -6969,8 +6969,8 @@ img {
   justify-content: center;
   align-self: flex-end;
   align-items: center;
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   display: flex;
   position: relative;
 }
@@ -6978,7 +6978,7 @@ img {
 .plus-line-icon {
   background-color: var(--dark-theme--text-color);
   border-radius: 2px;
-  width: 13px;
+  width: 15px;
   height: 4px;
   transform: rotate(-45deg);
 }
@@ -6986,7 +6986,7 @@ img {
 .minus-line-icon {
   background-color: var(--dark-theme--text-color);
   border-radius: 2px;
-  width: 13px;
+  width: 15px;
   height: 4px;
   position: absolute;
   transform: rotate(45deg);

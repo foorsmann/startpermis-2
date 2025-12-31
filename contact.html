@@ -1505,25 +1505,30 @@ document.addEventListener('DOMContentLoaded', function () {
   /* =====================================================
      INCHIDERE MENIU PROFIL LA CLICK PE .close-btn-background
      – foloseste mecanismul Webflow (click pe toggle) + cleanup
+     + reseteaza iconul (sageata) pentru sincronizare cu IX2
      ===================================================== */
   function closeUserDropdown() {
-    // Toggle deschis
-    var openToggle = document.querySelector(
-      '.user-logged-in-menu.w-dropdown-toggle.w--open'
-    );
-    // Lista deschisa
-    var openList = document.querySelector(
-      '.dropdown-list.w-dropdown-list.w--open'
-    );
-    // Daca nu e nimic deschis, nu facem nimic
-    if (!openToggle && !openList) return;
-    // 1) Folosim mecanismul Webflow -> simulam click pe toggle
-    if (openToggle) {
-      openToggle.click();
-    }
+    // Gasim dropdown-ul deschis
+    var openDropdown = document.querySelector('.w-dropdown.w--open');
+    if (!openDropdown) return;
+
+    // Gasim toggle-ul din dropdown (chiar daca nu are w--open pe el direct)
+    var toggle = openDropdown.querySelector('.w-dropdown-toggle');
+    if (!toggle) return;
+
+    // 1) Dispatch MouseEvent complet pentru a triggera si Webflow IX2
+    //    IX2 nu raspunde la .click() programatic, dar raspunde la MouseEvent real
+    var clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    });
+    toggle.dispatchEvent(clickEvent);
+
     // 2) Safety net: dupa ce Webflow proceseaza click-ul,
-    //    eliminam orice .w--open ramas pe elementele relevante
+    //    eliminam orice .w--open ramas + resetam iconul manual
     setTimeout(function () {
+      // Cleanup clase w--open
       var t = document.querySelector(
         '.user-logged-in-menu.w-dropdown-toggle.w--open'
       );
@@ -1532,13 +1537,19 @@ document.addEventListener('DOMContentLoaded', function () {
       );
       if (t) t.classList.remove('w--open');
       if (l) l.classList.remove('w--open');
-      var parent = null;
-      if (t) parent = t.closest('.w-dropdown');
-      if (!parent && l) parent = l.closest('.w-dropdown');
+
+      var parent = t ? t.closest('.w-dropdown') : (l ? l.closest('.w-dropdown') : null);
       if (parent && parent.classList.contains('w--open')) {
         parent.classList.remove('w--open');
       }
-    }, 20);
+
+      // 3) Resetam iconul (sageata) la starea inchis - sincronizare garantata
+      //    Aceasta este solutia definitiva pentru cazul in care IX2 nu a raspuns
+      var icon = toggle.querySelector('.icon');
+      if (icon) {
+        icon.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0deg) skew(0, 0)';
+      }
+    }, 50);
   }
   // Atasam logica pe toate elementele .close-btn-background (overlay de inchidere)
   var closeOverlays = document.querySelectorAll('.close-btn-background');

@@ -5943,8 +5943,8 @@ img {
   border-radius: 3px;
   justify-content: center;
   align-items: center;
-  width: 13px;
-  height: 13px;
+  width: 16px;
+  height: 16px;
   display: flex;
   position: relative;
 }
@@ -5952,14 +5952,14 @@ img {
 .wbs-accordion-3-icon-plus {
   background-color: #fff;
   border-radius: 2px;
-  width: 13px;
+  width: 16px;
   height: 4px;
 }
 
 .wbs-accordion-3-icon-minus {
   background-color: #fff;
   border-radius: 2px;
-  width: 13px;
+  width: 16px;
   height: 4px;
   position: absolute;
   transform: rotate(90deg);

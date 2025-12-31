@@ -1002,6 +1002,14 @@ img {
   display: flex;
 }
 
+@media screen and (max-width: 1150px) and (min-width: 992px) {
+  .dropdown-list {
+    border: 1px solid var(--dark-theme--border-color);
+    outline: none;
+    outline-offset: 0;
+  }
+}
+
 .legislatie-chapters-list {
   z-index: 300;
   grid-column-gap: 25px;

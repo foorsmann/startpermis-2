@@ -116,7 +116,15 @@ body.dropdown-blur-active #sp-dropdown-backdrop {
     background: rgba(0, 0, 0, 0.4);
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
-    z-index: 2147483645; /* Below dropdown-list (2147483647) but above navbar content */
+    z-index: 2147483645; /* Below dropdown-list but above navbar content */
     pointer-events: none;
+  }
+
+  /* Ensure dropdown-list is above the blur overlay when open */
+  .navbar-no-shadow [data-sp-dropdown].is-open .w-dropdown-list,
+  .navbar-no-shadow [data-sp-dropdown].is-open .dropdown-list,
+  .navbar-no-shadow-unlinked [data-sp-dropdown].is-open .w-dropdown-list,
+  .navbar-no-shadow-unlinked [data-sp-dropdown].is-open .dropdown-list {
+    z-index: 2147483650 !important;
   }
 }

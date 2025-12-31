@@ -6492,11 +6492,6 @@ img {
   color: var(--dark-theme--second-color);
 }
 
-.all-modules-bkg {
-  display: none;
-  overflow: clip;
-}
-
 .x-icon-dropdown {
   filter: invert();
   cursor: pointer;
@@ -7674,43 +7669,6 @@ img {
   position: relative;
 }
 
-.grain-overlay-v3 {
-  z-index: 10;
-  opacity: .53;
-  filter: contrast(105%);
-  pointer-events: none;
-  background-image: url('../images/grraa.webp');
-  background-position: 50%;
-  background-size: 100px;
-  width: 100%;
-  display: none;
-  position: fixed;
-  inset: 0%;
-}
-
-.grain-overlay-v3.no-snap {
-  pointer-events: none;
-}
-
-.grain-overlay-v3.full-second {
-  z-index: 10;
-  opacity: 0;
-  position: absolute;
-  inset: 0%;
-}
-
-.title-background-v2 {
-  opacity: .05;
-  filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.webp');
-  background-position: 50%;
-  background-repeat: repeat;
-  background-size: 700px;
-  display: none;
-  position: absolute;
-  inset: 0%;
-}
-
 .title-background-v3 {
   opacity: .05;
   filter: grayscale();
@@ -7740,43 +7698,6 @@ img {
 }
 
 .grain-overlay-v4.full-second {
-  z-index: 10;
-  opacity: 0;
-  position: absolute;
-  inset: 0%;
-}
-
-.title-background-v2-copy {
-  opacity: .05;
-  filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.webp');
-  background-position: 50%;
-  background-repeat: repeat;
-  background-size: 700px;
-  display: none;
-  position: absolute;
-  inset: 0%;
-}
-
-.grain-overlay-v3-copy {
-  z-index: 10;
-  opacity: .53;
-  filter: contrast(105%);
-  pointer-events: none;
-  background-image: url('../images/grraa.webp');
-  background-position: 50%;
-  background-size: 100px;
-  width: 100%;
-  display: none;
-  position: fixed;
-  inset: 0%;
-}
-
-.grain-overlay-v3-copy.no-snap {
-  pointer-events: none;
-}
-
-.grain-overlay-v3-copy.full-second {
   z-index: 10;
   opacity: 0;
   position: absolute;
@@ -8187,50 +8108,6 @@ img {
   font-weight: 400;
   line-height: 1;
   position: relative;
-}
-
-.all-modules-bkg-settings {
-  z-index: 0;
-  background-color: var(--dark-theme--active-black);
-  display: none;
-  position: absolute;
-  inset: 0%;
-}
-
-.title-background-v2-settings {
-  z-index: 0;
-  opacity: .05;
-  filter: grayscale();
-  background-image: url('../images/Background-cu-elemente-ss.webp');
-  background-position: 50%;
-  background-repeat: repeat;
-  background-size: 700px;
-  position: absolute;
-  inset: 0%;
-}
-
-.grain-overlay-v3-settings {
-  z-index: 10;
-  opacity: .09;
-  filter: contrast(105%);
-  pointer-events: none;
-  background-image: url('../images/grraa.webp');
-  background-position: 50%;
-  background-size: 100px;
-  width: 100%;
-  position: absolute;
-  inset: 0%;
-}
-
-.grain-overlay-v3-settings.no-snap {
-  pointer-events: none;
-}
-
-.grain-overlay-v3-settings.full-second {
-  z-index: 10;
-  opacity: 0;
-  position: absolute;
-  inset: 0%;
 }
 
 .option-wrapper {
@@ -9827,10 +9704,6 @@ img {
     inset: 0%;
   }
 
-  .all-modules-bkg {
-    background-color: var(--dark-theme--active-black);
-  }
-
   .x-icon-dropdown:hover {
     filter: invert();
   }
@@ -10036,34 +9909,10 @@ img {
     width: 30rem;
   }
 
-  .grain-overlay-v3 {
-    opacity: .15;
-    display: block;
-    position: absolute;
-  }
-
-  .title-background-v2 {
-    z-index: 0;
-    opacity: .03;
-    display: block;
-  }
-
   .title-background-v3 {
     z-index: 0;
     opacity: .01;
     filter: none;
-  }
-
-  .title-background-v2-copy {
-    z-index: 0;
-    opacity: .03;
-    display: block;
-  }
-
-  .grain-overlay-v3-copy {
-    opacity: .15;
-    display: block;
-    position: absolute;
   }
 
   .navbar-logo-link {
@@ -11065,15 +10914,6 @@ img {
     padding-right: 0;
   }
 
-  .all-modules-bkg {
-    z-index: 0;
-    justify-content: center;
-    align-items: center;
-    display: block;
-    position: absolute;
-    inset: 0%;
-  }
-
   .hero-description-hero-main {
     width: 90%;
     margin-top: 10px;
@@ -11239,11 +11079,6 @@ img {
   .settings-stack {
     grid-template-rows: auto auto auto auto auto;
     grid-template-columns: 1fr;
-  }
-
-  .all-modules-bkg-settings {
-    justify-content: center;
-    align-items: center;
   }
 
   .grain-overlay-settings {
@@ -12659,10 +12494,6 @@ img {
     padding-right: 0;
   }
 
-  .all-modules-bkg {
-    display: none;
-  }
-
   .x-icon-dropdown {
     margin-bottom: 10px;
   }
@@ -12900,10 +12731,6 @@ img {
     display: none;
   }
 
-  .grain-overlay-v3, .title-background-v2 {
-    display: none;
-  }
-
   .email-label {
     font-size: 20px;
   }
@@ -12965,10 +12792,6 @@ img {
 
   .heading-20 {
     font-size: 25px;
-  }
-
-  .all-modules-bkg-settings {
-    display: none;
   }
 
   .option-wrapper {

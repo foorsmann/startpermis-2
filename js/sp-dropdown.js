@@ -45,6 +45,11 @@
     list.style.pointerEvents = 'none';
   }
 
+  function updateBlurState() {
+    var hasOpen = document.querySelector('.w-dropdown-list.w--open, .dropdown-list.w--open, .dropdown-list.open');
+    document.body.classList.toggle('dropdown-blur-active', !!hasOpen);
+  }
+
   /**
    * Initialize a single dropdown
    */
@@ -102,6 +107,7 @@
 
     // Show the list
     dropdown.list.style.display = '';
+    updateBlurState();
   }
 
   /**
@@ -116,6 +122,7 @@
     dropdown.list.classList.remove('w--open');
     dropdown.toggle.setAttribute('aria-expanded', 'false');
     forceHideList(dropdown.list);
+    updateBlurState();
   }
 
   /**
@@ -241,6 +248,9 @@
     // Use capture phase for click to catch events before they bubble
     document.addEventListener('click', onDocumentClick, true);
     document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('click', function() {
+      setTimeout(updateBlurState, 0);
+    }, true);
   }
 
   // Initialize when DOM is ready
@@ -268,6 +278,8 @@
       closeProfileDropdown(root);
     }
   };
+
+  window.updateDropdownBlurState = updateBlurState;
 
   function closeProfileDropdown(root) {
     var dropdownRoot = root || document.querySelector('#profile-menu[data-sp-dropdown]');
@@ -310,6 +322,7 @@
       list.classList.remove('w--open');
       forceHideList(list);
     }
+    updateBlurState();
   }
 
   window.closeProfileDropdown = closeProfileDropdown;

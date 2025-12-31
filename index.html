@@ -1443,6 +1443,7 @@ document.addEventListener('DOMContentLoaded', function () {
     hideSpinner();
   }
   function showLoggedOutUI(){
+    closeAnyOpenDropdown();
     authBtns.forEach(el => { if (el) el.style.display = '';     });
     loggedMenus.forEach(el => { if (el) el.style.display = 'none'; });
     emailHolders.forEach(el => {

@@ -20,6 +20,9 @@
 
   // Track all initialized dropdowns
   var dropdowns = [];
+  var backdropEl = null;
+  var backdropHideTimeout = null;
+  var backdropOnTransitionEnd = null;
 
   function findDropdownInstance(wrapper) {
     if (!wrapper) return null;
@@ -326,5 +329,9 @@
   }
 
   window.closeProfileDropdown = closeProfileDropdown;
+
+  function onBackdropClick() {
+    closeAllDropdowns();
+  }
 
 })();

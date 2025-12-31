@@ -20,6 +20,27 @@
 
   // Track all initialized dropdowns
   var dropdowns = [];
+  var BACKDROP_ID = 'sp-dropdown-backdrop';
+
+  function ensureBackdrop() {
+    var existing = document.getElementById(BACKDROP_ID);
+    if (existing) return existing;
+
+    var backdrop = document.createElement('div');
+    backdrop.id = BACKDROP_ID;
+    document.body.insertBefore(backdrop, document.body.firstChild || null);
+    return backdrop;
+  }
+
+  function updateDropdownBlurState() {
+    var anyOpen = dropdowns.some(function(d) { return d.isOpen; });
+    if (anyOpen) {
+      ensureBackdrop();
+      document.body.classList.add('dropdown-blur-active');
+    } else {
+      document.body.classList.remove('dropdown-blur-active');
+    }
+  }
 
   function findDropdownInstance(wrapper) {
     if (!wrapper) return null;
@@ -102,6 +123,7 @@
 
     // Show the list
     dropdown.list.style.display = '';
+    updateDropdownBlurState();
   }
 
   /**
@@ -116,6 +138,7 @@
     dropdown.list.classList.remove('w--open');
     dropdown.toggle.setAttribute('aria-expanded', 'false');
     forceHideList(dropdown.list);
+    updateDropdownBlurState();
   }
 
   /**
@@ -310,6 +333,7 @@
       list.classList.remove('w--open');
       forceHideList(list);
     }
+    updateDropdownBlurState();
   }
 
   window.closeProfileDropdown = closeProfileDropdown;

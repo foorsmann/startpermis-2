@@ -36,3 +36,18 @@
   pointer-events: auto;
   display: flex;
 }
+
+/* Logged out hard-disable */
+[data-sp-dropdown].is-logged-out {
+  display: none !important;
+  visibility: hidden !important;
+}
+[data-sp-dropdown].is-logged-out .w-dropdown-toggle {
+  pointer-events: none !important;
+}
+[data-sp-dropdown].is-logged-out .w-dropdown-list {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

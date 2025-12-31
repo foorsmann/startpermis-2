@@ -919,6 +919,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const emailWrappers   = [...document.querySelectorAll('.client-email-wrapper')];
   const logoutAreas     = [...document.querySelectorAll('.log-out-wrapper')];
   const swapBtns        = [...document.querySelectorAll('.swap-btn')];
+  const profileDropdowns= [...document.querySelectorAll('#profile-menu[data-sp-dropdown]')];
+  const profileDropdownToggles = profileDropdowns.map(d => d.querySelector('.w-dropdown-toggle, .sp-dropdown-toggle')).filter(Boolean);
   /* JSON-ul Lottie pentru loader – exact animatia ta */
   const MS_SPINNER_LOTTIE = {
     "nm":"Main Scene",
@@ -1055,7 +1057,8 @@ document.addEventListener('DOMContentLoaded', function () {
     phantom: null,          // doar mobil
     spinnerTimer: null,
     hardFailTimer: null,
-    spinnerAnim: null       // referinta la animatia Lottie
+    spinnerAnim: null,      // referinta la animatia Lottie
+    isLoggedIn: false
   };
   /* Helpers */
   function inMobile(){ return window.matchMedia('(max-width: 991px)').matches; }
@@ -1206,9 +1209,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   /* ==== UI renderers ==== */
   function showLoggedInUI(email){
+    STATE.isLoggedIn = true;
     const displayEmail = formatEmailForDisplay(email || '');
     authBtns.forEach(el => { if (el) el.style.display = 'none'; });
     loggedMenus.forEach(el => { if (el) el.style.display = 'flex'; });
+    enableProfileDropdown();
     // text scurt in dropdown
     emailHolders.forEach(el => {
       if (!el) return;
@@ -1233,8 +1238,10 @@ document.addEventListener('DOMContentLoaded', function () {
     hideSpinner();
   }
   function showLoggedOutUI(){
+    STATE.isLoggedIn = false;
     authBtns.forEach(el => { if (el) el.style.display = '';     });
     loggedMenus.forEach(el => { if (el) el.style.display = 'none'; });
+    disableProfileDropdown();
     emailHolders.forEach(el => {
       if (!el) return;
       el.textContent = '';
@@ -1253,14 +1260,65 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.client-email-wrapper.ms-tooltip-open, .client-email-wrapper.ms-tooltip-pinned')
       .forEach(w => w.classList.remove('ms-tooltip-open','ms-tooltip-pinned'));
   }
+  function resetDropdownListStyles(list){
+    if (!list) return;
+    list.style.removeProperty('display');
+    list.style.removeProperty('visibility');
+    list.style.removeProperty('opacity');
+    list.style.removeProperty('pointer-events');
+  }
   function closeAnyOpenDropdown(){
+    if (typeof closeProfileDropdown === 'function') closeProfileDropdown();
     document.querySelectorAll('.w-dropdown-list.w--open, .dropdown-list.open').forEach(list=>{
       list.classList.remove('w--open'); list.classList.remove('open');
       list.style.display = 'none';
-      requestAnimationFrame(()=>{ list.style.display=''; });
+      requestAnimationFrame(()=>{ resetDropdownListStyles(list); });
     });
     document.querySelectorAll('.w-dropdown.w--open, .w-dropdown-toggle.w--open')
       .forEach(el => el.classList.remove('w--open'));
+  }
+  function disableProfileDropdown(){
+    profileDropdowns.forEach(dropdown => {
+      if (typeof closeProfileDropdown === 'function') closeProfileDropdown(dropdown);
+      dropdown.classList.add('is-logged-out');
+      dropdown.setAttribute('aria-hidden','true');
+      dropdown.style.display = 'none';
+      const toggle = dropdown.querySelector('.w-dropdown-toggle, .sp-dropdown-toggle');
+      const list   = dropdown.querySelector('.w-dropdown-list, .sp-dropdown-list');
+      if (toggle){
+        toggle.setAttribute('tabindex','-1');
+        toggle.setAttribute('aria-hidden','true');
+        toggle.classList.remove('w--open');
+        toggle.setAttribute('aria-expanded','false');
+      }
+      if (list){
+        list.setAttribute('aria-hidden','true');
+        list.classList.remove('w--open');
+        list.style.display = 'none';
+        list.style.visibility = 'hidden';
+        list.style.opacity = '0';
+        list.style.pointerEvents = 'none';
+      }
+    });
+  }
+  function enableProfileDropdown(){
+    profileDropdowns.forEach(dropdown => {
+      dropdown.classList.remove('is-logged-out');
+      dropdown.removeAttribute('aria-hidden');
+      dropdown.style.display = '';
+      const toggle = dropdown.querySelector('.w-dropdown-toggle, .sp-dropdown-toggle');
+      const list   = dropdown.querySelector('.w-dropdown-list, .sp-dropdown-list');
+      if (toggle){
+        toggle.removeAttribute('tabindex');
+        toggle.setAttribute('aria-hidden','false');
+        if (!toggle.getAttribute('aria-expanded')) toggle.setAttribute('aria-expanded','false');
+      }
+      if (list){
+        list.removeAttribute('aria-hidden');
+        list.classList.remove('w--open');
+        resetDropdownListStyles(list);
+      }
+    });
   }
   /* ===== Auth snapshot (fortat) ===== */
   function forceRenderSnapshot(){
@@ -1286,7 +1344,12 @@ document.addEventListener('DOMContentLoaded', function () {
     firebase.auth().onAuthStateChanged(function(user){
       document.body.classList.add('auth-checked');
       if (STATE.isLoggingOut) return;
-      if (user) showLoggedInUI(user.email); else showLoggedOutUI();
+      if (user){
+        showLoggedInUI(user.email);
+      } else {
+        closeAnyOpenDropdown();
+        showLoggedOutUI();
+      }
     });
   }
   /* Login intent flag */
@@ -1339,10 +1402,19 @@ document.addEventListener('DOMContentLoaded', function () {
       closeAllEmailTooltips();
     }
   });
+  profileDropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', function(e){
+      if (STATE.isLoggedIn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof closeProfileDropdown === 'function') closeProfileDropdown(toggle);
+    }, true);
+  });
   /* Logout – fara redirect, doar sign-out + actualizare UI locala */
   logoutAreas.forEach(el=>{
     el.addEventListener('click', async (e)=>{
       e.preventDefault();
+      if (typeof closeProfileDropdown === 'function') closeProfileDropdown(el);
       STATE.isLoggingOut = true;
       setAuthIntent('');
       const menuAnchor = document.querySelector('.user-logged-in-menu') || defaultAnchor;

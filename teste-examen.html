@@ -1382,64 +1382,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('online', ()=>{
     if (document.body.classList.contains('auth-loading')) forceRenderSnapshot();
   });
-  /* =====================================================
-     INCHIDERE MENIU PROFIL LA CLICK PE .close-btn-background
-     – foloseste mecanismul Webflow (click pe toggle) + cleanup
-     + reseteaza iconul (sageata) pentru sincronizare cu IX2
-     ===================================================== */
-  function closeUserDropdown() {
-    // Gasim dropdown-ul deschis
-    var openDropdown = document.querySelector('.w-dropdown.w--open');
-    if (!openDropdown) return;
-
-    // Gasim toggle-ul din dropdown (chiar daca nu are w--open pe el direct)
-    var toggle = openDropdown.querySelector('.w-dropdown-toggle');
-    if (!toggle) return;
-
-    // 1) Dispatch MouseEvent complet pentru a triggera si Webflow IX2
-    //    IX2 nu raspunde la .click() programatic, dar raspunde la MouseEvent real
-    var clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    });
-    toggle.dispatchEvent(clickEvent);
-
-    // 2) Safety net: dupa ce Webflow proceseaza click-ul,
-    //    eliminam orice .w--open ramas + resetam iconul manual
-    setTimeout(function () {
-      // Cleanup clase w--open
-      var t = document.querySelector(
-        '.user-logged-in-menu.w-dropdown-toggle.w--open'
-      );
-      var l = document.querySelector(
-        '.dropdown-list.w-dropdown-list.w--open'
-      );
-      if (t) t.classList.remove('w--open');
-      if (l) l.classList.remove('w--open');
-
-      var parent = t ? t.closest('.w-dropdown') : (l ? l.closest('.w-dropdown') : null);
-      if (parent && parent.classList.contains('w--open')) {
-        parent.classList.remove('w--open');
-      }
-
-      // 3) Resetam iconul (sageata) la starea inchis - sincronizare garantata
-      //    Aceasta este solutia definitiva pentru cazul in care IX2 nu a raspuns
-      var icon = toggle.querySelector('.icon');
-      if (icon) {
-        icon.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0deg) skew(0, 0)';
-      }
-    }, 50);
-  }
-  // Atasam logica pe toate elementele .close-btn-background (overlay de inchidere)
-  var closeOverlays = document.querySelectorAll('.close-btn-background');
-  closeOverlays.forEach(function (overlay) {
-    overlay.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeUserDropdown();
-    });
-  });
 });
 </script>
           </div>
@@ -1732,6 +1674,8 @@ document.addEventListener('DOMContentLoaded', function () {
   <script src="js/plyr.polyfilled-3.7.8.min.js"></script>
   <!-- Theme Manager -->
   <script src="js/theme.js"></script>
+  <!-- Dropdown Close Handler (centralized) -->
+  <script src="js/dropdown-close.js"></script>
   <script>
 Webflow.push(async function () {
   'use strict';

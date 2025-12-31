@@ -10550,6 +10550,7 @@ img {
 
   .modules-wrapper {
     border: 1px solid var(--dark-theme--border-color);
+    background-color: var(--dark-theme--main-color);
     border-radius: 10px;
     width: 100%;
     padding: 22px 10px;
@@ -12051,7 +12052,6 @@ img {
   }
 
   .modules-wrapper {
-    background-color: var(--dark-theme--main-color);
     margin-top: 10px;
     padding-top: 18px;
     padding-bottom: 18px;

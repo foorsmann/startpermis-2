@@ -103,28 +103,42 @@ body.dropdown-blur-active #sp-dropdown-backdrop {
 }
 
 /*
- * Mobile (≤991px): Blur overlay on navbar when dropdown is open.
- * Uses ::after pseudo-element to create blur layer over navbar content.
- * dropdown-list stays visible because it has position:fixed and higher z-index.
+ * Mobile (≤991px): Blur effect on navbar content when dropdown is open.
+ * Instead of using ::after overlay (which covers dropdown-list due to stacking context),
+ * we apply blur directly to navbar elements, excluding the dropdown.
  */
 @media screen and (max-width: 991px) {
-  .navbar-no-shadow:has([data-sp-dropdown].is-open)::after,
-  .navbar-no-shadow-unlinked:has([data-sp-dropdown].is-open)::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index: 2147483645; /* Below dropdown-list but above navbar content */
+  /* Blur all direct children of navbar-wrapper except profile-buttons (which contains dropdown) */
+  .navbar-no-shadow:has([data-sp-dropdown].is-open) .navbar-wrapper > *:not(.profile-buttons),
+  .navbar-no-shadow-unlinked:has([data-sp-dropdown].is-open) .navbar-wrapper > *:not(.profile-buttons) {
+    filter: blur(3px);
+    opacity: 0.3;
     pointer-events: none;
   }
 
-  /* Ensure dropdown-list is above the blur overlay when open */
+  /* Blur elements inside profile-buttons except the dropdown itself */
+  .navbar-no-shadow:has([data-sp-dropdown].is-open) .profile-buttons > *:not([data-sp-dropdown]),
+  .navbar-no-shadow-unlinked:has([data-sp-dropdown].is-open) .profile-buttons > *:not([data-sp-dropdown]) {
+    filter: blur(3px);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Blur the dropdown toggle when open, but not the dropdown-list */
+  .navbar-no-shadow [data-sp-dropdown].is-open > .w-dropdown-toggle,
+  .navbar-no-shadow-unlinked [data-sp-dropdown].is-open > .w-dropdown-toggle {
+    filter: blur(3px);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Ensure dropdown-list remains fully visible and interactive */
   .navbar-no-shadow [data-sp-dropdown].is-open .w-dropdown-list,
   .navbar-no-shadow [data-sp-dropdown].is-open .dropdown-list,
   .navbar-no-shadow-unlinked [data-sp-dropdown].is-open .w-dropdown-list,
   .navbar-no-shadow-unlinked [data-sp-dropdown].is-open .dropdown-list {
-    z-index: 2147483650 !important;
+    filter: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 }

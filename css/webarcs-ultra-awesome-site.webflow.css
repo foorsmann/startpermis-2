@@ -9408,7 +9408,6 @@ img {
 
   .wbs-pricing-component {
     z-index: 40;
-    background-color: var(--dark-theme--active-black);
     padding-top: 30px;
     padding-bottom: 30px;
     position: relative;
@@ -12211,7 +12210,6 @@ img {
   }
 
   .wbs-pricing-component {
-    background-color: var(--dark-theme--main-color);
     border-radius: 8px;
     padding: 12px 10px;
   }

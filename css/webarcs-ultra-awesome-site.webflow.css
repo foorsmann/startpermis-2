@@ -9719,11 +9719,6 @@ img {
     grid-auto-columns: 1fr;
   }
 
-  .navbar-no-shadow {
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-  }
-
   .hero-description-hero-main {
     font-size: 18px;
     line-height: 22px;
@@ -9845,8 +9840,6 @@ img {
     grid-template-rows: auto auto;
     grid-template-columns: 1fr 1fr;
     grid-auto-columns: 1fr;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
   }
 
   .heading-12-contact {

@@ -1,78 +1,105 @@
 /**
  * dropdown-close.js
- * Centralized handler for closing Webflow dropdowns via custom close buttons.
  *
- * Works with any .close-btn-background (or child elements like .close-btn-wrapper)
- * inside a Webflow dropdown (.w-dropdown).
+ * Handles closing Webflow dropdowns via custom close buttons (.close-btn-background).
  *
- * Uses Webflow's native mechanism by triggering a real click on the toggle,
- * ensuring proper state synchronization (w--open classes, IX2 animations, etc.)
+ * This script uses Webflow.push() to ensure it runs AFTER Webflow is fully initialized.
+ * It uses the 'pointerdown' event (which fires before 'click') in capture phase
+ * to intercept the event before Webflow can process it.
  */
+
 (function() {
   'use strict';
 
   /**
-   * Closes a Webflow dropdown by triggering native click on its toggle.
-   * This ensures all Webflow internals (classes, IX2 animations) stay in sync.
-   *
-   * @param {HTMLElement} dropdownWrapper - The .w-dropdown element to close
+   * Main initialization function.
+   * Called after Webflow is ready via Webflow.push()
    */
-  function closeWebflowDropdown(dropdownWrapper) {
-    if (!dropdownWrapper) return;
+  function initDropdownClose() {
 
-    var toggle = dropdownWrapper.querySelector('.w-dropdown-toggle');
-    if (!toggle) return;
+    /**
+     * Handles pointerdown on close buttons.
+     * Uses pointerdown instead of click because it fires earlier in the event sequence,
+     * giving us a chance to intercept before Webflow's handlers.
+     */
+    function onCloseButtonPointerDown(e) {
+      // Find if we clicked on or inside a close button
+      var closeBtn = e.target.closest('.close-btn-background');
+      if (!closeBtn) return;
 
-    // Check if dropdown is actually open (toggle or list has w--open)
-    var isOpen = toggle.classList.contains('w--open') ||
-                 dropdownWrapper.querySelector('.w-dropdown-list.w--open');
+      // Find the parent Webflow dropdown
+      var dropdown = closeBtn.closest('.w-dropdown');
+      if (!dropdown) return;
 
-    if (!isOpen) return;
+      // Find the toggle button
+      var toggle = dropdown.querySelector('.w-dropdown-toggle');
+      if (!toggle) return;
 
-    // Dispatch a real MouseEvent to trigger Webflow's native handler + IX2
-    // Simple .click() doesn't always trigger IX2 animations
-    var clickEvent = new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    });
-    toggle.dispatchEvent(clickEvent);
+      // Check if dropdown is actually open
+      var isOpen = toggle.classList.contains('w--open') ||
+                   dropdown.querySelector('.w-dropdown-list.w--open');
+      if (!isOpen) return;
+
+      // CRITICAL: Stop this event completely so Webflow doesn't process it
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      // Use setTimeout to dispatch the toggle click outside the current event flow.
+      // This ensures Webflow's internal state is clean when it receives our click.
+      setTimeout(function() {
+        // Dispatch a synthetic click on the toggle.
+        // This triggers Webflow's native dropdown close mechanism.
+        var clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        toggle.dispatchEvent(clickEvent);
+      }, 0);
+    }
+
+    // Listen for pointerdown in capture phase (fires before bubble phase handlers)
+    // This ensures we catch the event before Webflow's handlers
+    document.addEventListener('pointerdown', onCloseButtonPointerDown, true);
+
+    // Also handle touchstart for better mobile support
+    document.addEventListener('touchstart', onCloseButtonPointerDown, true);
   }
 
   /**
-   * Event delegation handler for close button clicks.
-   * Catches clicks on .close-btn-background or any of its children.
+   * Bootstrap: Wait for Webflow to be ready, then initialize.
+   * Webflow.push() queues a function to run after Webflow initialization.
    */
-  function handleCloseButtonClick(e) {
-    // Check if click target is inside a close button
-    var closeBtn = e.target.closest('.close-btn-background');
-    if (!closeBtn) return;
+  function bootstrap() {
+    if (window.Webflow && typeof Webflow.push === 'function') {
+      // Webflow is available - use its ready mechanism
+      Webflow.push(initDropdownClose);
+    } else {
+      // Webflow not available yet - wait for it
+      // This handles cases where our script loads before webflow.js
+      var checkInterval = setInterval(function() {
+        if (window.Webflow && typeof Webflow.push === 'function') {
+          clearInterval(checkInterval);
+          Webflow.push(initDropdownClose);
+        }
+      }, 50);
 
-    // Find the parent dropdown
-    var dropdown = closeBtn.closest('.w-dropdown');
-    if (!dropdown) return;
-
-    // Prevent the click from bubbling to dropdown (could cause issues)
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Close the dropdown using Webflow's native mechanism
-    closeWebflowDropdown(dropdown);
+      // Safety timeout - if Webflow never loads, init anyway after 3 seconds
+      setTimeout(function() {
+        clearInterval(checkInterval);
+        if (!window.Webflow) {
+          initDropdownClose();
+        }
+      }, 3000);
+    }
   }
 
-  /**
-   * Initialize the close button handler using event delegation.
-   * This approach works even if dropdowns are created dynamically.
-   */
-  function init() {
-    // Use capture phase to catch events before Webflow's handlers
-    document.addEventListener('click', handleCloseButtonClick, true);
-  }
-
-  // Initialize when DOM is ready
+  // Start bootstrap when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', bootstrap);
   } else {
-    init();
+    bootstrap();
   }
+
 })();

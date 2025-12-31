@@ -1,0 +1,25 @@
+/**
+ * sp-dropdown.css
+ * Styles for custom dropdown system (independent of Webflow)
+ */
+
+/* Arrow rotation when dropdown is open */
+[data-sp-dropdown].is-open .sp-dropdown-arrow,
+[data-sp-dropdown] .w-dropdown-toggle[aria-expanded="true"] .sp-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Smooth transition for arrow rotation */
+.sp-dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+/* Ensure dropdown list is hidden by default and shown when open */
+[data-sp-dropdown] .w-dropdown-list {
+  display: none;
+}
+
+[data-sp-dropdown].is-open .w-dropdown-list,
+[data-sp-dropdown] .w-dropdown-list.w--open {
+  display: flex;
+}

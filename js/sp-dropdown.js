@@ -20,6 +20,9 @@
 
   // Track all initialized dropdowns
   var dropdowns = [];
+  var backdropEl = null;
+  var backdropHideTimeout = null;
+  var backdropOnTransitionEnd = null;
 
   function findDropdownInstance(wrapper) {
     if (!wrapper) return null;
@@ -43,6 +46,78 @@
     list.style.visibility = 'hidden';
     list.style.opacity = '0';
     list.style.pointerEvents = 'none';
+  }
+
+  function ensureBackdrop() {
+    if (backdropEl) return backdropEl;
+    backdropEl = document.getElementById('sp-dropdown-backdrop');
+    if (!backdropEl) {
+      backdropEl = document.createElement('div');
+      backdropEl.id = 'sp-dropdown-backdrop';
+      backdropEl.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(backdropEl);
+    }
+    backdropEl.addEventListener('click', onBackdropClick);
+    return backdropEl;
+  }
+
+  function anyDropdownOpen() {
+    for (var i = 0; i < dropdowns.length; i++) {
+      if (dropdowns[i].isOpen) return true;
+    }
+    return false;
+  }
+
+  function showBackdrop() {
+    var el = ensureBackdrop();
+    if (backdropHideTimeout) {
+      clearTimeout(backdropHideTimeout);
+      backdropHideTimeout = null;
+    }
+    if (backdropOnTransitionEnd) {
+      el.removeEventListener('transitionend', backdropOnTransitionEnd);
+      backdropOnTransitionEnd = null;
+    }
+    el.style.display = 'block';
+    // Force a reflow so the opacity transition runs even when toggling quickly.
+    void el.offsetWidth;
+    document.body.classList.add('dropdown-blur-active');
+    el.classList.add('is-visible');
+  }
+
+  function hideBackdrop() {
+    var el = ensureBackdrop();
+    el.classList.remove('is-visible');
+    // Keep the body class during the fade-out so display: block stays in place.
+    if (backdropOnTransitionEnd) {
+      el.removeEventListener('transitionend', backdropOnTransitionEnd);
+      backdropOnTransitionEnd = null;
+    }
+    backdropOnTransitionEnd = function() {
+      document.body.classList.remove('dropdown-blur-active');
+      el.style.display = 'none';
+      el.removeEventListener('transitionend', backdropOnTransitionEnd);
+      backdropOnTransitionEnd = null;
+      if (backdropHideTimeout) {
+        clearTimeout(backdropHideTimeout);
+        backdropHideTimeout = null;
+      }
+    };
+    el.addEventListener('transitionend', backdropOnTransitionEnd);
+    // Safety timeout in case transitionend doesn't fire.
+    backdropHideTimeout = setTimeout(backdropOnTransitionEnd, 200);
+  }
+
+  function hideBackdropIfNoOpen() {
+    if (!anyDropdownOpen()) {
+      hideBackdrop();
+    }
+  }
+
+  function closeAllDropdowns() {
+    dropdowns.forEach(function(d) {
+      closeDropdown(d);
+    });
   }
 
   /**
@@ -102,6 +177,7 @@
 
     // Show the list
     dropdown.list.style.display = '';
+    showBackdrop();
   }
 
   /**
@@ -116,6 +192,7 @@
     dropdown.list.classList.remove('w--open');
     dropdown.toggle.setAttribute('aria-expanded', 'false');
     forceHideList(dropdown.list);
+    hideBackdropIfNoOpen();
   }
 
   /**
@@ -241,6 +318,7 @@
     // Use capture phase for click to catch events before they bubble
     document.addEventListener('click', onDocumentClick, true);
     document.addEventListener('keydown', onKeyDown);
+    ensureBackdrop();
   }
 
   // Initialize when DOM is ready
@@ -310,8 +388,13 @@
       list.classList.remove('w--open');
       forceHideList(list);
     }
+    hideBackdropIfNoOpen();
   }
 
   window.closeProfileDropdown = closeProfileDropdown;
+
+  function onBackdropClick() {
+    closeAllDropdowns();
+  }
 
 })();

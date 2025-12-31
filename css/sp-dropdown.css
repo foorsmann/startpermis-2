@@ -51,3 +51,29 @@
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* Navbar blur layer when dropdown backdrop is active on mobile/tablet */
+@media (max-width: 991px) {
+  body.dropdown-blur-active .navbar-no-shadow,
+  body.dropdown-blur-active .navbar-no-shadow-unlinked {
+    position: relative;
+  }
+
+  body.dropdown-blur-active .navbar-no-shadow::before,
+  body.dropdown-blur-active .navbar-no-shadow-unlinked::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body.dropdown-blur-active .navbar-no-shadow > *,
+  body.dropdown-blur-active .navbar-no-shadow-unlinked > * {
+    position: relative;
+    z-index: 1;
+  }
+}

@@ -14,12 +14,25 @@
   transition: transform 0.2s ease;
 }
 
-/* Ensure dropdown list is hidden by default and shown when open */
+/*
+ * Dropdown visibility strategy using visibility/opacity instead of display:none
+ * This keeps images in the render tree so they get decoded/preloaded immediately,
+ * preventing icon flash when opening the dropdown.
+ */
 [data-sp-dropdown] .w-dropdown-list {
-  display: none;
+  /* Hide visually but keep in render tree for image preloading */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  /* Smooth transition for opening */
+  transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
 [data-sp-dropdown].is-open .w-dropdown-list,
 [data-sp-dropdown] .w-dropdown-list.w--open {
+  /* Show dropdown */
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
   display: flex;
 }

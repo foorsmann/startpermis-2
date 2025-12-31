@@ -3919,8 +3919,8 @@ img {
 
 .hero-section {
   z-index: 400;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
   flex-flow: column;
   flex: 1;
   grid-template-rows: auto auto auto auto;
@@ -3938,6 +3938,12 @@ img {
   padding-right: 10px;
   display: grid;
   position: relative;
+}
+
+@media screen and (min-width: 992px) and (max-height: 800px) {
+  .hero-section {
+    grid-row-gap: 20px;
+  }
 }
 
 .liquid-chart {

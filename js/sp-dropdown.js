@@ -48,9 +48,61 @@
     list.style.pointerEvents = 'none';
   }
 
+  function ensureBackdrop() {
+    if (backdropEl && backdropEl.parentNode) return backdropEl;
+    backdropEl = document.querySelector('#sp-dropdown-backdrop') || document.createElement('div');
+    if (!backdropEl.id) backdropEl.id = 'sp-dropdown-backdrop';
+    backdropEl.removeEventListener('click', onBackdropClick);
+    backdropEl.addEventListener('click', onBackdropClick);
+    document.body.appendChild(backdropEl);
+    return backdropEl;
+  }
+
+  function setBackdropVisibility(hasOpen) {
+    var backdrop = ensureBackdrop();
+
+    if (backdropHideTimeout) {
+      clearTimeout(backdropHideTimeout);
+      backdropHideTimeout = null;
+    }
+
+    if (backdropOnTransitionEnd) {
+      backdrop.removeEventListener('transitionend', backdropOnTransitionEnd);
+      backdropOnTransitionEnd = null;
+    }
+
+    if (hasOpen) {
+      backdrop.style.display = 'block';
+      requestAnimationFrame(function() {
+        backdrop.classList.add('is-visible');
+      });
+      return;
+    }
+
+    backdrop.classList.remove('is-visible');
+    backdropOnTransitionEnd = function(event) {
+      if (event.target !== backdrop) return;
+      backdrop.style.display = 'none';
+      backdrop.removeEventListener('transitionend', backdropOnTransitionEnd);
+      backdropOnTransitionEnd = null;
+    };
+    backdrop.addEventListener('transitionend', backdropOnTransitionEnd);
+
+    // Fallback in case transitionend doesn't fire
+    backdropHideTimeout = setTimeout(function() {
+      if (backdropOnTransitionEnd) {
+        backdrop.style.display = 'none';
+      }
+    }, 250);
+  }
+
   function updateBlurState() {
-    var hasOpen = document.querySelector('.w-dropdown-list.w--open, .dropdown-list.w--open, .dropdown-list.open');
-    document.body.classList.toggle('dropdown-blur-active', !!hasOpen);
+    var hasOpenDropdown = dropdowns.some(function(dropdown) { return dropdown.isOpen; }) ||
+      document.querySelector('.w-dropdown-list.w--open, .dropdown-list.w--open, .dropdown-list.open');
+    var hasOpen = !!hasOpenDropdown;
+
+    document.body.classList.toggle('dropdown-blur-active', hasOpen);
+    setBackdropVisibility(hasOpen);
   }
 
   /**
@@ -126,6 +178,12 @@
     dropdown.toggle.setAttribute('aria-expanded', 'false');
     forceHideList(dropdown.list);
     updateBlurState();
+  }
+
+  function closeAllDropdowns() {
+    dropdowns.forEach(function(dropdown) {
+      closeDropdown(dropdown);
+    });
   }
 
   /**

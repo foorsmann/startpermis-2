@@ -9388,7 +9388,8 @@ img {
   }
 
   .wbs-pricing-4-wrap {
-    grid-template-columns: max-content;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
     place-content: center;
     position: relative;
   }
@@ -9398,7 +9399,7 @@ img {
     flex-flow: column;
     justify-content: center;
     align-items: center;
-    min-width: 25rem;
+    min-width: auto;
     margin-left: auto;
     margin-right: auto;
     position: relative;

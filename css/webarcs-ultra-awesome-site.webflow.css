@@ -5904,6 +5904,11 @@ img {
     padding-top: 60px;
     padding-bottom: 60px;
   }
+
+  .wbs-pricing-4-wrap {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
 }
 
 .wbs-accordion-3-item {
@@ -11099,6 +11104,12 @@ img {
   }
 }
 
+@media screen and (max-width: 590px) {
+  .wbs-pricing-4-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media screen and (max-width: 479px) {
   .section {
     height: 79%;
@@ -12197,7 +12208,8 @@ img {
   }
 
   .wbs-pricing-4-wrap {
-    grid-template-columns: 1fr;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
     padding: 10px;
   }
 

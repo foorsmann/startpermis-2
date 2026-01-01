@@ -982,12 +982,11 @@ img {
   flex-flow: column;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 20px;
+  margin-top: 27px;
   padding: 40px;
   font-family: Kanit, sans-serif;
   font-weight: 200;
   display: none;
-  top: 150%;
   left: auto;
   right: 0;
 }

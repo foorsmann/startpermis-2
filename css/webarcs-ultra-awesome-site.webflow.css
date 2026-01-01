@@ -5173,7 +5173,6 @@ img {
 .wbs-section-2 {
   z-index: 300;
   width: 100%;
-  padding-bottom: 4rem;
   padding-left: 10px;
   padding-right: 10px;
   position: relative;
@@ -9369,9 +9368,6 @@ img {
     max-width: 100%;
   }
 
-  .wbs-section-2 {
-    padding-bottom: 2rem;
-  }
 
   .wbs-button-border {
     border-radius: 4px;

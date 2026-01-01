@@ -4701,7 +4701,7 @@ img {
 .notice-column-module {
   z-index: 500;
   border: 1px solid var(--dark-theme--border-color);
-  background-color: var(--dark-theme--main-color);
+  background-color: var(--dark-theme--contrast-background);
   text-align: center;
   letter-spacing: 1px;
   border-radius: 10px;

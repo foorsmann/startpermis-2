@@ -8466,6 +8466,16 @@ img {
   }
 }
 
+@media screen and (max-width: 1400px) {
+  .modules-wrapper {
+    width: 100%;
+    padding: 20px 10px;
+    border: 1px solid var(--dark-theme--border-color);
+    background-color: var(--dark-theme--main-color);
+    border-radius: 10px;
+  }
+}
+
 @media screen and (max-width: 991px) {
   .container {
     flex: 0 auto;
@@ -9547,6 +9557,7 @@ img {
 
   .div-block-55, .div-block-56, .div-block-57 {
     width: 100%;
+    height: auto;
   }
 
   .heading-10 {

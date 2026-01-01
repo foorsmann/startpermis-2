@@ -5747,7 +5747,7 @@ img {
 
 .wbs-feature-image-2 {
   filter: grayscale();
-  width: 100%;
+  width: auto;
 }
 
 .wbs-feature-split-4 {

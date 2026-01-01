@@ -9830,7 +9830,7 @@ img {
 
   .close-btn-background {
     border-radius: 6px;
-    background-color: var(--dark-theme--active-black);
+    background-color: var(--dark-theme--main-background);
     border: 1px solid var(--dark-theme--border-color);
     padding: 7px;
     top: 20px;

@@ -9814,6 +9814,7 @@ img {
   }
 
   .plus-line-icon, .minus-line-icon {
+    background-color: var(--dark-theme--second-color);
     width: 20px;
   }
 

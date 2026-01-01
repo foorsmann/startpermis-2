@@ -5893,6 +5893,12 @@ img {
   display: flex;
 }
 
+@media screen and (min-width: 992px) {
+  .wbs-according-component {
+    padding-top: 60px;
+  }
+}
+
 .wbs-accordion-3-item {
   z-index: 70;
   border: 1px solid var(--dark-theme--border-color);

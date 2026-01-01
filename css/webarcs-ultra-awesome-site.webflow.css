@@ -12207,11 +12207,6 @@ img {
     border-radius: 4px;
   }
 
-  .wbs-pricing-4-wrap {
-    grid-column-gap: 30px;
-    grid-row-gap: 30px;
-    padding: 10px;
-  }
 
   .wbs-pricing-4-price-wrap {
     grid-column-gap: 0px;

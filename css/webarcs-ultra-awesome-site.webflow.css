@@ -5896,6 +5896,7 @@ img {
 @media screen and (min-width: 992px) {
   .wbs-according-component {
     padding-top: 60px;
+    padding-bottom: 60px;
   }
 }
 

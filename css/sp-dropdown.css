@@ -101,3 +101,38 @@ body.dropdown-blur-active #sp-dropdown-backdrop {
 .navbar-no-shadow-unlinked .w-dropdown-list {
   z-index: 2147483647;
 }
+
+/*
+ * Mobile dropdown positioning (≤991px)
+ * Position the dropdown-list 10px below the navbar-no-shadow-container
+ * The --navbar-mobile-height CSS variable is set dynamically by sp-dropdown.js
+ */
+@media screen and (max-width: 991px) {
+  .navbar-no-shadow .dropdown-list,
+  .navbar-no-shadow-unlinked .dropdown-list,
+  .navbar-no-shadow .w-dropdown-list,
+  .navbar-no-shadow-unlinked .w-dropdown-list {
+    /* Reset inset first to avoid conflicts with Webflow styles */
+    inset: unset !important;
+    /* Use fixed positioning to stay in viewport */
+    position: fixed !important;
+    /* Position 10px below navbar-no-shadow-container using dynamic variable */
+    top: calc(var(--navbar-mobile-height, 90px) + 10px) !important;
+    left: 20px !important;
+    right: 20px !important;
+    bottom: 20px !important;
+    margin-top: 0 !important;
+  }
+
+  /* More specific selector for open state */
+  .navbar-no-shadow .dropdown-list.w--open,
+  .navbar-no-shadow-unlinked .dropdown-list.w--open,
+  [data-sp-dropdown].is-open .dropdown-list {
+    inset: unset !important;
+    position: fixed !important;
+    top: calc(var(--navbar-mobile-height, 90px) + 10px) !important;
+    left: 20px !important;
+    right: 20px !important;
+    bottom: 20px !important;
+  }
+}

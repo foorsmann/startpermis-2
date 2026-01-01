@@ -9499,7 +9499,7 @@ img {
     background-color: var(--dark-theme--main-color);
     border-radius: 10px;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
   }
 
   .wbs-heading-h4-2 {
@@ -9545,7 +9545,7 @@ img {
     border-radius: 10px;
     width: 100%;
     margin-top: 0;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     padding: 20px;
     font-size: 40px;
     position: relative;

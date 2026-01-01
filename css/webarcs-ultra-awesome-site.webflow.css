@@ -9400,15 +9400,22 @@ img {
     justify-content: center;
     align-items: center;
     min-width: auto;
+    width: 90%;
     margin-left: auto;
-    margin-right: auto;
     position: relative;
+  }
+
+  .wbs-pricing-4-wrap > .wbs-pricing-4-item:nth-child(2) {
+    margin-left: 0;
+    margin-right: auto;
   }
 
   .wbs-pricing-component {
     z-index: 40;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
     position: relative;
     overflow: clip;
   }
@@ -9476,6 +9483,14 @@ img {
     margin-bottom: 40px;
   }
 
+  .wbs-container-2 {
+    border: 1px solid var(--dark-theme--border-color);
+    background-color: var(--dark-theme--main-color);
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+  }
+
   .wbs-heading-h4-2 {
     border-radius: 8px;
     padding-top: 15px;
@@ -9514,10 +9529,13 @@ img {
 
   .heading-10 {
     z-index: 40;
-    border-radius: 8px;
+    border: none;
+    background-color: transparent;
+    border-radius: 0;
     width: 100%;
-    margin-bottom: 25px;
-    padding: 20px 25px 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
     font-size: 40px;
     position: relative;
   }

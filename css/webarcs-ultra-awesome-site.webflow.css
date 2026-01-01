@@ -10770,11 +10770,7 @@ img {
     font-size: 24px;
   }
 
-  .wbs-feature-split-4 {
-    grid-column-gap: 35px;
-    grid-row-gap: 35px;
-  }
-
+  
   .heading-10 {
     border-radius: 8px;
     font-size: 35px;

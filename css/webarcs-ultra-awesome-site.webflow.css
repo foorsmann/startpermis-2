@@ -5789,7 +5789,10 @@ img {
 }
 
 .div-block-52 {
-  border-radius: 10px;
+    border: 1px solid var(--dark-theme--border-color);
+    background-color: var(--dark-theme--main-color);
+    border-radius: 10px;
+    padding: 20px;
   flex-flow: column;
   justify-content: center;
   align-items: center;
@@ -5798,7 +5801,10 @@ img {
 }
 
 .div-block-53, .div-block-54 {
-  border-radius: 10px;
+    border: 1px solid var(--dark-theme--border-color);
+    background-color: var(--dark-theme--main-color);
+    border-radius: 10px;
+    padding: 20px;
   flex-flow: column;
   justify-content: center;
   align-items: center;

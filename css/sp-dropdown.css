@@ -118,9 +118,9 @@ body.dropdown-blur-active #sp-dropdown-backdrop {
     position: fixed !important;
     /* Position 10px below navbar-no-shadow-container using dynamic variable */
     top: calc(var(--navbar-mobile-height, 90px) + 10px) !important;
-    left: 20px !important;
-    right: 20px !important;
-    bottom: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
     margin-top: 0 !important;
   }
 
@@ -131,8 +131,8 @@ body.dropdown-blur-active #sp-dropdown-backdrop {
     inset: unset !important;
     position: fixed !important;
     top: calc(var(--navbar-mobile-height, 90px) + 10px) !important;
-    left: 20px !important;
-    right: 20px !important;
-    bottom: 20px !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
   }
 }

@@ -10644,7 +10644,7 @@ img {
 
   .image-19 {
     border-radius: 10px;
-    max-width: 70%;
+    max-width: 50%;
     margin-bottom: 10px;
   }
 
@@ -12266,6 +12266,7 @@ img {
   }
 
   ._w-1 {
+    width: 100%;
     grid-column-gap: 20px;
     grid-row-gap: 20px;
     grid-template-rows: auto;

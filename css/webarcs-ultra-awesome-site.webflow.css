@@ -975,7 +975,7 @@ img {
   z-index: 2147483647 !important;
   grid-column-gap: 15px;
   grid-row-gap: 15px;
-  border: 2px solid var(--dark-theme--second-color);
+  border: 1px solid var(--dark-theme--border-color);
   background-color: var(--dark-theme--main-color);
   cursor: default;
   border-radius: 10px;

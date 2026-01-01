@@ -5740,6 +5740,9 @@ img {
 
 .wbs-feature-component-2 {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .wbs-feature-image-2 {
@@ -5750,15 +5753,14 @@ img {
 .wbs-feature-split-4 {
   grid-column-gap: 40px;
   grid-row-gap: 40px;
-  grid-template-rows: auto;
-  grid-template-columns: .5fr .5fr;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-auto-columns: 1fr;
-  justify-content: space-between;
-  place-items: center;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   display: grid;
+  align-items: stretch;
 }
 
 .wbs-feature-split-3-list {
@@ -5793,26 +5795,30 @@ img {
 }
 
 .div-block-52 {
-    border: 1px solid var(--dark-theme--border-color);
-    background-color: var(--dark-theme--main-color);
-    border-radius: 10px;
-    padding: 20px;
+  border: 1px solid var(--dark-theme--border-color);
+  background-color: var(--dark-theme--main-color);
+  border-radius: 10px;
+  padding: 20px;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   display: flex;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .div-block-53, .div-block-54 {
-    border: 1px solid var(--dark-theme--border-color);
-    background-color: var(--dark-theme--main-color);
-    border-radius: 10px;
-    padding: 20px;
+  border: 1px solid var(--dark-theme--border-color);
+  background-color: var(--dark-theme--main-color);
+  border-radius: 10px;
+  padding: 20px;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   display: flex;
+  width: 100%;
+  height: 100%;
 }
 
 .div-block-55, .div-block-56, .div-block-57 {
@@ -5820,6 +5826,8 @@ img {
   background-color: var(--dark-theme--main-color);
   border-radius: 10px;
   padding: 20px;
+  height: auto;
+  align-self: start;
 }
 
 .image-35, .image-36, .image-37, .image-38, .image-39, .image-40, .image-41, .image-42, .image-43, .image-44, .image-45, .image-46, .image-47, .image-48, .image-49, .image-50, .image-51, .image-52, .image-53, .image-54, .image-55 {
@@ -8443,7 +8451,7 @@ img {
   }
 
   .wbs-feature-split-4 {
-    grid-template-columns: 45% 45%;
+    grid-template-columns: 1fr 1fr;
   }
 
   .wbs-according-component {

@@ -5269,8 +5269,8 @@ img {
 }
 
 .wbs-pricing-4-wrap {
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
   color: var(--dark-theme--text-color);
   grid-template-rows: auto;
   grid-template-columns: 1fr 1fr 1fr;
@@ -9400,7 +9400,7 @@ img {
     justify-content: center;
     align-items: center;
     min-width: auto;
-    width: 90%;
+    width: 100%;
     margin-left: auto;
     position: relative;
   }
@@ -10684,9 +10684,6 @@ img {
     padding-left: 12px;
   }
 
-  .wbs-pricing-4-item {
-    min-width: 22rem;
-  }
 
   .wbs-accordion-icon {
     margin-left: 20px;

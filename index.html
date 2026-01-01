@@ -277,10 +277,11 @@
   .all-modules {
     /* replicate setarile de pe breakpointul Tablet */
     display: grid;
-    grid-template-columns: 1fr 1fr;    /* doua coloane egale  */
+    grid-template-columns: auto auto;  /* coloane care isi pastreaza dimensiunea */
     grid-template-rows: auto auto;     /* doua randuri auto   */
     grid-column-gap: 20px;
     grid-row-gap: 20px;
+    justify-content: center;           /* centreaza coloanele pe orizontala */
     place-items: stretch stretch;
     width: 100%;
     margin-left: auto;

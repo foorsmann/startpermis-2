@@ -288,6 +288,19 @@
   }
 
   /**
+   * Update CSS variable for navbar height (used for mobile dropdown positioning)
+   */
+  function updateNavbarHeightVariable() {
+    var navbar = document.querySelector('.navbar-no-shadow-container');
+    if (!navbar) return;
+
+    var rect = navbar.getBoundingClientRect();
+    // The navbar's bottom position from the viewport top
+    var navbarBottom = rect.bottom;
+    document.documentElement.style.setProperty('--navbar-mobile-height', navbarBottom + 'px');
+  }
+
+  /**
    * Initialize all dropdowns on the page
    */
   function init() {
@@ -312,6 +325,10 @@
     document.addEventListener('click', function() {
       setTimeout(updateBlurState, 0);
     }, true);
+
+    // Calculate navbar height for mobile dropdown positioning
+    updateNavbarHeightVariable();
+    window.addEventListener('resize', updateNavbarHeightVariable);
   }
 
   // Initialize when DOM is ready

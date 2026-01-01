@@ -5881,14 +5881,11 @@ img {
 }
 
 .wbs-according-component {
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
   flex-flow: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 1500px;
-  margin-bottom: 40px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 20px;
@@ -9582,7 +9579,6 @@ img {
   .paragraph-7 {
     align-self: center;
     width: 50%;
-    margin-bottom: auto;
   }
 
   .navbar-brand-copy {
